@@ -1,0 +1,19 @@
+cmake_minimum_required(VERSION 3.0)
+project(Gyronaut C)
+
+set(CMAKE_C_STANDARD 11)
+
+#set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} -march=native)  # march=native for best performance
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-long-long -pedantic -Wno-unused-function -Wno-missing-braces")
+
+# Set sources
+add_executable(gyronaut
+        src/main.c
+        )
+
+# find SDL
+find_library(SDL_LIB SDL)
+
+
+# link to the libraries
+target_link_libraries(gyronaut ${SDL_LIB})
