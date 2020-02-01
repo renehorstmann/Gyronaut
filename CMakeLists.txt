@@ -12,4 +12,6 @@ include_directories(/usr/include/SDL2)
 # Set sources
 add_executable(gyronaut
         src/main.c
+        src/inputs.c
+        src/render.c
         )
