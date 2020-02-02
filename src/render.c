@@ -14,7 +14,7 @@ void render_init(SDL_Renderer *r, int w, int h) {
     screen_scale = screen_h < screen_w ? (float) screen_h / 100.0f : (float) screen_w / 100.0f;
 }
 
-static SDL_Rect RRect_to_SDL_Rect(RRect rect) {
+static SDL_Rect rrect_to_SDL_Rect(struct rrect rect) {
     SDL_Rect res;
     res.x = (int) (screen_w_half + rect.x * screen_scale);
     res.y = (int) (screen_h_half + rect.y * screen_scale);
@@ -23,7 +23,7 @@ static SDL_Rect RRect_to_SDL_Rect(RRect rect) {
     return res;
 }
 
-bool RRect_contains(RRect rect, float x, float y) {
+bool rrect_contains(struct rrect rect, float x, float y) {
     float dx = x - rect.x;
     float dy = y - rect.y;
 
@@ -37,9 +37,9 @@ bool RRect_contains(RRect rect, float x, float y) {
            && rotated_y < rect.h / 2 && rotated_y > -rect.h / 2;
 }
 
-void render_objects(Object *objects, int n) {
+void render_objects(renderobject *objects, int n) {
     for(int i=0; i<n; i++) {
-        SDL_Rect rect = RRect_to_SDL_Rect(objects[i].rect);
+        SDL_Rect rect = rrect_to_SDL_Rect(objects[i].rect);
 
         SDL_SetRenderDrawColor(renderer,
                 objects[i].color.r,
