@@ -13,23 +13,23 @@ static float rad2deg(float rad) {
 
 void render_init(SDL_Renderer *renderer, int screen_w, int screen_h);
 
-typedef struct {
+struct rrect {
     float x, y; // mid point
     float w, h;
     float angle;
-} rrect;
+};
 
-bool rreect_contains(rreect rect, float x, float y);
+bool rreect_contains(struct rreect rect, float x, float y);
 
-typedef struct {
+struct color {
     Uint8 r, g, b, a;
-} color;
+};
 
 typedef struct {
-    rrect rect;
+    struct rrect rect;
     SDL_Texture *tex;
     SDL_Rect tex_pos;
-    color color;
+    struct color color;
 } renderobject;
 
 void render_objects(renderobject *objects, int n);
