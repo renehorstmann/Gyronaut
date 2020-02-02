@@ -17,21 +17,21 @@ typedef struct {
     float x, y; // mid point
     float w, h;
     float angle;
-} RRect;
+} rrect;
 
-bool RRect_contains(RRect rect, float x, float y);
+bool rreect_contains(rreect rect, float x, float y);
 
 typedef struct {
     Uint8 r, g, b, a;
-} Color;
+} color;
 
 typedef struct {
-    RRect rect;
+    rrect rect;
     SDL_Texture *tex;
     SDL_Rect tex_pos;
-    Color color;
-} Object;
+    color color;
+} renderobject;
 
-void render_objects(Object *objects, int n);
+void render_objects(renderobject *objects, int n);
 
 #endif //GYRONAUT_RENDER_H
