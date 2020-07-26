@@ -9,3 +9,15 @@ Gyronaut will be a simple 2D game.
 An astronaut wants to reach his space station and uses his "space jetpack" to get there.
 He will constantly float forward (right) and the player can rotate his direction up and down to avoid obstacles like asteroids.
 
+## Todo
+- Setup for OpenGL usage (+ OpenGL ES)
+- Draw basic sprites
+  - Gyronaut
+  - Asteroids
+  - Background
+- Topdown Layout
+  - Renderer
+     - OpenGL rotated rects
+     - Camera with position and rotation
+  - InputController
+  - GameObjects...
