@@ -141,6 +141,7 @@ Makefile2
 link.txt
 CMakeCache.txt
 TargetDirectories.txt
+compile_commands.json
 compiler_commands.json
 CMakeCCompilerId.c
 progress.marks
