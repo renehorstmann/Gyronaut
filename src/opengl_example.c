@@ -5,6 +5,12 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
+#ifdef GYRONAUT_GLES
+#define PRECISION "precision mediump float;\n"
+#else
+#define PRESICION ""
+#endif
+
 const char *VERTEX_SHADER =
 	"attribute vec4 position;\n"
 	"attribute vec4 color;\n"
@@ -16,6 +22,7 @@ const char *VERTEX_SHADER =
 	"}";
 
 const char *FRAGMENT_SHADER =
+	PRESICION
 	"varying vec4 vcolor;\n"
 	"void main()\n"
 	"{\n"
