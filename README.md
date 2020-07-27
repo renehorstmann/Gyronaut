@@ -10,7 +10,6 @@ An astronaut wants to reach his space station and uses his "space jetpack" to ge
 He will constantly float forward (right) and the player can rotate his direction up and down to avoid obstacles like asteroids.
 
 ## Todo
-- Setup for OpenGL usage (+ OpenGL ES)
 - Draw basic sprites
   - Gyronaut
   - Asteroids
