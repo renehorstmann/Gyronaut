@@ -29,6 +29,10 @@ int main() {
         return 1;
     }
 
+    int width, height;
+    SDL_GetWindowSize(window, &width, &height);
+    SDL_Log("window size: %dx%d", width, height);
+
     // Not necessary, but recommended to create a gl context:
     SDL_GL_CreateContext(window);
 
@@ -47,21 +51,6 @@ int main() {
         {
             if(event.type == SDL_QUIT)
                 goto BYE;
-
-            if (event.type == SDL_WINDOWEVENT) {
-                switch (event.window.event) {
-                    case SDL_WINDOWEVENT_RESIZED:
-                        SDL_Log("Window %d resized to %dx%d",
-                                event.window.windowID, event.window.data1,
-                                event.window.data2);
-                        break;
-                    case SDL_WINDOWEVENT_SIZE_CHANGED:
-                        SDL_Log("Window %d size changed to %dx%d",
-                                event.window.windowID, event.window.data1,
-                                event.window.data2);
-                        break;
-                }
-            }
 
             // Process events so the app doesn't hang
         }
