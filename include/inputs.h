@@ -1,7 +1,7 @@
 #ifndef GYRONAUT_INPUTS_H
 #define GYRONAUT_INPUTS_H
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 enum TouchAction {TOUCH_DOWN, TOUCH_MOVE, TOUCH_UP};
 

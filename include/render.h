@@ -1,7 +1,7 @@
 #ifndef GYRONAUT_RENDER_H
 #define GYRONAUT_RENDER_H
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <stdbool.h>
 
 static float deg2rad(float deg) {
