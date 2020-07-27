@@ -19,6 +19,8 @@ int main() {
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 
+    SDL_SetHint(SDL_HINT_ORIENTATIONS, "Portrait");
+
     // create window
     SDL_Window *window = SDL_CreateWindow("Gyronaut",
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
