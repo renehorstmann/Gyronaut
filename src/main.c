@@ -4,30 +4,38 @@
 #include "opengl_example.h"
 
 int main() {
+    if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_Init failed: %s", SDL_GetError());
+        return 1;
+    }
 
-    SDL_Init(SDL_INIT_EVERYTHING);  // != 0 test
-
-    SDL_Log("Hello World");
-    SDL_Log("Hello Too");
-
+    // setup OpenGL usage
     SDL_Log("OpenGL minimal version: %d.%d", GYRONAUT_OPENGL_MAJOR_VERSION, GYRONAUT_OPENGL_MINOR_VERSION);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, GYRONAUT_OPENGL_MAJOR_VERSION);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, GYRONAUT_OPENGL_MINOR_VERSION);
 
-    // We want at least 8 bits per color
+    // 8 bits per color
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 
-    SDL_Window *window = SDL_CreateWindow("Hello SDL2 OpenGL ES", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 640, 480, SDL_WINDOW_OPENGL);
-    if (window == NULL)
-    {
-        fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
+    // create window
+    SDL_Window *window = SDL_CreateWindow("Gyronaut",
+            SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+            640, 480,
+            SDL_WINDOW_OPENGL);
+    if (!window) {
+        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_CreateWindow failed: %s", SDL_GetError());
         return 1;
     }
 
-    // We will not actually need a context created, but we should create one
+    // Not necessary, but recommended to create a gl context:
     SDL_GL_CreateContext(window);
+
+
+    //
+    // opengl example:
+    //
 
     // Initialize triangle renderer
     triangle_init();
@@ -47,6 +55,10 @@ int main() {
         SDL_GL_SwapWindow(window);
     }
     BYE:
+
+    //
+    // opengl example end
+    //
 
     SDL_DestroyWindow(window);
     SDL_Quit();
