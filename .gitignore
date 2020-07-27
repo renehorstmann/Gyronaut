@@ -128,3 +128,22 @@ fabric.properties
 /.idea/vcs.xml
 /.idea/Utilc.iml
 /.idea/Plyc.iml
+
+
+# CxxDroid
+*.cmake
+*.log
+*.make
+*.bin
+gyronaut
+Makefile
+Makefile2
+link.txt
+CMakeCache.txt
+TargetDirectories.txt
+compiler_commands.json
+CMakeCCompilerId.c
+progress.marks
+depend.internal
+cmake.check_cache
+C.includecache
