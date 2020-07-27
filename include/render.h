@@ -5,10 +5,11 @@
 #include <SDL2/SDL.h>
 
 
-void r_init();
+void render_init();
 
+void render_update(int wnd_with, int wnd_height, float *world_pose);
 
-void r_render(double delta_time, int wnd_width, int wnd_height);
+void render_hud_mode();
 
 
 #endif //GYRONAUT_RENDER_H
