@@ -8,6 +8,7 @@ int main() {
     SDL_Init(SDL_INIT_EVERYTHING);  // != 0 test
 
     SDL_Log("Hello World");
+    SDL_Log("Hello Too");
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, GYRONAUT_OPENGL_MAJOR_VERSION);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, GYRONAUT_OPENGL_MINOR_VERSION);
