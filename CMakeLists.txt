@@ -27,10 +27,15 @@ if (GL_LIB)
     message("GL found: Desktop mode")
     target_link_libraries(gyronaut ${GL_LIB})
     add_compile_definitions(GYRONAUT_OPENGL_MAJOR_VERSION=3)
-    add_compile_definitions(GYRONAUT_OPENGL_MINOR_VERSION=0)
+    add_compile_definitions(GYRONAUT_OPENGL_MINOR_VERSION=3)
 else ()
     message("GL not found: Mobile mode")
     add_compile_definitions(GYRONAUT_GLES)
     add_compile_definitions(GYRONAUT_OPENGL_MAJOR_VERSION=3)
     add_compile_definitions(GYRONAUT_OPENGL_MINOR_VERSION=0)
 endif ()
+
+
+# res
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

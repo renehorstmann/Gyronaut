@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
+
+#include "astronaut.h"
 
 #include "opengl_example.h"
 
@@ -44,8 +45,9 @@ int main() {
     // opengl example:
     //
 
+    astronaut_init();
     // Initialize triangle renderer
-    triangle_init();
+//    triangle_init();
 
     while (true)
     {
@@ -58,7 +60,10 @@ int main() {
             // Process events so the app doesn't hang
         }
         // Draw triangle
-        triangle_render(SDL_GetTicks());
+//        triangle_render(SDL_GetTicks());
+
+        astronaut_render();
+
         // Swap buffers
         SDL_GL_SwapWindow(window);
     }
