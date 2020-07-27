@@ -1,10 +1,11 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_opengl.h>
 
 #include "opengl_example.h"
 
 int main() {
-    if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+    if(SDL_Init(SDL_INIT_VIDEO) != 0) {
         SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_Init failed: %s", SDL_GetError());
         return 1;
     }
@@ -14,10 +15,13 @@ int main() {
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, GYRONAUT_OPENGL_MAJOR_VERSION);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, GYRONAUT_OPENGL_MINOR_VERSION);
 
+    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+
     // 8 bits per color
     SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
     SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+
 
     // create window
     SDL_Window *window = SDL_CreateWindow("Gyronaut",
@@ -35,7 +39,6 @@ int main() {
 
     // Not necessary, but recommended to create a gl context:
     SDL_GL_CreateContext(window);
-
 
     //
     // opengl example:

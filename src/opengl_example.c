@@ -16,7 +16,6 @@ const char *VERTEX_SHADER =
 	"}";
 
 const char *FRAGMENT_SHADER =
-	"precision mediump float;\n"
 	"varying vec4 vcolor;\n"
 	"void main()\n"
 	"{\n"
@@ -68,7 +67,7 @@ void triangle_render(double timemillis)
         colors[i * 4 + 3] = 1.0f;
     }
     // Clear screen
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Draw triangle
