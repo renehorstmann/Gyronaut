@@ -2,6 +2,7 @@
 #include <math.h>
 
 #define GL_GLEXT_PROTOTYPES
+#include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
 const char *VERTEX_SHADER =
@@ -27,6 +28,8 @@ static GLfloat colors[12] = {0};
 
 void triangle_init()
 {
+    SDL_Log("version: %s", glGetString(GL_VERSION));
+
     // Load shaders
 	GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertex, 1, &VERTEX_SHADER, NULL);
