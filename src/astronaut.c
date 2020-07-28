@@ -11,16 +11,18 @@
 #endif
 
 static const char *vertex_code =
-        "#version 330\n"
+        "#version 320 es\n"
         "layout(location = 0) in vec2 position;"
         "void main() {"
         "  gl_Position = vec4(position.x, position.y, 0, 1);"
         "}";
 
 static const char *fragment_code =
-        "#version 330 \n"
+        "#version 320 es\n"
+        "precision mediump float;\n"
+        "out vec4 fragcolor;"
         "void main() {"
-        "  gl_FragColor = vec4(0, 1, 0, 1);"
+        "  fragcolor = vec4(0, 1, 0, 1);"
         "}";
 
 static GLuint vao;
@@ -104,7 +106,7 @@ void astronaut_init() {
 }
 
 void astronaut_render() {
-    glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(1.0f, 0.5f * rand() / RAND_MAX, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(program);

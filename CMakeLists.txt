@@ -36,6 +36,11 @@ else ()
 endif ()
 
 
+find_library(GLEW_LIB GLESv3)
+message("glew: " ${GLEW_LIB})
+target_link_libraries(gyronaut ${GLEW_LIB})
+
+
 # res
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
