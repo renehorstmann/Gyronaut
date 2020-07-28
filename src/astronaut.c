@@ -1,14 +1,14 @@
 #include "gl.h"
 
 static const char *vertex_code =
-        "#version 300 es\n"
+        "#version 330 core\n"
         "layout(location = 0) in vec2 position;\n"
         "void main() {\n"
         "  gl_Position = vec4(position.x, position.y, 0, 1);\n"
         "}\n";
 
 static const char *fragment_code =
-        "#version 300 es\n"
+        "#version 330 core\n"
         "precision mediump float;\n"
         "out vec4 fragcolor;\n"
         "void main() {\n"
