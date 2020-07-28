@@ -2,8 +2,8 @@
 #define GYRONAUT_GL_H
 
 #define GL_GLEXT_PROTOTYPES
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
+#include <SDL.h>
+#include <SDL_opengl.h>
 
 #ifdef R_GLES
 static const int R_GL_MAJOR_VERSION = 3;

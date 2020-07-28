@@ -19,9 +19,12 @@ add_executable(gyronaut ${SRCS})
 
 # SDL
 find_package(SDL2 REQUIRED)
-find_library(SDL2_IMAGE_LIB SDL2_image)
+find_package(SDL2_image REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS})
-target_link_libraries(gyronaut m ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIB})
+target_link_libraries(gyronaut m 
+    ${SDL2_LIBRARIES} 
+    ${SDL2_IMAGE_LIBRARIES}
+)
 
 # Desktop or Mobile? -> GL or GLES?
 find_library(GL_LIB GL)
@@ -31,7 +34,7 @@ if (GL_LIB)
     target_link_libraries(gyronaut ${GL_LIB})
 elseif (GLES_LIB)
     message("GLES found: Mobile mode")
-    add_compile_definitions(G_GLES)
+    add_compile_definitions(R_GLES)
     target_link_libraries(gyronaut ${GLES_LIB})
 else()
     message( FATAL_ERROR "Neither GL nor GLESv3 found, exiting CMake")
