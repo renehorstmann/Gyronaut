@@ -14,12 +14,12 @@
 #endif
 
 
-//#ifdef GYRONAUT_GLES
-//#define GYRONAUT_VERTEX "#version 300 es\n"
-//#define GYRONAUT_FRAGMENT "#version 300 es\nprecision mediump float;\n"
-//#else
-//#define GYRONAUT_VERTEX "#version 330\n"
-//#define GYRONAUT_FRAGMENT "#version 330\n"
-//#endif
+#ifdef GYRONAUT_GLES
+#define GYRONAUT_VERTEX "#version 300 es\n"
+#define GYRONAUT_FRAGMENT "#version 300 es\nprecision mediump float;\n"
+#else
+#define GYRONAUT_VERTEX "#version 330 core\n"
+#define GYRONAUT_FRAGMENT "#version 330 core\n"
+#endif
 
 #endif //GYRONAUT_GL_H

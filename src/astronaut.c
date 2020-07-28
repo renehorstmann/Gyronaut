@@ -1,15 +1,14 @@
 #include "gl.h"
 
 static const char *vertex_code =
-        "#version 330 core\n"
+        GYRONAUT_VERTEX
         "layout(location = 0) in vec2 position;\n"
         "void main() {\n"
         "  gl_Position = vec4(position.x, position.y, 0, 1);\n"
         "}\n";
 
 static const char *fragment_code =
-        "#version 330 core\n"
-        "precision mediump float;\n"
+        GYRONAUT_FRAGMENT
         "out vec4 fragcolor;\n"
         "void main() {\n"
         "  fragcolor = vec4(0, 1, 0, 1);\n"
