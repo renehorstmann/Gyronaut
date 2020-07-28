@@ -1,12 +1,19 @@
 #include <stdbool.h>
-
+#include <SDL_image.h>
 #include "gl.h"
 #include "camera.h"
 #include "astronaut.h"
 
 int main() {
-    if(SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_Init failed: %s", SDL_GetError());
+        return 1;
+    }
+    //Initialize PNG loading
+    int imgFlags = IMG_INIT_PNG;
+    if( !( IMG_Init( imgFlags ) & imgFlags ) )
+    {
+        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "IMG_Init failed: %s", IMG_GetError());
         return 1;
     }
 
@@ -47,11 +54,11 @@ int main() {
     // Initialize triangle renderer
 //    triangle_init();
 
-    while (true)
-    {
+
+    Uint32 last_time = SDL_GetTicks();
+    while (true) {
         SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
+        while (SDL_PollEvent(&event)) {
             if(event.type == SDL_QUIT)
                 goto BYE;
 
@@ -62,14 +69,20 @@ int main() {
 
         int width, height;
         SDL_GetWindowSize(window, &width, &height);
-        camera_update(width, height);
+
+        Uint32 time = SDL_GetTicks();
+        double dtime = (time - last_time) / 1000.0;
+        last_time = time;
+
 
         // simulate
+        camera_update(width, height);
+
+        astronaut_update(dtime);
 
         // render
         glClearColor(1.0f, 0.5f * rand() / RAND_MAX, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 
 
         astronaut_render();

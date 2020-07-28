@@ -17,6 +17,7 @@ static const char *fragment_code =
 static GLuint vao;
 static GLuint vbo;
 static GLuint program;
+static GLuint tex;
 
 
 void astronaut_init() {
@@ -24,6 +25,9 @@ void astronaut_init() {
             {GL_VERTEX_SHADER,   vertex_code},
             {GL_FRAGMENT_SHADER, fragment_code}
     }, 2);
+
+    tex = load_texture_from_file("res/test_astronaut.png");
+
 
     static float data[] = {
             0, 0, 1, 0, 0, 1
@@ -47,7 +51,13 @@ void astronaut_init() {
     glBindVertexArray(0);
 }
 
+void astronaut_update(double dtime) {
+
+}
+
 void astronaut_render() {
+    glActiveTexture(tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
 
     glUseProgram(program);
     glBindVertexArray(vao);

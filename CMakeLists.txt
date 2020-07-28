@@ -19,7 +19,9 @@ add_executable(gyronaut ${SRCS})
 
 # SDL
 find_package(SDL2 REQUIRED)
-target_link_libraries(gyronaut ${SDL2_LIBRARIES} m)
+find_library(SDL2_IMAGE_LIB SDL2_image)
+include_directories(${SDL2_INCLUDE_DIRS})
+target_link_libraries(gyronaut m ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIB})
 
 # Desktop or Mobile? -> GL or GLES?
 find_library(GL_LIB GL)

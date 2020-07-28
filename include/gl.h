@@ -34,4 +34,6 @@ typedef struct shader_source {
 
 GLuint compile_glsl(shader_source *sources, int n);
 
+GLuint load_texture_from_file(const char *file);
+
 #endif //GYRONAUT_GL_H
