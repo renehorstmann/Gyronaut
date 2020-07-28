@@ -1,9 +1,7 @@
 #include <stdbool.h>
-#include <SDL2/SDL.h>
+#include "gl.h"
 
 #include "astronaut.h"
-
-#include "opengl_example.h"
 
 int main() {
     if(SDL_Init(SDL_INIT_VIDEO) != 0) {
@@ -40,6 +38,8 @@ int main() {
 
     // Not necessary, but recommended to create a gl context:
     SDL_GL_CreateContext(window);
+
+    SDL_Log("OpenGL version: %s", glGetString(GL_VERSION));
 
     //
     // opengl example:

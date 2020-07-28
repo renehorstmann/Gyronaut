@@ -1,29 +1,19 @@
-#define GL_GLEXT_PROTOTYPES
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_opengl.h>
-
-#include "astronaut.h"
-
-#ifdef GYRONAUT_GLES
-#define PRECISION "precision mediump float;\n"
-#else
-#define PRECISION ""
-#endif
+#include "gl.h"
 
 static const char *vertex_code =
-        "#version 320 es\n"
-        "layout(location = 0) in vec2 position;"
-        "void main() {"
-        "  gl_Position = vec4(position.x, position.y, 0, 1);"
-        "}";
+        "#version 300 es\n"
+        "layout(location = 0) in vec2 position;\n"
+        "void main() {\n"
+        "  gl_Position = vec4(position.x, position.y, 0, 1);\n"
+        "}\n";
 
 static const char *fragment_code =
-        "#version 320 es\n"
+        "#version 300 es\n"
         "precision mediump float;\n"
-        "out vec4 fragcolor;"
-        "void main() {"
-        "  fragcolor = vec4(0, 1, 0, 1);"
-        "}";
+        "out vec4 fragcolor;\n"
+        "void main() {\n"
+        "  fragcolor = vec4(0, 1, 0, 1);\n"
+        "}\n";
 
 static GLuint vao;
 static GLuint vbo;

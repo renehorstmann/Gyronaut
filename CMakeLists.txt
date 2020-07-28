@@ -23,23 +23,17 @@ target_link_libraries(gyronaut ${SDL2_LIBRARIES} m)
 
 # Desktop or Mobile? -> GL or GLES?
 find_library(GL_LIB GL)
+find_library(GLES_LIB GLESv3)
 if (GL_LIB)
     message("GL found: Desktop mode")
     target_link_libraries(gyronaut ${GL_LIB})
-    add_compile_definitions(GYRONAUT_OPENGL_MAJOR_VERSION=3)
-    add_compile_definitions(GYRONAUT_OPENGL_MINOR_VERSION=3)
-else ()
-    message("GL not found: Mobile mode")
+elseif (GLES_LIB)
+    message("GLES found: Mobile mode")
     add_compile_definitions(GYRONAUT_GLES)
-    add_compile_definitions(GYRONAUT_OPENGL_MAJOR_VERSION=3)
-    add_compile_definitions(GYRONAUT_OPENGL_MINOR_VERSION=0)
+    target_link_libraries(gyronaut ${GLES_LIB})
+else()
+    message( FATAL_ERROR "Neither GL nor GLESv3 found, exiting CMake")
 endif ()
-
-
-find_library(GLEW_LIB GLESv3)
-message("glew: " ${GLEW_LIB})
-target_link_libraries(gyronaut ${GLEW_LIB})
-
 
 # res
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/res
