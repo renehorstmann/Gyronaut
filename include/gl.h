@@ -5,21 +5,23 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_opengl.h>
 
-#ifdef GYRONAUT_GLES
-#define GYRONAUT_OPENGL_MAJOR_VERSION 3
-#define GYRONAUT_OPENGL_MINOR_VERSION 0
+#ifdef G_GLES
+static const int G_GL_MAJOR_VERSION = 3;
+static const int G_GL_MINOR_VERSION = 0;
+static const int G_GL_PROFILE = SDL_GL_CONTEXT_PROFILE_ES;
 #else
-#define GYRONAUT_OPENGL_MAJOR_VERSION 3
-#define GYRONAUT_OPENGL_MINOR_VERSION 3
+static const int G_GL_MAJOR_VERSION = 3;
+static const int G_GL_MINOR_VERSION = 3;
+static const int G_GL_PROFILE = SDL_GL_CONTEXT_PROFILE_CORE;
 #endif
 
 
-#ifdef GYRONAUT_GLES
-#define GYRONAUT_VERTEX "#version 300 es\n"
-#define GYRONAUT_FRAGMENT "#version 300 es\nprecision mediump float;\n"
+#ifdef G_GLES
+#define G_VERTEX "#version 300 es\n"
+#define G_FRAGMENT "#version 300 es\nprecision mediump float;\n"
 #else
-#define GYRONAUT_VERTEX "#version 330 core\n"
-#define GYRONAUT_FRAGMENT "#version 330 core\n"
+#define G_VERTEX "#version 330 core\n"
+#define G_FRAGMENT "#version 330 core\n"
 #endif
 
 #endif //GYRONAUT_GL_H
