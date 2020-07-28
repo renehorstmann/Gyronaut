@@ -1,6 +1,7 @@
 #include <stdbool.h>
-#include "gl.h"
 
+#include "gl.h"
+#include "camera.h"
 #include "astronaut.h"
 
 int main() {
@@ -33,19 +34,15 @@ int main() {
         return 1;
     }
 
-    int width, height;
-    SDL_GetWindowSize(window, &width, &height);
-    SDL_Log("window size: %dx%d", width, height);
-
     // Not necessary, but recommended to create a gl context:
     SDL_GL_CreateContext(window);
-
     SDL_Log("OpenGL version: %s", glGetString(GL_VERSION));
 
     //
     // opengl example:
     //
 
+    camera_init();
     astronaut_init();
     // Initialize triangle renderer
 //    triangle_init();
@@ -62,6 +59,18 @@ int main() {
         }
         // Draw triangle
 //        triangle_render(SDL_GetTicks());
+
+        int width, height;
+        SDL_GetWindowSize(window, &width, &height);
+        camera_update(width, height);
+
+        // simulate
+
+        // render
+        glClearColor(1.0f, 0.5f * rand() / RAND_MAX, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
 
         astronaut_render();
 

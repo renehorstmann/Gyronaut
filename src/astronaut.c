@@ -48,8 +48,6 @@ void astronaut_init() {
 }
 
 void astronaut_render() {
-    glClearColor(1.0f, 0.5f * rand() / RAND_MAX, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(program);
     glBindVertexArray(vao);
