@@ -4,16 +4,8 @@
 #include "camera.h"
 #include "astronaut.h"
 
-#define DEBUG
-#include "cglm/vec3.h"
-#include "cglm/cam.h"
-#include "cglm/io.h"
 
 int main() {
-
-    mat4 dst;
-    glm_look((vec3) {10, 20, 30}, (vec3){1, 0, 0}, (vec3) {0, 0, 1}, dst);
-    glm_mat4_print(dst, stdout);
 
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
         SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_Init failed: %s", SDL_GetError());
