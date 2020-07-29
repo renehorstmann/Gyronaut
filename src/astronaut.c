@@ -3,19 +3,20 @@
 #include "render/render.h"
 #include "camera.h"
 
+static struct {
+    GLuint program;
+    GLuint vao;
+    GLuint vbo;
+    GLuint tex;
+} gl;
 
-static GLuint program;
-static GLuint vao;
-static GLuint vbo;
-static GLuint tex;
-
-typedef struct vertex {
+typedef struct vertex_s {
     float x, y, u, v;
 } vertex_s;
 static vertex_s buffer[6];
 
 static mat3 position;
-static float scale;
+static float scale = 20;
 
 
 static void update_uv() {
@@ -43,6 +44,11 @@ static void update_pos() {
     }
 }
 
+static void update_buffer() {
+    glBindBuffer(GL_ARRAY_BUFFER, gl.vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(buffer), buffer);
+}
+
 void astronaut_set_angle(float alpha) {
     position[0][0] = cos(alpha) * scale;
     position[0][1] = sin(alpha) * scale;
@@ -51,25 +57,24 @@ void astronaut_set_angle(float alpha) {
 }
 
 void astronaut_init() {
-    scale = 20;
     glm_mat3_identity(position);
     astronaut_set_angle(0);
     update_uv();
     update_pos();
 
-    program = r_compile_glsl_from_files((char *[]) {
+    gl.program = r_compile_glsl_from_files((char *[]) {
             "res/shader/astronaut.vsh",
             "res/shader/astronaut.fsh",
             NULL
     });
 
-    tex = r_load_texture_from_file("res/test_astronaut.png");
+    gl.tex = r_load_texture_from_file("res/test_astronaut.png");
 
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
+    glGenVertexArrays(1, &gl.vao);
+    glBindVertexArray(gl.vao);
 
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glGenBuffers(1, &gl.vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, gl.vbo);
     glBufferData(GL_ARRAY_BUFFER,
                  sizeof(buffer),
                  buffer,
@@ -80,7 +85,7 @@ void astronaut_init() {
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex_s), (void *) offsetof(vertex_s, u));
 
-    glUniform1i(glGetUniformLocation(program, "tex"), tex);
+    glUniform1i(glGetUniformLocation(gl.program, "tex"), gl.tex);
 
     // unbind
     glBindVertexArray(0);
@@ -88,22 +93,21 @@ void astronaut_init() {
 
 void astronaut_update(float dtime) {
     static float alpha = 0;
-    alpha += M_PI_2 * dtime;
+    alpha -= M_PI_2 * dtime;
     astronaut_set_angle(alpha);
     update_pos();
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(buffer), buffer);
+    update_buffer();
 }
 
 void astronaut_render() {
-    glUniformMatrix4fv(glGetUniformLocation(program, "projection"),
+    glUniformMatrix4fv(glGetUniformLocation(gl.program, "projection"),
                        1, GL_FALSE, camera_get_projection());
 
-    glActiveTexture(tex);
-    glBindTexture(GL_TEXTURE_2D, tex);
+    glActiveTexture(gl.tex);
+    glBindTexture(GL_TEXTURE_2D, gl.tex);
 
-    glUseProgram(program);
-    glBindVertexArray(vao);
+    glUseProgram(gl.program);
+    glBindVertexArray(gl.vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
 }
