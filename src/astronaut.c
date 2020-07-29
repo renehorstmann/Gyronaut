@@ -1,4 +1,7 @@
+#define DEBUG
+#include "cglm/cglm.h"
 #include "gl_utils.h"
+#include "camera.h"
 
 static const char *vertex_code =
         R_VERTEX
@@ -19,54 +22,82 @@ static const char *fragment_code =
         "  out_frag_color = texture(tex, v_tex_coord);\n"
         "}\n";
 
-static GLuint vao;
+
 static GLuint program;
+static GLuint vao;
+static GLuint vbo;
 static GLuint tex;
 
+typedef struct vertex {
+    float x, y, u, v;
+} vertex_s;
+static vertex_s buffer[6];
 
-void astronaut_init() {
-    program = compile_glsl((shader_source[]) {
-            {GL_VERTEX_SHADER,   vertex_code},
-            {GL_FRAGMENT_SHADER, fragment_code}
-    }, 2);
-
-    tex = load_texture_from_file("res/test_astronaut.png");
+static mat3 position;
+static float scale;
 
 
-    static float tr_data[] = {
-            0, 0, 1, 0, 0, 1,
-            0, 1, 1, 0, 1, 1
-    };
-    static float tex_pos_data[] = {
+static void update_uv() {
+    float uv[] = {
             0, 1, 1, 1, 0, 0,
             0, 0, 1, 1, 1, 0
     };
+    for (int i = 0; i < 6; i++) {
+        buffer[i].u = uv[i * 2];
+        buffer[i].v = uv[i * 2 + 1];
+    }
+}
 
-    GLuint vbo;
-    glGenBuffers(1, &vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(tr_data),
-                 tr_data,
-                 GL_STATIC_DRAW);
+static void update_pos() {
+    static const float v[] = {
+            -1, -1, +1, -1, -1, +1,
+            -1, +1, +1, -1, +1, +1
+    };
+    for (int i = 0; i < 6; i++) {
+        vec3 from = {v[i * 2], v[i * 2 + 1], 1};
+        vec3 to;
+        glm_mat3_mulv(position, from, to);
+        buffer[i].x = to[0];
+        buffer[i].y = to[1];
+    }
+}
 
-    GLuint tbo;
-    glGenBuffers(1, &tbo);
-    glBindBuffer(GL_ARRAY_BUFFER, tbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(tex_pos_data), tex_pos_data, GL_STATIC_DRAW);
+void astronaut_set_angle(float alpha) {
+    position[0][0] = cos(alpha) * scale;
+    position[0][1] = sin(alpha) * scale;
+    position[1][0] = -sin(alpha) * scale;
+    position[1][1] = cos(alpha) * scale;
+}
+
+void astronaut_init() {
+    scale = 20;
+    glm_mat3_identity(position);
+    astronaut_set_angle(0);
+    update_uv();
+    update_pos();
+
+    program = compile_glsl_from_files((char *[]) {
+            "res/shader/astronaut.vsh",
+            "res/shader/astronaut.fsh",
+            NULL
+    });
+
+    tex = load_texture_from_file("res/test_astronaut.png");
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
 
+    glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER,
+                 sizeof(buffer),
+                 buffer,
+                 GL_STREAM_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
-
-    glBindBuffer(GL_ARRAY_BUFFER, tbo);
-
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(vertex_s), NULL);
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(vertex_s), (void *) offsetof(vertex_s, u));
 
     glUniform1i(glGetUniformLocation(program, "tex"), tex);
 
@@ -74,11 +105,19 @@ void astronaut_init() {
     glBindVertexArray(0);
 }
 
-void astronaut_update(double dtime) {
-
+void astronaut_update(float dtime) {
+    static float alpha = 0;
+    alpha += M_PI_2 * dtime;
+    astronaut_set_angle(alpha);
+    update_pos();
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(buffer), buffer);
 }
 
 void astronaut_render() {
+    glUniformMatrix4fv(glGetUniformLocation(program, "projection"),
+                       1, GL_FALSE, camera_get_projection());
+
     glActiveTexture(tex);
     glBindTexture(GL_TEXTURE_2D, tex);
 

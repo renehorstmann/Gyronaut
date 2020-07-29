@@ -25,9 +25,9 @@
  * 
  * @param[in] origin         origin of ray
  * @param[in] direction      direction of ray
- * @param[in] v0             first vertex of triangle
- * @param[in] v1             second vertex of triangle
- * @param[in] v2             third vertex of triangle
+ * @param[in] v0             first vertex_s of triangle
+ * @param[in] v1             second vertex_s of triangle
+ * @param[in] v2             third vertex_s of triangle
  * @param[in, out] d         distance to intersection
  * @return whether there is intersection
  */

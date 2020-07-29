@@ -3,7 +3,9 @@
 
 void astronaut_init();
 
-void astronaut_update(double dtime);
+void astronaut_set_angle(float alpha);
+
+void astronaut_update(float dtime);
 
 void astronaut_render();
 

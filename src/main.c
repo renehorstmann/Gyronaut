@@ -69,7 +69,7 @@ int main() {
         SDL_GetWindowSize(window, &width, &height);
 
         Uint32 time = SDL_GetTicks();
-        double dtime = (time - last_time) / 1000.0;
+        float dtime = (time - last_time) / 1000.0f;
         last_time = time;
 //        printf("fps = %f\n", 1.0/dtime);
 
