@@ -95,6 +95,7 @@ void astronaut_update(float dtime) {
     static float alpha = 0;
     alpha -= M_PI_2 * dtime;
     astronaut_set_angle(alpha);
+    position[2][0] += 10 * dtime;
     update_pos();
     update_buffer();
 }
