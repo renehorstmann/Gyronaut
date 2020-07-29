@@ -44,6 +44,7 @@ int main() {
     // Not necessary, but recommended to create a gl context:
     SDL_GL_CreateContext(window);
     SDL_Log("OpenGL version: %s", glGetString(GL_VERSION));
+    SDL_GL_SetSwapInterval(1);  // (0=off, 1=V-Sync, -1=addaptive V-Sync
 
 
     // init
@@ -68,6 +69,7 @@ int main() {
         Uint32 time = SDL_GetTicks();
         double dtime = (time - last_time) / 1000.0;
         last_time = time;
+        printf("fps = %f\n", 1.0/dtime);
 
 
         // simulate
