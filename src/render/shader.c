@@ -1,8 +1,5 @@
-#include <SDL.h>
-#include <SDL_image.h>
 #include "utilc/strviu.h"
-#include "gl_utils.h"
-
+#include "render/shader.h"
 
 
 static char *file_read(const char *filename) {
@@ -30,12 +27,7 @@ static char *file_read(const char *filename) {
 }
 
 
-void setup_blending() {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-GLuint compile_shader(GLint type, const char *src) {
+GLuint r_compile_shader(GLint type, const char *src) {
     GLint shader = glCreateShader(type);
     glShaderSource(shader, 1, &src, NULL);
     glCompileShader(shader);
@@ -58,13 +50,13 @@ GLuint compile_shader(GLint type, const char *src) {
 }
 
 
-GLuint compile_glsl(shader_source *sources, int n) {
+GLuint r_compile_glsl(r_shader_source_s *sources, int n) {
     GLuint program = 0;
     GLuint shaders[n];
 
     // Compile shaders
     for (int i = 0; i < n; i++) {
-        shaders[i] = compile_shader(sources[i].type, sources[i].src);
+        shaders[i] = r_compile_shader(sources[i].type, sources[i].src);
         if (shaders[i] == 0) {
             n = i;  // delete previous compiled shaders
             goto CLEAN_UP;
@@ -100,17 +92,17 @@ GLuint compile_glsl(shader_source *sources, int n) {
 }
 
 
-GLuint compile_shader_from_file(const char *file) {
+GLuint r_compile_shader_from_file(const char *file) {
     GLint type;
     const char *shader_begin;
     {
         strviu viu = ToStrViu(file);
         if (sv_ends_with_cstring(viu, ".vsh")) {
             type = GL_VERTEX_SHADER;
-            shader_begin = R_VERTEX;
+            shader_begin = R_VERTEX_BEGIN;
         } else if (sv_ends_with_cstring(viu, ".fsh")) {
             type = GL_FRAGMENT_SHADER;
-            shader_begin = R_FRAGMENT;
+            shader_begin = R_FRAGMENT_BEGIN;
         } else {
             SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
                             "compile shader failed, neither .vsh nor .fsh: %s", file);
@@ -131,13 +123,13 @@ GLuint compile_shader_from_file(const char *file) {
     strcat(shader, src);
 
 
-    GLint out = compile_shader(type, shader);
+    GLint out = r_compile_shader(type, shader);
     free(src);
     free(shader);
     return out;
 }
 
-GLuint compile_glsl_from_files(char **files) {
+GLuint r_compile_glsl_from_files(char **files) {
     int n = -1;
     while(files[++n]);
 
@@ -146,7 +138,7 @@ GLuint compile_glsl_from_files(char **files) {
 
     // Compile shaders
     for (int i = 0; i < n; i++) {
-        shaders[i] = compile_shader_from_file(files[i]);
+        shaders[i] = r_compile_shader_from_file(files[i]);
         if (shaders[i] == 0) {
             n = i;  // delete previous compiled shaders
             goto CLEAN_UP;
@@ -179,36 +171,4 @@ GLuint compile_glsl_from_files(char **files) {
         glDeleteShader(shaders[i]);
 
     return program;
-}
-
-GLuint load_texture_from_file(const char *file) {
-    SDL_Surface *img = IMG_Load(file);
-    if (!img) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "load image failed: %s", IMG_GetError());
-        return 0;
-    }
-    SDL_PixelFormat *f = img->format;
-    if (f->Rmask != 0xff || f->Gmask != 0xff00 || f->Bmask != 0xff0000 || (f->Amask != 0 && f->Amask != 0xff000000)) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "load tex failed: wrong format (8bit/col needed)");
-        return 0;
-    }
-
-    GLenum format = f->Amask != 0 ? GL_RGBA : GL_RGB;
-
-    GLuint tex;
-    glGenTextures(1, &tex);
-    glBindTexture(GL_TEXTURE_2D, tex);
-
-    // GL_REPEAT is already default...
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, format, GL_UNSIGNED_BYTE, img->pixels);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    SDL_FreeSurface(img);
-    return tex;
 }

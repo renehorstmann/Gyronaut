@@ -1,26 +1,7 @@
 #define DEBUG
 #include "cglm/cglm.h"
-#include "gl_utils.h"
+#include "render/render.h"
 #include "camera.h"
-
-static const char *vertex_code =
-        R_VERTEX
-        "layout(location = 0) in vec2 in_position;\n"
-        "layout(location = 1) in vec2 in_tex_coord;\n"
-        "out vec2 v_tex_coord;\n"
-        "void main() {\n"
-        "  gl_Position = vec4(in_position.x, in_position.y, 0, 1);\n"
-        "  v_tex_coord = in_tex_coord;\n"
-        "}\n";
-
-static const char *fragment_code =
-        R_FRAGMENT
-        "in vec2 v_tex_coord;\n"
-        "out vec4 out_frag_color;\n"
-        "uniform sampler2D tex;\n"
-        "void main() {\n"
-        "  out_frag_color = texture(tex, v_tex_coord);\n"
-        "}\n";
 
 
 static GLuint program;
@@ -76,13 +57,13 @@ void astronaut_init() {
     update_uv();
     update_pos();
 
-    program = compile_glsl_from_files((char *[]) {
+    program = r_compile_glsl_from_files((char *[]) {
             "res/shader/astronaut.vsh",
             "res/shader/astronaut.fsh",
             NULL
     });
 
-    tex = load_texture_from_file("res/test_astronaut.png");
+    tex = r_load_texture_from_file("res/test_astronaut.png");
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);

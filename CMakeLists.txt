@@ -13,6 +13,7 @@ include_directories(
 file(GLOB SRCS
         "${PROJECT_SOURCE_DIR}/include/*"
         "${PROJECT_SOURCE_DIR}/src/*"
+        "${PROJECT_SOURCE_DIR}/src/render/*"
         )
 
 add_executable(gyronaut ${SRCS})

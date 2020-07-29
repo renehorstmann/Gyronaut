@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <SDL_image.h>
-#include "gl_utils.h"
+#include "render/render.h"
 #include "camera.h"
 #include "astronaut.h"
 
@@ -50,7 +50,7 @@ int main() {
 
 
     // init
-    setup_blending();
+    r_setup_blending();
     camera_init();
     astronaut_init();
 
