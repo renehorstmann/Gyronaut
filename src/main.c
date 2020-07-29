@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <SDL_image.h>
-#include "gl.h"
+#include "gl_utils.h"
 #include "camera.h"
 #include "astronaut.h"
 

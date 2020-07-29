@@ -1,4 +1,4 @@
-#include "gl.h"
+#include "gl_utils.h"
 
 static const char *vertex_code =
         R_VERTEX
