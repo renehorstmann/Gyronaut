@@ -44,7 +44,7 @@ int main() {
     // Not necessary, but recommended to create a gl context:
     SDL_GL_CreateContext(window);
     SDL_Log("OpenGL version: %s", glGetString(GL_VERSION));
-    SDL_GL_SetSwapInterval(1);  // (0=off, 1=V-Sync, -1=addaptive V-Sync
+    SDL_GL_SetSwapInterval(1);  // (0=off, 1=V-Sync, -1=addaptive V-Sync)
 
 
     // init
