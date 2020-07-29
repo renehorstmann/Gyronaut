@@ -2,21 +2,25 @@
 
 static const char *vertex_code =
         R_VERTEX
-        "layout(location = 0) in vec2 v_position;\n"
-        "layout (location = 1) in vec2 v_tex_coord;\n"
-        "out vec2 f_tex_coord;\n"
+        "layout(location = 0) in vec2 in_position;\n"
+        "layout(location = 1) in vec2 in_tex_coord;\n"
+        "out VData {\n"
+        "  vec2 tex_coord;\n"
+        "} o;\n"
         "void main() {\n"
-        "  gl_Position = vec4(v_position.x, v_position.y, 0, 1);\n"
-        "  f_tex_coord = v_tex_coord;\n"
+        "  gl_Position = vec4(in_position.x, in_position.y, 0, 1);\n"
+        "  o.tex_coord = in_tex_coord;\n"
         "}\n";
 
 static const char *fragment_code =
         R_FRAGMENT
-        "in vec2 f_tex_coord;\n"
-        "out vec4 frag_color;\n"
+        "in VData {\n"
+        "  vec2 tex_coord;\n"
+        "} i;\n"
+        "out vec4 out_frag_color;\n"
         "uniform sampler2D tex;\n"
         "void main() {\n"
-        "  frag_color = texture(tex, f_tex_coord);\n"
+        "  out_frag_color = texture(tex, i.tex_coord);\n"
         "}\n";
 
 static GLuint vao;
