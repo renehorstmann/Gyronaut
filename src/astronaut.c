@@ -2,20 +2,24 @@
 
 static const char *vertex_code =
         R_VERTEX
-        "layout(location = 0) in vec2 position;\n"
+        "layout(location = 0) in vec2 v_position;\n"
+        "layout (location = 1) in vec2 v_tex_coord;\n"
+        "out vec2 f_tex_coord;\n"
         "void main() {\n"
-        "  gl_Position = vec4(position.x, position.y, 0, 1);\n"
+        "  gl_Position = vec4(v_position.x, v_position.y, 0, 1);\n"
+        "  f_tex_coord = v_tex_coord;\n"
         "}\n";
 
 static const char *fragment_code =
         R_FRAGMENT
-        "out vec4 fragcolor;\n"
+        "in vec2 f_tex_coord;\n"
+        "out vec4 frag_color;\n"
+        "uniform sampler2D tex;\n"
         "void main() {\n"
-        "  fragcolor = vec4(0, 1, 0, 1);\n"
+        "  frag_color = texture(tex, f_tex_coord);\n"
         "}\n";
 
 static GLuint vao;
-static GLuint vbo;
 static GLuint program;
 static GLuint tex;
 
@@ -29,15 +33,27 @@ void astronaut_init() {
     tex = load_texture_from_file("res/test_astronaut.png");
 
 
-    static float data[] = {
-            0, 0, 1, 0, 0, 1
+    static float tr_data[] = {
+            0, 0, 1, 0, 0, 1,
+            0, 1, 1, 0, 1, 1
     };
+    static float tex_pos_data[] = {
+            0, 1, 1, 1, 0, 0,
+            0, 0, 1, 1, 1, 0
+    };
+
+    GLuint vbo;
     glGenBuffers(1, &vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(data),
-                 data,
+                 sizeof(tr_data),
+                 tr_data,
                  GL_STATIC_DRAW);
+
+    GLuint tbo;
+    glGenBuffers(1, &tbo);
+    glBindBuffer(GL_ARRAY_BUFFER, tbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(tex_pos_data), tex_pos_data, GL_STATIC_DRAW);
 
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
@@ -46,6 +62,13 @@ void astronaut_init() {
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+
+    glBindBuffer(GL_ARRAY_BUFFER, tbo);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
+
+    glUniform1i(glGetUniformLocation(program, "tex"), tex);
 
     // unbind
     glBindVertexArray(0);
@@ -61,6 +84,6 @@ void astronaut_render() {
 
     glUseProgram(program);
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
 }

@@ -25,6 +25,8 @@ static const int R_GL_PROFILE = SDL_GL_CONTEXT_PROFILE_CORE;
 #endif
 
 
+void setup_blending();
+
 GLuint compile_shader(GLint type, const char *src);
 
 typedef struct shader_source {

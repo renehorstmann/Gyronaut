@@ -45,14 +45,11 @@ int main() {
     SDL_GL_CreateContext(window);
     SDL_Log("OpenGL version: %s", glGetString(GL_VERSION));
 
-    //
-    // opengl example:
-    //
 
+    // init
+    setup_blending();
     camera_init();
     astronaut_init();
-    // Initialize triangle renderer
-//    triangle_init();
 
 
     Uint32 last_time = SDL_GetTicks();
@@ -64,8 +61,6 @@ int main() {
 
             // Process events so the app doesn't hang
         }
-        // Draw triangle
-//        triangle_render(SDL_GetTicks());
 
         int width, height;
         SDL_GetWindowSize(window, &width, &height);
@@ -92,9 +87,6 @@ int main() {
     }
     BYE:
 
-    //
-    // opengl example end
-    //
 
     SDL_DestroyWindow(window);
     SDL_Quit();

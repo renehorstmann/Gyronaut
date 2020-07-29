@@ -1,6 +1,10 @@
 #include <SDL_image.h>
 #include "gl.h"
 
+void setup_blending() {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
 
 GLuint compile_shader(GLint type, const char *src) {
     GLint shader = glCreateShader(type);
@@ -83,10 +87,12 @@ GLuint load_texture_from_file(const char *file) {
     GLuint tex;
     glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
-    // set the texture wrapping parameters
+
+    // GL_REPEAT is already default...
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters
+
+    // MipMaps dont work with GL_LINEAR and GL_NEAREST
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
