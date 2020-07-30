@@ -1,24 +1,33 @@
-//#define DEBUG
+#define DEBUG
 #include "cglm/cglm.h"
 #include "render/render.h"
 #include "camera.h"
 
 
-mat3 view;
-mat4 projection;
+static mat4 view;
+static mat4 projection;
+static mat4 view_projection;
 
 
-const float *camera_get_view() {
+const float *camera_get_v() {
     return &view[0][0];
 }
-const float *camera_get_projection() {
+const float *camera_get_p() {
     return &projection[0][0];
 }
-
+const float *camera_get_vp() {
+    return &view_projection[0][0];
+}
 
 void camera_init() {
-    glm_mat3_identity(view);
+    glm_mat4_identity(view);
     glm_mat4_identity(projection);
+    glm_mat4_identity(view_projection);
+}
+
+void camera_set_pos(float x, float y) {
+    view[3][0] = x;
+    view[3][1] = y;
 }
 
 void camera_update(int wnd_width, int wnd_height) {
@@ -32,4 +41,8 @@ void camera_update(int wnd_width, int wnd_height) {
     }
 
     glm_ortho(-width/2, width/2, -height/2, height/2, -1, 1, projection);
+
+    mat4 view_inv;
+    glm_mat4_inv(view, view_inv);
+    glm_mat4_mul(projection, view_inv, view_projection);
 }

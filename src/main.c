@@ -75,9 +75,9 @@ int main() {
 
 
         // simulate
-        camera_update(width, height);
-
         astronaut_update(dtime);
+
+        camera_update(width, height);
 
         // render
         glClearColor(1.0f, 0.5f * rand() / RAND_MAX, 0.0f, 1.0f);

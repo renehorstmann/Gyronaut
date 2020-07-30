@@ -101,8 +101,8 @@ void astronaut_update(float dtime) {
 }
 
 void astronaut_render() {
-    glUniformMatrix4fv(glGetUniformLocation(gl.program, "projection"),
-                       1, GL_FALSE, camera_get_projection());
+    glUniformMatrix4fv(glGetUniformLocation(gl.program, "vp"),
+                       1, GL_FALSE, camera_get_vp());
 
     glActiveTexture(gl.tex);
     glBindTexture(GL_TEXTURE_2D, gl.tex);
