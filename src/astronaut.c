@@ -39,7 +39,7 @@ void astronaut_update(float dtime) {
 
 
     // set camera position
-    camera_set_pos(rect.mat[2][0], rect.mat[2][1]);
+    //camera_set_pos(rect.mat[2][0], rect.mat[2][1]);
     camera_set_angle(alpha_dest);
 }
 
