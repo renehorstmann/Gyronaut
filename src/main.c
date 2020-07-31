@@ -63,12 +63,14 @@ int main() {
             switch(event.type) {
             	case SDL_QUIT:
             	    goto BYE;
-            	    break;
             	case SDL_MOUSEBUTTONDOWN:
             	case SDL_MOUSEMOTION:
             	case SDL_MOUSEBUTTONUP:
             	    input_handle_event(&event);
             	    break;
+
+                case SDL_FINGERDOWN:
+                    SDL_Log("Finger down: %ld  (%f|%f)", event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
             }
             
             // Process events so the app doesn't hang
