@@ -53,10 +53,6 @@ static Pointer_s pointer_finger(enum PointerAction action, float x, float y, int
     return res;
 }
 
-void input_init() {
-
-}
-
 void input_handle_pointer(SDL_Event *event) {
     switch (event->type) {
 #ifdef R_GLES

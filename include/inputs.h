@@ -20,8 +20,6 @@ typedef struct Pointer_s {
     int id;
 } Pointer_s;
 
-void input_init();
-
 void input_handle_pointer(SDL_Event *event);
 
 void input_handle_keys(SDL_Event *event);
