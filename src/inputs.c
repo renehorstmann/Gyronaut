@@ -5,12 +5,12 @@
 #define MAX_POINTER_EVENTS 32
 
 
-bool input_up_pressed;
-bool input_left_pressed;
-bool input_right_pressed;
-bool input_down_pressed;
-bool input_enter_pressed;
-bool input_space_pressed;
+bool input_up;
+bool input_left;
+bool input_right;
+bool input_down;
+bool input_enter;
+bool input_space;
 
 static struct {
     void (*cb)(Pointer_s, void *);
@@ -108,22 +108,22 @@ void input_handle_keys(SDL_Event *event) {
     bool down = event->type == SDL_KEYDOWN;
     switch (event->key.keysym.sym) {
         case SDLK_UP:
-            input_up_pressed = down;
+            input_up = down;
             break;
         case SDLK_LEFT:
-            input_left_pressed = down;
+            input_left = down;
             break;
         case SDLK_RIGHT:
-            input_right_pressed = down;
+            input_right = down;
             break;
         case SDLK_DOWN:
-            input_down_pressed = down;
+            input_down = down;
             break;
         case SDLK_RETURN:
-            input_enter_pressed = down;
+            input_enter = down;
             break;
         case SDLK_SPACE:
-            input_space_pressed = down;
+            input_space = down;
             break;
     }
 }

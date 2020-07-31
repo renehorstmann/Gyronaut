@@ -5,12 +5,12 @@
 #include <SDL.h>
 
 
-extern bool input_up_pressed;
-extern bool input_left_pressed;
-extern bool input_right_pressed;
-extern bool input_down_pressed;
-extern bool input_enter_pressed;
-extern bool input_space_pressed;
+extern bool input_up;
+extern bool input_left;
+extern bool input_right;
+extern bool input_down;
+extern bool input_enter;
+extern bool input_space;
 
 enum PointerAction {POINTER_DOWN, POINTER_MOVE, POINTER_UP, POINTER_NUM_ACTIONS};
 
