@@ -17,6 +17,7 @@ static void astronaut_set_angle(float alpha) {
 
 
 static void pointer_cb(Pointer_s p, void *ud) {
+    if(p.id>0) return;
 	rect.mat[2][0] = p.x;
 	rect.mat[2][1] = p.y;
 }

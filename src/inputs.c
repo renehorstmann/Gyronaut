@@ -6,31 +6,40 @@
 
 static struct {
     void (*cb)(Pointer_s, void *);
+
     void *ud;
 } reg_pointer_e[MAX_POINTER_EVENTS];
+
 static int reg_pointer_e_size = 0;
 
-static void to_perspective(int wnd_x, int wnd_y, float *x, float *y) {
-	vec4s pos;
-	pos.x = (2.0f * wnd_x) / camera_wnd_size[0] - 1.0f;
-	pos.y = 1.0f - (2.0f * wnd_y) / camera_wnd_size[1];
-	pos.z = 0;
-	pos.w = 1;
-	
-	vec4s res = glms_mat4_mulv(camera_p_inv, pos);
-	*x = res.x;
-	*y = res.y;
+static void to_perspective(float gl_x, float gl_y, float *x, float *y) {
+    vec4s res = glms_mat4_mulv(camera_p_inv, (vec4s) {gl_x, gl_y, 0, 1});
+    *x = res.x;
+    *y = res.y;
 }
 
-static Pointer_s pointer_init(enum PointerAction action) {
-	Pointer_s res;
-	res.action = action;
-	
-	int x, y;
-	SDL_GetMouseState(&x, &y);
-	
-	to_perspective(x, y, &res.x, &res.y);
-	return res;
+static Pointer_s pointer_mouse(enum PointerAction action) {
+    Pointer_s res;
+    res.action = action;
+    res.id = 0;
+
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+
+    float gl_x = (2.0f * x) / camera_wnd_size[0] - 1.0f;
+    float gl_y = 1.0f - (2.0f * y) / camera_wnd_size[1];
+
+    to_perspective(gl_x, gl_y, &res.x, &res.y);
+    return res;
+}
+
+static Pointer_s pointer_finger(enum PointerAction action, float x, float y, int finger_id) {
+    Pointer_s res;
+    res.action = action;
+    res.id = finger_id;
+
+    to_perspective(x, y, &res.x, &res.y);
+    return res;
 }
 
 void input_init() {
@@ -39,21 +48,48 @@ void input_init() {
 
 void input_handle_event(SDL_Event *event) {
     switch (event->type) {
+#ifdef R_GLES
+        case SDL_FINGERDOWN: {
+            Pointer_s action = pointer_finger(POINTER_DOWN,
+                                              event->tfinger.y, event->tfinger.y, event->tfinger.fingerId);
+            for (int i = 0; i < reg_pointer_e_size; i++)
+                reg_pointer_e[i].cb(action, reg_pointer_e[i].ud);
+        }
+            break;
+        case SDL_FINGERMOTION: {
+            Pointer_s action = pointer_finger(POINTER_MOVE,
+                                              event->tfinger.y, event->tfinger.y, event->tfinger.fingerId);
+            for (int i = 0; i < reg_pointer_e_size; i++)
+                reg_pointer_e[i].cb(action, reg_pointer_e[i].ud);
+        }
+            break;
+        case SDL_FINGERUP: {
+            Pointer_s action = pointer_finger(POINTER_UP,
+                                              event->tfinger.y, event->tfinger.y, event->tfinger.fingerId);
+            for (int i = 0; i < reg_pointer_e_size; i++)
+                reg_pointer_e[i].cb(action, reg_pointer_e[i].ud);
+        }
+            break;
+#else
         case SDL_MOUSEBUTTONDOWN: {
-            Pointer_s action = pointer_init(POINTER_DOWN);
-            for(int i=0; i<reg_pointer_e_size; i++)
+            Pointer_s action = pointer_mouse(POINTER_DOWN);
+            for (int i = 0; i < reg_pointer_e_size; i++)
                 reg_pointer_e[i].cb(action, reg_pointer_e[i].ud);
-        } break;
+        }
+            break;
         case SDL_MOUSEMOTION: {
-            Pointer_s action = pointer_init(POINTER_MOVE);
-            for(int i=0; i<reg_pointer_e_size; i++)
+            Pointer_s action = pointer_mouse(POINTER_MOVE);
+            for (int i = 0; i < reg_pointer_e_size; i++)
                 reg_pointer_e[i].cb(action, reg_pointer_e[i].ud);
-        } break;
+        }
+            break;
         case SDL_MOUSEBUTTONUP: {
-            Pointer_s action = pointer_init(POINTER_UP);
-            for(int i=0; i<reg_pointer_e_size; i++)
+            Pointer_s action = pointer_mouse(POINTER_UP);
+            for (int i = 0; i < reg_pointer_e_size; i++)
                 reg_pointer_e[i].cb(action, reg_pointer_e[i].ud);
-        } break;
+        }
+            break;
+#endif
     }
 }
 

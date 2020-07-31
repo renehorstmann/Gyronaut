@@ -6,8 +6,9 @@
 enum PointerAction {POINTER_DOWN, POINTER_MOVE, POINTER_UP, POINTER_NUM_ACTIONS};
 
 typedef struct Pointer_s {
-    enum PointerAction action;
     float x, y;
+    enum PointerAction action;
+    int id;
 } Pointer_s;
 
 void input_init();

@@ -66,11 +66,11 @@ int main() {
             	case SDL_MOUSEBUTTONDOWN:
             	case SDL_MOUSEMOTION:
             	case SDL_MOUSEBUTTONUP:
+                case SDL_FINGERDOWN:
+                case SDL_FINGERMOTION:
+                case SDL_FINGERUP:
             	    input_handle_event(&event);
             	    break;
-
-                case SDL_FINGERDOWN:
-                    SDL_Log("Finger down: %ld  (%f|%f)", event.tfinger.fingerId, event.tfinger.x, event.tfinger.y);
             }
             
             // Process events so the app doesn't hang
