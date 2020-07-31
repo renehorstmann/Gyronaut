@@ -7,6 +7,7 @@ void astronaut_update(float dtime);
 
 void astronaut_render();
 
-void astronaut_set_angle(float alpha);
+// in [%]
+void astronaut_rotate(float angular_speed);
 
 #endif //GYRONAUT_ASTRONAUT_H

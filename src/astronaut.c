@@ -31,3 +31,8 @@ void astronaut_render() {
     r_basic_rect_render(&rect);
 }
 
+
+void astronaut_rotate(float angular_speed) {
+    // todo
+}
+
