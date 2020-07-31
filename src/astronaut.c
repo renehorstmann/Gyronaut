@@ -23,7 +23,7 @@ static void pointer_cb(Pointer_s p, void *ud) {
 
 
 void astronaut_init() {
-    r_basic_rect_init(&rect, "res/test_astronaut.png", camera_get_vp());
+    r_basic_rect_init(&rect, "res/test_astronaut.png", &camera_vp.m00);
     
     input_register_pointer_event(pointer_cb, NULL);
 }

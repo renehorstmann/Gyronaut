@@ -1,4 +1,3 @@
-#include "cglm/cglm.h"
 #include "utilc/assume.h"
 #include "inputs.h"
 #include "camera.h"
@@ -11,27 +10,16 @@ static struct {
 } reg_pointer_e[MAX_POINTER_EVENTS];
 static int reg_pointer_e_size = 0;
 
-
-// todo
-static float from_pixel_x(int x) {
-    return 0;
-}
-static float from_pixel_y(int y) {
-    return 0;
-}
-
 static void to_perspective(int wnd_x, int wnd_y, float *x, float *y) {
-	const int *wnd_size = camera_get_wnd_size();
-	vec4 pos;
-	pos[0] = (2.0f * wnd_x) / wnd_size[0] - 1.0f;
-	pos[1] = 1.0f - (2.0f * wnd_y) / wnd_size[1];
-	pos[2] = 0;
-	pos[3] = 1;
+	vec4s pos;
+	pos.x = (2.0f * wnd_x) / camera_wnd_size[0] - 1.0f;
+	pos.y = 1.0f - (2.0f * wnd_y) / camera_wnd_size[1];
+	pos.z = 0;
+	pos.w = 1;
 	
-	vec4 res;
-	glm_mat4_mulv(camera_get_p_inv(), pos, res);
-	*x = res[0];
-	*y = res[1];
+	vec4s res = glms_mat4_mulv(camera_p_inv, pos);
+	*x = res.x;
+	*y = res.y;
 }
 
 static Pointer_s pointer_init(enum PointerAction action) {

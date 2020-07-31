@@ -1,25 +1,29 @@
 #define DEBUG
 
-#include "cglm/cglm.h"
 #include "render/render.h"
 #include "camera.h"
 
 
-static int wnd_size[2];
-static mat4 view;
-static mat4 projection;
-static mat4 projection_inv;
-static mat4 view_projection;
+int camera_wnd_size[2];
+mat4s camera_v;
+mat4s camera_v_inv;
+mat4s camera_p;
+mat4s camera_p_inv;
+mat4s camera_vp;
+//mat4s camera_vp_inv;
 
 void camera_init() {
-    glm_mat4_identity(view);
-    glm_mat4_identity(projection);
-    glm_mat4_identity(view_projection);
+    camera_v = glms_mat4_identity();
+    camera_v_inv = glms_mat4_identity();
+    camera_p = glms_mat4_identity();
+    camera_p_inv = glms_mat4_identity();
+    camera_vp = glms_mat4_identity();
+//    camera_vp_inv = glms_mat4_identity();
 }
 
 void camera_update(int wnd_width, int wnd_height) {
-    wnd_size[0] = wnd_width;
-    wnd_size[1] = wnd_height;
+    camera_wnd_size[0] = wnd_width;
+    camera_wnd_size[1] = wnd_height;
     
     float width, height;
     if (wnd_width > wnd_height) {
@@ -30,36 +34,16 @@ void camera_update(int wnd_width, int wnd_height) {
         height = 200 * wnd_height / wnd_width;
     }
 
-    glm_ortho(-width / 2, width / 2, -height / 2, height / 2, -1, 1, projection);
-    
-    glm_mat4_inv(projection, projection_inv);
+    camera_v_inv = glms_mat4_inv(camera_v);
 
-    mat4 view_inv;
-    glm_mat4_inv(view, view_inv);
-    glm_mat4_mul(projection, view_inv, view_projection);
-}
+    camera_p = glms_ortho(-width / 2, width / 2, -height / 2, height / 2, -1, 1);
+    camera_p_inv = glms_mat4_inv(camera_p);
 
-const int *camera_get_wnd_size() {
-	return &wnd_size[0];
-}
-
-const float *camera_get_v() {
-    return &view[0][0];
-}
-
-const float *camera_get_p() {
-    return &projection[0][0];
-}
-
-const float *camera_get_p_inv() {
-	return &projection_inv[0][0];
-}
-
-const float *camera_get_vp() {
-    return &view_projection[0][0];
+    camera_vp = glms_mat4_mul(camera_p, camera_v_inv);
+//    camera_vp_inv = glms_mat4_inv(camera_vp);
 }
 
 void camera_set_pos(float x, float y) {
-    view[3][0] = x;
-    view[3][1] = y;
+    camera_v.m30 = x;
+    camera_v.m31 = y;
 }

@@ -17,7 +17,7 @@
 
 /*!
  * @brief maps the specified viewport coordinates into specified space [1]
- *        the matrix should contain projection matrix.
+ *        the matrix should contain camera_p matrix.
  *
  * if you don't have ( and don't want to have ) an inverse matrix then use
  * glm_unproject version. You may use existing inverse of matrix in somewhere
@@ -51,7 +51,7 @@ glms_unprojecti(vec3s pos, mat4s invMat, vec4s vp) {
 
 /*!
  * @brief maps the specified viewport coordinates into specified space [1]
- *        the matrix should contain projection matrix.
+ *        the matrix should contain camera_p matrix.
  *
  * this is same as glm_unprojecti except this function get inverse matrix for
  * you.
