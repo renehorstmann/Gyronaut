@@ -5,8 +5,10 @@
 #include "camera.h"
 
 
+static int wnd_size[2];
 static mat4 view;
 static mat4 projection;
+static mat4 projection_inv;
 static mat4 view_projection;
 
 void camera_init() {
@@ -16,6 +18,9 @@ void camera_init() {
 }
 
 void camera_update(int wnd_width, int wnd_height) {
+    wnd_size[0] = wnd_width;
+    wnd_size[1] = wnd_height;
+    
     float width, height;
     if (wnd_width > wnd_height) {
         height = 200;
@@ -26,12 +31,17 @@ void camera_update(int wnd_width, int wnd_height) {
     }
 
     glm_ortho(-width / 2, width / 2, -height / 2, height / 2, -1, 1, projection);
+    
+    glm_mat4_inv(projection, projection_inv);
 
     mat4 view_inv;
     glm_mat4_inv(view, view_inv);
     glm_mat4_mul(projection, view_inv, view_projection);
 }
 
+const int *camera_get_wnd_size() {
+	return &wnd_size[0];
+}
 
 const float *camera_get_v() {
     return &view[0][0];
@@ -39,6 +49,10 @@ const float *camera_get_v() {
 
 const float *camera_get_p() {
     return &projection[0][0];
+}
+
+const float *camera_get_p_inv() {
+	return &projection_inv[0][0];
 }
 
 const float *camera_get_vp() {

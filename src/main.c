@@ -2,6 +2,7 @@
 #include <SDL_image.h>
 #include "render/render.h"
 #include "camera.h"
+#include "inputs.h"
 #include "astronaut.h"
 
 
@@ -59,9 +60,17 @@ int main() {
     while (true) {
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
-            if(event.type == SDL_QUIT)
-                goto BYE;
-
+            switch(event.type) {
+            	case SDL_QUIT:
+            	    goto BYE;
+            	    break;
+            	case SDL_MOUSEBUTTONDOWN:
+            	case SDL_MOUSEMOTION:
+            	case SDL_MOUSEBUTTONUP:
+            	    input_handle_event(&event);
+            	    break;
+            }
+            
             // Process events so the app doesn't hang
         }
 

@@ -2,7 +2,7 @@
 #include "cglm/cglm.h"
 #include "render/basic_rect.h"
 #include "camera.h"
-
+#include "inputs.h"
 
 static rBasicRect rect;
 static float scale = 20;
@@ -15,8 +15,17 @@ static void astronaut_set_angle(float alpha) {
     rect.mat[1][1] = cos(alpha) * scale;
 }
 
+
+static void pointer_cb(Pointer_s p, void *ud) {
+	rect.mat[2][0] = p.x;
+	rect.mat[2][1] = p.y;
+}
+
+
 void astronaut_init() {
     r_basic_rect_init(&rect, "res/test_astronaut.png", camera_get_vp());
+    
+    input_register_pointer_event(pointer_cb, NULL);
 }
 
 void astronaut_update(float dtime) {
