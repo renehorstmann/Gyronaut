@@ -5,16 +5,24 @@
 GLuint r_load_texture_from_file(const char *file) {
     SDL_Surface *img = IMG_Load(file);
     if (!img) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "load image failed: %s", IMG_GetError());
+        SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,
+                "load image (%s) failed: %s", file, IMG_GetError());
         return 0;
     }
     SDL_PixelFormat *f = img->format;
     if (f->Rmask != 0xff || f->Gmask != 0xff00 || f->Bmask != 0xff0000 || (f->Amask != 0 && f->Amask != 0xff000000)) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "load tex failed: wrong format (8bit/col needed)");
+        SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,
+                "load tex (%s) failed: wrong format (8bit/col needed)", file);
         return 0;
     }
 
     GLenum format = f->Amask != 0 ? GL_RGBA : GL_RGB;
+
+    // todo:
+    if(format == GL_RGB) {
+        SDL_LogWarn(SDL_LOG_CATEGORY_RENDER,
+                "load tex (%s) may have failed, no alpha channel", file);
+    }
 
     GLuint tex;
     glGenTextures(1, &tex);
