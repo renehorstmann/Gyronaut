@@ -49,6 +49,10 @@ int main() {
     SDL_Log("OpenGL version: %s", glGetString(GL_VERSION));
     SDL_GL_SetSwapInterval(1);  // (0=off, 1=V-Sync, -1=addaptive V-Sync)
 
+    int max_tex_size;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex_size);
+    SDL_Log("maximal texture size is: %d", max_tex_size);
+
 
     // init
     r_setup_blending();
