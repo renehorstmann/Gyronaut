@@ -1,44 +1,46 @@
 #define DEBUG
-#include "cglm/cglm.h"
+#include "cglm/struct.h"
 #include "render/basic_rect.h"
 #include "camera.h"
-#include "inputs.h"
+#include "input.h"
+
+const static float ALPHA_SPEED_P = 1;
 
 static rBasicRect rect;
 static float scale = 20;
 
+static vec2 speed;
+static float alpha;
+static float alpha_dest;
 
-static void astronaut_set_angle(float alpha) {
-    rect.mat[0][0] = cos(alpha) * scale;
-    rect.mat[0][1] = sin(alpha) * scale;
-    rect.mat[1][0] = -sin(alpha) * scale;
-    rect.mat[1][1] = cos(alpha) * scale;
+static void set_angle(float alpha_rad) {
+    rect.mat[0][0] = cos(alpha_rad) * scale;
+    rect.mat[0][1] = sin(alpha_rad) * scale;
+    rect.mat[1][0] = -sin(alpha_rad) * scale;
+    rect.mat[1][1] = cos(alpha_rad) * scale;
 }
-
-
-static void pointer_cb(Pointer_s p, void *ud) {
-    if(p.id>0) return;
-	rect.mat[2][0] = p.x;
-	rect.mat[2][1] = p.y;
-}
-
 
 void astronaut_init() {
     r_basic_rect_init(&rect, "res/test_astronaut.png", &camera_vp.m00);
-    
-    input_register_pointer_event(pointer_cb, NULL);
+    speed[0] = 10;
 }
 
 void astronaut_update(float dtime) {
-    static float alpha = 0;
-    alpha -= M_PI_2 * dtime;
-    astronaut_set_angle(alpha);
-    rect.mat[2][0] += 10 * dtime;
-    if(input_up)
-        rect.mat[2][1] += 10 * dtime;
-    else if(input_down)
-        rect.mat[2][1] -= 10 * dtime;
+    // set position and rotation
+    rect.mat[2][0] += speed[0] * dtime;
+    rect.mat[2][1] += speed[1] * dtime;
+
+    float angular_speed = (alpha_dest - alpha) * ALPHA_SPEED_P;
+    alpha += angular_speed * dtime;
+    set_angle(alpha);
     r_basic_rect_update(&rect, R_BASIC_RECT_UPDATE_XY);
+
+    // check collision
+
+
+    // set camera position
+    camera_set_pos(rect.mat[2][0], rect.mat[2][1]);
+    camera_set_angle(alpha_dest);
 }
 
 void astronaut_render() {
@@ -46,7 +48,9 @@ void astronaut_render() {
 }
 
 
-void astronaut_rotate(float angular_speed) {
-    // todo
+void astronaut_rotate(float target_angle) {
+    float delta_target = target_angle - alpha_dest;
+    alpha -= delta_target;
+    alpha_dest = target_angle;
 }
 

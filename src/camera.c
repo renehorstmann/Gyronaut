@@ -47,3 +47,10 @@ void camera_set_pos(float x, float y) {
     camera_v.m30 = x;
     camera_v.m31 = y;
 }
+
+void camera_set_angle(float alpha) {
+    camera_v.m00 = cos(alpha);
+    camera_v.m01 = -sin(alpha);
+    camera_v.m10 = sin(alpha);
+    camera_v.m11 = cos(alpha);
+}

@@ -1,5 +1,5 @@
 #include "utilc/assume.h"
-#include "inputs.h"
+#include "input.h"
 #include "camera.h"
 
 #define MAX_POINTER_EVENTS 32

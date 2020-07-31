@@ -1,5 +1,5 @@
-#ifndef GYRONAUT_INPUTS_H
-#define GYRONAUT_INPUTS_H
+#ifndef GYRONAUT_INPUT_H
+#define GYRONAUT_INPUT_H
 
 #include <stdbool.h>
 #include <SDL.h>
@@ -26,4 +26,4 @@ void input_handle_keys(SDL_Event *event);
 
 void input_register_pointer_event(void (*on_pointer_event)(Pointer_s, void *), void *user_data);
 
-#endif //GYRONAUT_INPUTS_H
+#endif //GYRONAUT_INPUT_H

@@ -17,4 +17,6 @@ void camera_update(int wnd_width, int wnd_height);
 
 void camera_set_pos(float x, float y);
 
+void camera_set_angle(float alpha);
+
 #endif //GYRONAUT_CAMERA_H
