@@ -34,6 +34,10 @@ void astronaut_update(float dtime) {
     alpha -= M_PI_2 * dtime;
     astronaut_set_angle(alpha);
     rect.mat[2][0] += 10 * dtime;
+    if(input_up_pressed)
+        rect.mat[2][1] += 10 * dtime;
+    else if(input_down_pressed)
+        rect.mat[2][1] -= 10 * dtime;
     r_basic_rect_update(&rect, R_BASIC_RECT_UPDATE_XY);
 }
 

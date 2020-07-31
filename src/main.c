@@ -58,6 +58,17 @@ int main() {
 
     Uint32 last_time = SDL_GetTicks();
     while (true) {
+
+        // delta time
+        Uint32 time = SDL_GetTicks();
+        float dtime = (time - last_time) / 1000.0f;
+        last_time = time;
+
+        // current window size
+        int width, height;
+        SDL_GetWindowSize(window, &width, &height);
+
+        // inputs
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             switch(event.type) {
@@ -69,32 +80,22 @@ int main() {
                 case SDL_FINGERDOWN:
                 case SDL_FINGERMOTION:
                 case SDL_FINGERUP:
-            	    input_handle_event(&event);
+                    input_handle_pointer(&event);
             	    break;
+                case SDL_KEYDOWN:
+                case SDL_KEYUP:
+                    input_handle_keys(&event);
+                    break;
             }
-            
-            // Process events so the app doesn't hang
         }
-
-        int width, height;
-        SDL_GetWindowSize(window, &width, &height);
-
-        Uint32 time = SDL_GetTicks();
-        float dtime = (time - last_time) / 1000.0f;
-        last_time = time;
-//        printf("fps = %f\n", 1.0/dtime);
-
 
         // simulate
         astronaut_update(dtime);
-
         camera_update(width, height);
 
         // render
         glClearColor(1.0f, 0.5f * rand() / RAND_MAX, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
         astronaut_render();
 
         // Swap buffers

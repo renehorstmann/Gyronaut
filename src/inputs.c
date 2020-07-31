@@ -4,6 +4,14 @@
 
 #define MAX_POINTER_EVENTS 32
 
+
+bool input_up_pressed;
+bool input_left_pressed;
+bool input_right_pressed;
+bool input_down_pressed;
+bool input_enter_pressed;
+bool input_space_pressed;
+
 static struct {
     void (*cb)(Pointer_s, void *);
 
@@ -49,7 +57,7 @@ void input_init() {
 
 }
 
-void input_handle_event(SDL_Event *event) {
+void input_handle_pointer(SDL_Event *event) {
     switch (event->type) {
 #ifdef R_GLES
         case SDL_FINGERDOWN: {
@@ -93,6 +101,30 @@ void input_handle_event(SDL_Event *event) {
         }
             break;
 #endif
+    }
+}
+
+void input_handle_keys(SDL_Event *event) {
+    bool down = event->type == SDL_KEYDOWN;
+    switch (event->key.keysym.sym) {
+        case SDLK_UP:
+            input_up_pressed = down;
+            break;
+        case SDLK_LEFT:
+            input_left_pressed = down;
+            break;
+        case SDLK_RIGHT:
+            input_right_pressed = down;
+            break;
+        case SDLK_DOWN:
+            input_down_pressed = down;
+            break;
+        case SDLK_RETURN:
+            input_enter_pressed = down;
+            break;
+        case SDLK_SPACE:
+            input_space_pressed = down;
+            break;
     }
 }
 
