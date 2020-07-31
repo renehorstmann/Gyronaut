@@ -9,7 +9,7 @@ const static float ALPHA_SPEED_P = 1;
 static rBasicRect rect;
 static float scale = 20;
 
-static vec2 speed;
+static float speed;
 static float alpha;
 static float alpha_dest;
 
@@ -22,25 +22,25 @@ static void set_angle(float alpha_rad) {
 
 void astronaut_init() {
     r_basic_rect_init(&rect, "res/test_astronaut.png", &camera_vp.m00);
-    speed[0] = 10;
+    speed = 10;
 }
 
 void astronaut_update(float dtime) {
     // set position and rotation
-    rect.mat[2][0] += speed[0] * dtime;
-    rect.mat[2][1] += speed[1] * dtime;
-
     float angular_speed = (alpha_dest - alpha) * ALPHA_SPEED_P;
     alpha += angular_speed * dtime;
     set_angle(alpha);
     r_basic_rect_update(&rect, R_BASIC_RECT_UPDATE_XY);
 
+    rect.mat[2][0] += speed * cos(alpha) * dtime;
+    rect.mat[2][1] += speed * sin(alpha) * dtime;
+
     // check collision
 
 
     // set camera position
-    //camera_set_pos(rect.mat[2][0], rect.mat[2][1]);
-    camera_set_angle(alpha_dest);
+    camera_set_pos(rect.mat[2][0], rect.mat[2][1]);
+    camera_set_angle(-alpha_dest);
 }
 
 void astronaut_render() {
@@ -49,8 +49,6 @@ void astronaut_render() {
 
 
 void astronaut_rotate(float target_angle) {
-    float delta_target = target_angle - alpha_dest;
-    alpha -= delta_target;
     alpha_dest = target_angle;
 }
 

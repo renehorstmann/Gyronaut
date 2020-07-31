@@ -7,14 +7,25 @@
 static rBasicRect background;
 
 static bool rot_left = false;
+static bool rot_right = false;
 
 static void pointer(Pointer_s p, void *ud) {
-	if(p.action == POINTER_DOWN) {
-		if(p.x < -75)
-		    rot_left = true;
-	}
-	if(p.action == POINTER_UP)
-	    rot_left = false;
+#ifdef R_GLES
+    if(rot_left) {
+        if(p.action == POINTER_UP || p.x > -75)
+            rot_left = false;
+    } else {
+        if(p.action != POINTER_UP && p.x < -75)
+            rot_left = true;
+    }
+    if(rot_right) {
+        if(p.action == POINTER_UP || p.x < 75)
+            rot_right = false;
+    } else {
+        if(p.action != POINTER_UP && p.x > 75)
+            rot_right = true;
+    }
+#endif
 }
 
 void game_init() {
@@ -31,7 +42,7 @@ void game_update(float dtime) {
     static float target = 0;
     if(input_right || rot_left)
         target -= M_PI_2 * dtime;
-    if(input_left)
+    if(input_left || rot_right)
         target += M_PI_2 * dtime;
 
     astronaut_rotate(target);
