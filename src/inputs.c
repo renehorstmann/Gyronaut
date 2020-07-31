@@ -38,7 +38,10 @@ static Pointer_s pointer_finger(enum PointerAction action, float x, float y, int
     res.action = action;
     res.id = finger_id;
 
-    to_perspective(x, y, &res.x, &res.y);
+    float gl_x = 2.0f * x - 1.0f;
+    float gl_y = 1.0f - 2.0f * y;
+
+    to_perspective(gl_x, gl_y, &res.x, &res.y);
     return res;
 }
 
@@ -51,21 +54,21 @@ void input_handle_event(SDL_Event *event) {
 #ifdef R_GLES
         case SDL_FINGERDOWN: {
             Pointer_s action = pointer_finger(POINTER_DOWN,
-                                              event->tfinger.y, event->tfinger.y, event->tfinger.fingerId);
+                                              event->tfinger.x, event->tfinger.y, event->tfinger.fingerId);
             for (int i = 0; i < reg_pointer_e_size; i++)
                 reg_pointer_e[i].cb(action, reg_pointer_e[i].ud);
         }
             break;
         case SDL_FINGERMOTION: {
             Pointer_s action = pointer_finger(POINTER_MOVE,
-                                              event->tfinger.y, event->tfinger.y, event->tfinger.fingerId);
+                                              event->tfinger.x, event->tfinger.y, event->tfinger.fingerId);
             for (int i = 0; i < reg_pointer_e_size; i++)
                 reg_pointer_e[i].cb(action, reg_pointer_e[i].ud);
         }
             break;
         case SDL_FINGERUP: {
             Pointer_s action = pointer_finger(POINTER_UP,
-                                              event->tfinger.y, event->tfinger.y, event->tfinger.fingerId);
+                                              event->tfinger.x, event->tfinger.y, event->tfinger.fingerId);
             for (int i = 0; i < reg_pointer_e_size; i++)
                 reg_pointer_e[i].cb(action, reg_pointer_e[i].ud);
         }
