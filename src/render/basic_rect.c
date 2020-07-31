@@ -3,7 +3,7 @@
 #include "cglm/cglm.h"
 
 
-static void update_uv(r_BasicRect *self) {
+static void update_uv(rBasicRect *self) {
     float uv[] = {
             0, 1, 1, 1, 0, 0,
             0, 0, 1, 1, 1, 0
@@ -14,7 +14,7 @@ static void update_uv(r_BasicRect *self) {
     }
 }
 
-static void update_pos(r_BasicRect *self) {
+static void update_pos(rBasicRect *self) {
     static const float v[] = {
             -1, -1, +1, -1, -1, +1,
             -1, +1, +1, -1, +1, +1
@@ -28,7 +28,7 @@ static void update_pos(r_BasicRect *self) {
     }
 }
 
-void r_basic_rect_init(r_BasicRect *self, const char *tex_file, const float *vp) {
+void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp) {
 
     self->vp = vp;
     glm_mat3_identity(self->mat);
@@ -55,11 +55,11 @@ void r_basic_rect_init(r_BasicRect *self, const char *tex_file, const float *vp)
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,
-                          sizeof(struct r_BasicRectVertex_s), NULL);
+                          sizeof(struct rBasicRectVertex_s), NULL);
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
-                          sizeof(struct r_BasicRectVertex_s),
-                          (void *) offsetof(struct r_BasicRectVertex_s, u));
+                          sizeof(struct rBasicRectVertex_s),
+                          (void *) offsetof(struct rBasicRectVertex_s, u));
 
     glUniform1i(glGetUniformLocation(self->program, tex_file), self->tex);
 
@@ -67,7 +67,15 @@ void r_basic_rect_init(r_BasicRect *self, const char *tex_file, const float *vp)
     glBindVertexArray(0);
 }
 
-void r_basic_rect_update(r_BasicRect *self, int flags) {
+
+void r_basic_rect_kill(rBasicRect *self) {
+	glDeleteProgram(self->program);
+	glDeleteVertexArrays(1, &self->vao);
+	glDeleteBuffers(1, &self->vbo);
+	glDeleteTextures(1, &self->tex);
+}
+
+void r_basic_rect_update(rBasicRect *self, int flags) {
     if(flags & R_BASIC_RECT_UPDATE_XY)
         update_pos(self);
     if(flags & R_BASIC_RECT_UPDATE_UV)
@@ -77,7 +85,7 @@ void r_basic_rect_update(r_BasicRect *self, int flags) {
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(self->buffer), self->buffer);
 }
 
-void r_basic_rect_render(r_BasicRect *self) {
+void r_basic_rect_render(rBasicRect *self) {
     glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),
                        1, GL_FALSE, self->vp);
 

@@ -8,25 +8,27 @@ static const int R_BASIC_RECT_UPDATE_XY = 0x01;
 static const int R_BASIC_RECT_UPDATE_UV = 0x02;
 
 
-struct r_BasicRectVertex_s {
+struct rBasicRectVertex_s {
     float x, y, u, v;
 };
 
-typedef struct r_BasicRect {
-    struct r_BasicRectVertex_s buffer[6];
+typedef struct rBasicRect {
+    struct rBasicRectVertex_s buffer[6];
     mat3 mat;
     const float *vp;
     GLuint program;
     GLuint vao;
     GLuint vbo;
     GLuint tex;
-} r_BasicRect;
+} rBasicRect;
 
-void r_basic_rect_init(r_BasicRect *self, const char *tex_file, const float *vp);
+void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp);
+
+void r_basic_rect_kill(rBasicRect *self);
 
 // use flags above
-void r_basic_rect_update(r_BasicRect *self, int flags);
+void r_basic_rect_update(rBasicRect *self, int flags);
 
-void r_basic_rect_render(r_BasicRect *self);
+void r_basic_rect_render(rBasicRect *self);
 
 #endif //RENDER_BASIC_RECT_H

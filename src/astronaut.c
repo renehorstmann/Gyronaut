@@ -4,7 +4,7 @@
 #include "camera.h"
 
 
-static r_BasicRect rect;
+static rBasicRect rect;
 static float scale = 20;
 
 
