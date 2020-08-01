@@ -14,9 +14,27 @@ He will constantly float forward (right) and the player can rotate his direction
   - Gyronaut
   - Asteroids
   - Background
-- Topdown Layout
-  - Renderer
-     - OpenGL rotated rects
-     - Camera with position and rotation
-  - InputController
-  - GameObjects...
+- Text renderer
+- Input 
+  - switch between:
+    - keys
+    - touch
+    - gyro
+- Meteorites
+  - batch renderer
+  - collision detection
+- Space Station
+  - Arrow to it
+- Basic Game
+  - Menu
+  - Settings
+  - Level system
+- Background
+  - stars and planets, etc.
+  - batch rendered
+  - 2nd Layer of bg meteorites
+- Particles of Gyronaut
+- Render to Framebuffer
+  - FishEye effect
+  - HUD outside of fisheye sphere
+
