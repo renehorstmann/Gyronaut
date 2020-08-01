@@ -1,10 +1,11 @@
 #include "render/basic_rect.h"
 #include "camera.h"
 #include "input.h"
+#include "background.h"
 #include "astronaut.h"
 #include "game.h"
 
-static rBasicRect background;
+
 
 static bool rot_left = false;
 static bool rot_right = false;
@@ -31,10 +32,8 @@ static void pointer(Pointer_s p, void *ud) {
 void game_init() {
     input_register_pointer_event(pointer, NULL);
     
+    background_init();
     astronaut_init();
-    r_basic_rect_init(&background, "res/test_bg.png", &camera_vp.m00);
-    background.mat[0][0] = background.mat[1][1] = 200;
-    r_basic_rect_update(&background, R_BASIC_RECT_UPDATE_XY);
 }
 
 void game_update(float dtime) {
@@ -51,6 +50,6 @@ void game_update(float dtime) {
 }
 
 void game_render() {
-    r_basic_rect_render(&background);
+    background_render();
     astronaut_render();
 }
