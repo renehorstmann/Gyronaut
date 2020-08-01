@@ -32,7 +32,7 @@ void game_init() {
     input_register_pointer_event(pointer, NULL);
     
     astronaut_init();
-    r_basic_rect_init(&background, "res/test_bg_small_alpha.png", &camera_vp.m00);
+    r_basic_rect_init(&background, "res/test_bg.png", &camera_vp.m00);
     background.mat[0][0] = background.mat[1][1] = 200;
     r_basic_rect_update(&background, R_BASIC_RECT_UPDATE_XY);
 }
