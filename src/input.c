@@ -12,6 +12,11 @@ bool input_down;
 bool input_enter;
 bool input_space;
 
+
+bool input_rotation_active;
+float input_actual_rotation;
+
+
 static struct {
     void (*cb)(Pointer_s, void *);
 
@@ -51,6 +56,24 @@ static Pointer_s pointer_finger(enum PointerAction action, float x, float y, int
 
     to_perspective(gl_x, gl_y, &res.x, &res.y);
     return res;
+}
+
+void input_init() {
+	int num_sensors = SDL_NumSensors();
+	bool accel_opened = false;
+	for(int i=0; i<num_sensors; i++) {
+		if (SDL_SensorGetDeviceType(i) == SDL_SENSOR_ACCEL) {
+            SDL_Sensor *sensor = SDL_SensorOpen(i);
+            if (sensor) {
+                accel_opened = true;
+                break;
+            }
+		}
+	}
+	
+	input_rotation_active = accel_opened;
+	if(accel_opened)
+	    SDL_Log("opened accel sensor");
 }
 
 void input_handle_pointer(SDL_Event *event) {
@@ -122,6 +145,24 @@ void input_handle_keys(SDL_Event *event) {
             input_space = down;
             break;
     }
+}
+
+
+
+void input_handle_sensors(SDL_Event *event) {
+	SDL_Sensor *sensor = SDL_SensorFromInstanceID(event->sensor.which);
+    if (!sensor
+        || SDL_SensorGetType(sensor) != SDL_SENSOR_ACCEL) {
+        SDL_LogWarn(SDL_LOG_CATEGORY_INPUT, "Couldn't get sensor for sensor event\n");
+        return;
+    }
+    
+    const float *data = event->sensor.data;
+    float alpha = atan2(data[1], data[0]);
+    input_actual_rotation = alpha;
+    
+    //SDL_Log("Gyro update: %.2f, %.2f, %.2f\n", data[0], data[1], data[2]);
+      
 }
 
 void input_register_pointer_event(void (*on_pointer_event)(Pointer_s, void *), void *user_data) {

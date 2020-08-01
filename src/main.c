@@ -52,6 +52,7 @@ int main() {
 
     // init
     r_setup_blending();
+    input_init();
     camera_init();
     game_init();
 
@@ -85,6 +86,9 @@ int main() {
                 case SDL_KEYDOWN:
                 case SDL_KEYUP:
                     input_handle_keys(&event);
+                    break;
+                case SDL_SENSORUPDATE:
+                    input_handle_sensors(&event);
                     break;
             }
         }

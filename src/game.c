@@ -44,9 +44,33 @@ void game_update(float dtime) {
     if(input_left || rot_right)
         target += M_PI_2 * dtime;
 
+    
+    
+    // todo: running mean not works for alpha
+    // rotation should effect the gyronaut, not the bg in that mode 
+    static float gyro[128];
+    static int gyro_i = 0;
+    
+    gyro_i++;
+    if(gyro_i >= 32)
+        gyro_i = 0;
+       
+    gyro[gyro_i] = input_actual_rotation;
+    float rot = 0;
+    for(int i=0; i<32;i++)
+        rot += gyro[i];
+    rot /= 32;
+    SDL_Log("rot %f", rot);
+    
+    target = -rot;
+    
+    
+    
     astronaut_rotate(target);
 
     astronaut_update(dtime);
+    
+    
 }
 
 void game_render() {
