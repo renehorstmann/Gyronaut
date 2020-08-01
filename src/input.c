@@ -13,8 +13,9 @@ bool input_enter;
 bool input_space;
 
 
-bool input_rotation_active;
-float input_actual_rotation;
+bool input_accel_active;
+float input_accel[3];
+
 
 
 static struct {
@@ -71,7 +72,7 @@ void input_init() {
 		}
 	}
 	
-	input_rotation_active = accel_opened;
+	input_accel_active = accel_opened;
 	if(accel_opened)
 	    SDL_Log("opened accel sensor");
 }
@@ -158,8 +159,7 @@ void input_handle_sensors(SDL_Event *event) {
     }
     
     const float *data = event->sensor.data;
-    float alpha = atan2(data[1], data[0]);
-    input_actual_rotation = alpha;
+    memcpy(input_accel, data, sizeof(input_accel));
     
     //SDL_Log("Gyro update: %.2f, %.2f, %.2f\n", data[0], data[1], data[2]);
       

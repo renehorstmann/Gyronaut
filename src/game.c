@@ -48,22 +48,11 @@ void game_update(float dtime) {
     
     // todo: running mean not works for alpha
     // rotation should effect the gyronaut, not the bg in that mode 
-    static float gyro[128];
-    static int gyro_i = 0;
-    
-    gyro_i++;
-    if(gyro_i >= 32)
-        gyro_i = 0;
-       
-    gyro[gyro_i] = input_actual_rotation;
-    float rot = 0;
-    for(int i=0; i<32;i++)
-        rot += gyro[i];
-    rot /= 32;
-    SDL_Log("rot %f", rot);
-    
-    target = -rot;
-    
+    static float ax=0, ay=0;
+    ax = ax*0.95f + input_accel[0] *0.05f;
+    ay = ay*0.95f + input_accel[1] *0.05f;
+    float rot = atan2(ay, ax);
+    target = - rot;
     
     
     astronaut_rotate(target);

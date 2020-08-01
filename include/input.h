@@ -12,8 +12,8 @@ extern bool input_down;
 extern bool input_enter;
 extern bool input_space;
 
-extern bool input_rotation_active;
-extern float input_actual_rotation;
+extern bool input_accel_active;
+extern float input_accel[3];
 
 
 enum PointerAction {POINTER_DOWN, POINTER_MOVE, POINTER_UP, POINTER_NUM_ACTIONS};
