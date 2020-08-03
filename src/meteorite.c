@@ -12,7 +12,7 @@ void meteorite_update(double dt) {
 	
 }
 
-void meteroite_render() {
+void meteorite_render() {
 	
 }
 

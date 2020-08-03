@@ -7,7 +7,7 @@ void meteorite_kill();
 
 void meteorite_update(double dt);
 
-void meteroite_render();
+void meteorite_render();
 
 // ... meteroite_collision_test(...);
 

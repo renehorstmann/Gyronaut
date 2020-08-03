@@ -3,6 +3,7 @@
 #include "input.h"
 #include "background.h"
 #include "astronaut.h"
+#include "meteorite.h"
 #include "game.h"
 
 
@@ -34,6 +35,7 @@ void game_init() {
     
     background_init();
     astronaut_init();
+    meteorite_init(10);
 }
 
 void game_update(float dtime) {
@@ -58,11 +60,12 @@ void game_update(float dtime) {
     astronaut_rotate(target);
 
     astronaut_update(dtime);
-    
+    meteorite_update(dtime);
     
 }
 
 void game_render() {
     background_render();
     astronaut_render();
+    meteorite_render();
 }
