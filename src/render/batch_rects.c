@@ -4,17 +4,19 @@
 
 
 void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const float *vp) {
+	
 
     self->vp = vp;
     glm_mat3_identity(self->mat);
     //update_pos(self);
     //update_uv(self);
-
+    puts("1");
     self->program = r_compile_glsl_from_files((char *[]) {
-            "res/shader/render/basic_rect.vsh",
-            "res/shader/render/basic_rect.fsh",
+            "res/shader/render/batch_rects.vsh",
+            "res/shader/render/batch_rects.fsh",
             NULL
     });
+    puts("2");
 
     self->tex = r_load_texture_from_file(tex_file);
 

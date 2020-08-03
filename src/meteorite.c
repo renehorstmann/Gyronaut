@@ -1,7 +1,9 @@
+#include "render/batch_rects.h"
 #include "meteorite.h"
 
 void meteorite_init(int num) {
-	
+    rBatchRects b;
+    r_batch_rects_init(&b, 4, NULL, NULL);
 }
 
 void meteorite_kill() {
