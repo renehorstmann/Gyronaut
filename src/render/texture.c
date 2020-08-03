@@ -1,18 +1,11 @@
 #include <SDL_image.h>
 #include "render/texture.h"
 
-
-GLuint r_load_texture_from_file(const char *file) {
-    SDL_Surface *img = IMG_Load(file);
-    if (!img) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,
-                "load image (%s) failed: %s", file, IMG_GetError());
-        return 0;
-    }
-    SDL_PixelFormat *f = img->format;
+GLuint r_load_texture_from_img(SDL_Surface *img) {
+	SDL_PixelFormat *f = img->format;
     if (f->Rmask != 0xff || f->Gmask != 0xff00 || f->Bmask != 0xff0000 || (f->Amask != 0 && f->Amask != 0xff000000)) {
         SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,
-                "load tex (%s) failed: wrong format (8bit/col needed)", file);
+                "load tex failed: wrong format (8bit/col needed)");
         return 0;
     }
 
@@ -21,7 +14,7 @@ GLuint r_load_texture_from_file(const char *file) {
     // todo:
     if(format == GL_RGB) {
         SDL_LogWarn(SDL_LOG_CATEGORY_RENDER,
-                "load tex (%s) may have failed, no alpha channel", file);
+                "load tex may have failed, no alpha channel");
     }
 
     GLuint tex;
@@ -38,6 +31,19 @@ GLuint r_load_texture_from_file(const char *file) {
     glTexImage2D(GL_TEXTURE_2D, 0, format, img->w, img->h, 0, format, GL_UNSIGNED_BYTE, img->pixels);
     glGenerateMipmap(GL_TEXTURE_2D);
 
+    return tex;
+}
+
+
+GLuint r_load_texture_from_file(const char *file) {
+    SDL_Surface *img = IMG_Load(file);
+    if (!img) {
+        SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,
+                "load image (%s) failed: %s", file, IMG_GetError());
+        return 0;
+    }
+    
+    GLuint tex = r_load_texture_from_img(img);
     SDL_FreeSurface(img);
     return tex;
 }
