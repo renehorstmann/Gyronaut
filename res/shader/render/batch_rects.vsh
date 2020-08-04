@@ -7,6 +7,7 @@ out vec2 v_tex_coord;
 uniform mat4 vp;
 
 void main() {
-  gl_Position = vp * in_m * vec4(in_position.x, in_position.y, 0, 1);
+  //gl_Position = vp * in_m * vec4(in_position.x, in_position.y, 0, 1);
+  gl_Position = vp * vec4(in_position.x, in_position.y, 0, 1);
   v_tex_coord = in_tex_coord;
 }

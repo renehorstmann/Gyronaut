@@ -1,3 +1,4 @@
+#define DEBUG
 #include "utilc/alloc.h"
 #include "render/render.h"
 #include "render/batch_rects.h"
@@ -20,7 +21,7 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
 	
 	
 	for(int i=0; i<num; i++)
-	glm_mat4_identity(self->instances[i].m);
+	    glm_mat4_identity(self->instances[i].m);
 	
 	self->program = r_compile_glsl_from_files((char *[]){
 		"res/shader/render/batch_rects.vsh",
@@ -59,7 +60,7 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
 	
 	glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 16, GL_FLOAT, GL_FALSE, sizeof(struct rBatchRectsInstance_s), NULL);
-    glVertexAttribDivisor(2, 1);  
+    //glVertexAttribDivisor(2, 1);  
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -81,6 +82,7 @@ void r_batch_rects_kill(rBatchRects *self) {
 }
 
 void r_batch_rects_update(rBatchRects *self) {
+    //glm_mat4_print(self->instances[0].m, stdout);
     glBindBuffer(GL_ARRAY_BUFFER, self->instance_bo);
     glBufferSubData(GL_ARRAY_BUFFER, 0, 
         self->num * sizeof(struct rBatchRectsInstance_s), self->instances);
