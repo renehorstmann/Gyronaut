@@ -60,6 +60,8 @@ void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp) 
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
                           sizeof(struct rBasicRectVertex_s),
                           (void *) offsetof(struct rBasicRectVertex_s, u));
+                          
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glUniform1i(glGetUniformLocation(self->program, tex_file), self->tex);
 
@@ -83,17 +85,22 @@ void r_basic_rect_update(rBasicRect *self, int flags) {
 
     glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(self->buffer), self->buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void r_basic_rect_render(rBasicRect *self) {
+    glUseProgram(self->program);
+    
     glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),
                        1, GL_FALSE, self->vp);
 
     glActiveTexture(self->tex);
     glBindTexture(GL_TEXTURE_2D, self->tex);
 
-    glUseProgram(self->program);
+    
     glBindVertexArray(self->vao);
     glDrawArrays(GL_TRIANGLES, 0, 6);
     glBindVertexArray(0);
+    
+    glUseProgram(0);
 }

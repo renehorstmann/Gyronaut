@@ -57,9 +57,18 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
 				 num * sizeof(struct rBatchRectsInstance_s),
 				 self->instances,
 				 GL_STREAM_DRAW);
+				 
+	glBindVertexArray(self->vao);
 	
 	glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 16, GL_FLOAT, GL_FALSE, sizeof(struct rBatchRectsInstance_s), NULL);
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 16, 0);
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, 16, 4);
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, 16, 8);
+    glEnableVertexAttribArray(5);
+    glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, 16, 12);
+    
     //glVertexAttribDivisor(2, 1);  
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -90,15 +99,18 @@ void r_batch_rects_update(rBatchRects *self) {
 }
 
 void r_batch_rects_render(rBatchRects *self) {
+	glUseProgram(self->program);
+	
 	glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),
 					   1, GL_FALSE, self->vp);
 
 	glActiveTexture(self->tex);
 	glBindTexture(GL_TEXTURE_2D, self->tex);
 
-	glUseProgram(self->program);
 	glBindVertexArray(self->vao);
 	//glDrawArraysInstanced(GL_TRIANGLES, 0, 6, self->num);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
+	
+	glUseProgram(0);
 }
