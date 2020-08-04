@@ -18,7 +18,7 @@
    enum glm_euler_seq
 
  Functions:
-   CGLM_INLINE vec3s glms_euler_angles(mat4s pose)
+   CGLM_INLINE vec3s glms_euler_angles(mat4s m)
    CGLM_INLINE mat4s glms_euler_xyz(vec3s angles)
    CGLM_INLINE mat4s glms_euler_xzy(vec3s angles)
    CGLM_INLINE mat4s glms_euler_yxz(vec3s angles)

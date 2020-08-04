@@ -97,7 +97,7 @@ CGLM_EXPORT
 void
 glmc_decompose(mat4 m, vec4 t, mat4 r, vec3 s);
 
-/* affine-pose */
+/* affine-mat */
 
 CGLM_EXPORT
 void

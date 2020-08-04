@@ -46,7 +46,7 @@
                                   vec3 up,
                                   versor dest);
    CGLM_INLINE void glm_quat_rotatev(versor q, vec3 v, vec3 dest);
-   CGLM_INLINE void glm_quat_rotate(mat4 pose, versor q, mat4 dest);
+   CGLM_INLINE void glm_quat_rotate(mat4 m, versor q, mat4 dest);
  */
 
 #ifndef cglm_quat_h

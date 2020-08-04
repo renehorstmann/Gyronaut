@@ -15,19 +15,19 @@
 
 /*!
  * @brief maps the specified viewport coordinates into specified space [1]
- *        the matrix should contain camera_p matrix.
+ *        the matrix should contain projection matrix.
  *
  * if you don't have ( and don't want to have ) an inverse matrix then use
  * glm_unproject version. You may use existing inverse of matrix in somewhere
  * else, this is why glm_unprojecti exists to save save inversion cost
  *
  * [1] space:
- *  1- if pose = invProj:     View Space
- *  2- if pose = invViewProj: World Space
- *  3- if pose = invMVP:      Object Space
+ *  1- if m = invProj:     View Space
+ *  2- if m = invViewProj: World Space
+ *  3- if m = invMVP:      Object Space
  *
  * You probably want to map the coordinates into object space
- * so use invMVP as pose
+ * so use invMVP as m
  *
  * Computing viewProj:
  *   glm_mat4_mul(proj, view, viewProj);
@@ -56,18 +56,18 @@ glm_unprojecti(vec3 pos, mat4 invMat, vec4 vp, vec3 dest) {
 
 /*!
  * @brief maps the specified viewport coordinates into specified space [1]
- *        the matrix should contain camera_p matrix.
+ *        the matrix should contain projection matrix.
  *
  * this is same as glm_unprojecti except this function get inverse matrix for
  * you.
  *
  * [1] space:
- *  1- if pose = proj:     View Space
- *  2- if pose = viewProj: World Space
- *  3- if pose = MVP:      Object Space
+ *  1- if m = proj:     View Space
+ *  2- if m = viewProj: World Space
+ *  3- if m = MVP:      Object Space
  *
  * You probably want to map the coordinates into object space
- * so use MVP as pose
+ * so use MVP as m
  *
  * Computing viewProj and MVP:
  *   glm_mat4_mul(proj, view, viewProj);

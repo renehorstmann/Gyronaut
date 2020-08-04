@@ -13,21 +13,21 @@
    GLMS_MAT3_ZERO
 
  Functions:
-   CGLM_INLINE mat3s  glms_mat3_copy(mat3s pose);
+   CGLM_INLINE mat3s  glms_mat3_copy(mat3s mat);
    CGLM_INLINE mat3s  glms_mat3_identity(void);
-   CGLM_INLINE void   glms_mat3_identity_array(mat3s * __restrict pose, size_t count);
+   CGLM_INLINE void   glms_mat3_identity_array(mat3s * __restrict mat, size_t count);
    CGLM_INLINE mat3s  glms_mat3_zero(void);
    CGLM_INLINE mat3s  glms_mat3_mul(mat3s m1, mat3s m2);
-   CGLM_INLINE ma3s   glms_mat3_transpose(mat3s pose);
-   CGLM_INLINE vec3s  glms_mat3_mulv(mat3s pose, vec3s v);
-   CGLM_INLINE float  glms_mat3_trace(mat3s pose);
-   CGLM_INLINE versor glms_mat3_quat(mat3s pose);
-   CGLM_INLINE mat3s  glms_mat3_scale(mat3s pose, float s);
-   CGLM_INLINE float  glms_mat3_det(mat3s pose);
-   CGLM_INLINE mat3s  glms_mat3_inv(mat3s pose);
-   CGLM_INLINE mat3s  glms_mat3_swap_col(mat3s pose, int col1, int col2);
-   CGLM_INLINE mat3s  glms_mat3_swap_row(mat3s pose, int row1, int row2);
-   CGLM_INLINE float  glms_mat3_rmc(vec3s r, mat3s pose, vec3s c);
+   CGLM_INLINE ma3s   glms_mat3_transpose(mat3s m);
+   CGLM_INLINE vec3s  glms_mat3_mulv(mat3s m, vec3s v);
+   CGLM_INLINE float  glms_mat3_trace(mat3s m);
+   CGLM_INLINE versor glms_mat3_quat(mat3s m);
+   CGLM_INLINE mat3s  glms_mat3_scale(mat3s m, float s);
+   CGLM_INLINE float  glms_mat3_det(mat3s mat);
+   CGLM_INLINE mat3s  glms_mat3_inv(mat3s mat);
+   CGLM_INLINE mat3s  glms_mat3_swap_col(mat3s mat, int col1, int col2);
+   CGLM_INLINE mat3s  glms_mat3_swap_row(mat3s mat, int row1, int row2);
+   CGLM_INLINE float  glms_mat3_rmc(vec3s r, mat3s m, vec3s c);
  */
 
 #ifndef cglms_mat3s_h
@@ -46,7 +46,7 @@
 #define GLMS_MAT3_ZERO     ((mat3s)GLMS_MAT3_ZERO_INIT)
 
 /*!
- * @brief copy all members of [pose] to [dest]
+ * @brief copy all members of [mat] to [dest]
  *
  * @param[in]  mat  source
  * @returns         destination
@@ -65,10 +65,10 @@ glms_mat3_copy(mat3s mat) {
  *        e.g. glm_mat3_identity(aStruct->aMatrix);
  *
  * @code
- * glm_mat3_copy(GLM_MAT3_IDENTITY, pose); // C only
+ * glm_mat3_copy(GLM_MAT3_IDENTITY, mat); // C only
  *
  * // or
- * mat3 pose = GLM_MAT3_IDENTITY_INIT;
+ * mat3 mat = GLM_MAT3_IDENTITY_INIT;
  * @endcode
  *
  * @returns  destination
@@ -119,8 +119,8 @@ glms_mat3_zero(void) {
  * m1, m2 and dest matrices can be same matrix, it is possible to write this:
  *
  * @code
- * mat3 pose = GLM_MAT3_IDENTITY_INIT;
- * glm_mat3_mul(pose, pose, pose);
+ * mat3 m = GLM_MAT3_IDENTITY_INIT;
+ * glm_mat3_mul(m, m, m);
  * @endcode
  *
  * @param[in]  m1   left matrix

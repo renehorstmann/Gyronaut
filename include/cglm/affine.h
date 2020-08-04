@@ -7,27 +7,27 @@
 
 /*
  Functions:
-   CGLM_INLINE void glm_translate_to(mat4 pose, vec3 v, mat4 dest);
-   CGLM_INLINE void glm_translate(mat4 pose, vec3 v);
-   CGLM_INLINE void glm_translate_x(mat4 pose, float to);
-   CGLM_INLINE void glm_translate_y(mat4 pose, float to);
-   CGLM_INLINE void glm_translate_z(mat4 pose, float to);
-   CGLM_INLINE void glm_translate_make(mat4 pose, vec3 v);
-   CGLM_INLINE void glm_scale_to(mat4 pose, vec3 v, mat4 dest);
-   CGLM_INLINE void glm_scale_make(mat4 pose, vec3 v);
-   CGLM_INLINE void glm_scale(mat4 pose, vec3 v);
-   CGLM_INLINE void glm_scale_uni(mat4 pose, float s);
-   CGLM_INLINE void glm_rotate_x(mat4 pose, float angle, mat4 dest);
-   CGLM_INLINE void glm_rotate_y(mat4 pose, float angle, mat4 dest);
-   CGLM_INLINE void glm_rotate_z(mat4 pose, float angle, mat4 dest);
-   CGLM_INLINE void glm_rotate_make(mat4 pose, float angle, vec3 axis);
-   CGLM_INLINE void glm_rotate(mat4 pose, float angle, vec3 axis);
-   CGLM_INLINE void glm_rotate_at(mat4 pose, vec3 pivot, float angle, vec3 axis);
-   CGLM_INLINE void glm_rotate_atm(mat4 pose, vec3 pivot, float angle, vec3 axis);
-   CGLM_INLINE void glm_decompose_scalev(mat4 pose, vec3 s);
-   CGLM_INLINE bool glm_uniscaled(mat4 pose);
-   CGLM_INLINE void glm_decompose_rs(mat4 pose, mat4 r, vec3 s);
-   CGLM_INLINE void glm_decompose(mat4 pose, vec4 t, mat4 r, vec3 s);
+   CGLM_INLINE void glm_translate_to(mat4 m, vec3 v, mat4 dest);
+   CGLM_INLINE void glm_translate(mat4 m, vec3 v);
+   CGLM_INLINE void glm_translate_x(mat4 m, float to);
+   CGLM_INLINE void glm_translate_y(mat4 m, float to);
+   CGLM_INLINE void glm_translate_z(mat4 m, float to);
+   CGLM_INLINE void glm_translate_make(mat4 m, vec3 v);
+   CGLM_INLINE void glm_scale_to(mat4 m, vec3 v, mat4 dest);
+   CGLM_INLINE void glm_scale_make(mat4 m, vec3 v);
+   CGLM_INLINE void glm_scale(mat4 m, vec3 v);
+   CGLM_INLINE void glm_scale_uni(mat4 m, float s);
+   CGLM_INLINE void glm_rotate_x(mat4 m, float angle, mat4 dest);
+   CGLM_INLINE void glm_rotate_y(mat4 m, float angle, mat4 dest);
+   CGLM_INLINE void glm_rotate_z(mat4 m, float angle, mat4 dest);
+   CGLM_INLINE void glm_rotate_make(mat4 m, float angle, vec3 axis);
+   CGLM_INLINE void glm_rotate(mat4 m, float angle, vec3 axis);
+   CGLM_INLINE void glm_rotate_at(mat4 m, vec3 pivot, float angle, vec3 axis);
+   CGLM_INLINE void glm_rotate_atm(mat4 m, vec3 pivot, float angle, vec3 axis);
+   CGLM_INLINE void glm_decompose_scalev(mat4 m, vec3 s);
+   CGLM_INLINE bool glm_uniscaled(mat4 m);
+   CGLM_INLINE void glm_decompose_rs(mat4 m, mat4 r, vec3 s);
+   CGLM_INLINE void glm_decompose(mat4 m, vec4 t, mat4 r, vec3 s);
  */
 
 #ifndef cglm_affine_h
@@ -63,13 +63,13 @@ glm_translate(mat4 m, vec3 v) {
 #else
   vec4 v1, v2, v3;
 
-  glm_vec4_scale(pose[0], v[0], v1);
-  glm_vec4_scale(pose[1], v[1], v2);
-  glm_vec4_scale(pose[2], v[2], v3);
+  glm_vec4_scale(m[0], v[0], v1);
+  glm_vec4_scale(m[1], v[1], v2);
+  glm_vec4_scale(m[2], v[2], v3);
 
-  glm_vec4_add(v1, pose[3], pose[3]);
-  glm_vec4_add(v2, pose[3], pose[3]);
-  glm_vec4_add(v3, pose[3], pose[3]);
+  glm_vec4_add(v1, m[3], m[3]);
+  glm_vec4_add(v2, m[3], m[3]);
+  glm_vec4_add(v3, m[3], m[3]);
 #endif
 }
 
@@ -107,8 +107,8 @@ glm_translate_x(mat4 m, float x) {
   ;
 #else
   vec4 v1;
-  glm_vec4_scale(pose[0], x, v1);
-  glm_vec4_add(v1, pose[3], pose[3]);
+  glm_vec4_scale(m[0], x, v1);
+  glm_vec4_add(v1, m[3], m[3]);
 #endif
 }
 
@@ -129,8 +129,8 @@ glm_translate_y(mat4 m, float y) {
   ;
 #else
   vec4 v1;
-  glm_vec4_scale(pose[1], y, v1);
-  glm_vec4_add(v1, pose[3], pose[3]);
+  glm_vec4_scale(m[1], y, v1);
+  glm_vec4_add(v1, m[3], m[3]);
 #endif
 }
 
@@ -151,8 +151,8 @@ glm_translate_z(mat4 m, float z) {
   ;
 #else
   vec4 v1;
-  glm_vec4_scale(pose[2], z, v1);
-  glm_vec4_add(v1, pose[3], pose[3]);
+  glm_vec4_scale(m[2], z, v1);
+  glm_vec4_add(v1, m[3], m[3]);
 #endif
 }
 
@@ -416,7 +416,7 @@ glm_decompose_scalev(mat4 m, vec3 s) {
  * @brief returns true if matrix is uniform scaled. This is helpful for
  *        creating normal matrix.
  *
- * @param[in] m pose
+ * @param[in] m m
  *
  * @return boolean
  */

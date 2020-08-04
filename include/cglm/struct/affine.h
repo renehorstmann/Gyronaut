@@ -7,26 +7,26 @@
 
 /*
  Functions:
-   CGLM_INLINE mat4s glms_translate(mat4s pose, vec3s v);
-   CGLM_INLINE mat4s glms_translate_x(mat4s pose, float x);
-   CGLM_INLINE mat4s glms_translate_y(mat4s pose, float y);
-   CGLM_INLINE mat4s glms_translate_z(mat4s pose, float z);
+   CGLM_INLINE mat4s glms_translate(mat4s m, vec3s v);
+   CGLM_INLINE mat4s glms_translate_x(mat4s m, float x);
+   CGLM_INLINE mat4s glms_translate_y(mat4s m, float y);
+   CGLM_INLINE mat4s glms_translate_z(mat4s m, float z);
    CGLM_INLINE mat4s glms_translate_make(vec3s v);
-   CGLM_INLINE mat4s glms_scale_to(mat4s pose, vec3s v);
+   CGLM_INLINE mat4s glms_scale_to(mat4s m, vec3s v);
    CGLM_INLINE mat4s glms_scale_make(vec3s v);
-   CGLM_INLINE mat4s glms_scale(mat4s pose, vec3s v);
-   CGLM_INLINE mat4s glms_scale_uni(mat4s pose, float s);
-   CGLM_INLINE mat4s glms_rotate_x(mat4s pose, float angle);
-   CGLM_INLINE mat4s glms_rotate_y(mat4s pose, float angle);
-   CGLM_INLINE mat4s glms_rotate_z(mat4s pose, float angle);
+   CGLM_INLINE mat4s glms_scale(mat4s m, vec3s v);
+   CGLM_INLINE mat4s glms_scale_uni(mat4s m, float s);
+   CGLM_INLINE mat4s glms_rotate_x(mat4s m, float angle);
+   CGLM_INLINE mat4s glms_rotate_y(mat4s m, float angle);
+   CGLM_INLINE mat4s glms_rotate_z(mat4s m, float angle);
    CGLM_INLINE mat4s glms_rotate_make(float angle, vec3s axis);
-   CGLM_INLINE mat4s glms_rotate(mat4s pose, float angle, vec3s axis);
-   CGLM_INLINE mat4s glms_rotate_at(mat4s pose, vec3s pivot, float angle, vec3s axis);
-   CGLM_INLINE mat4s glms_rotate_atm(mat4s pose, vec3s pivot, float angle, vec3s axis);
-   CGLM_INLINE vec3s glms_decompose_scalev(mat4s pose);
-   CGLM_INLINE bool  glms_uniscaled(mat4s pose);
-   CGLM_INLINE void  glms_decompose_rs(mat4s pose, mat4s * r, vec3s * s);
-   CGLM_INLINE void  glms_decompose(mat4s pose, vec4s t, mat4s * r, vec3s * s);
+   CGLM_INLINE mat4s glms_rotate(mat4s m, float angle, vec3s axis);
+   CGLM_INLINE mat4s glms_rotate_at(mat4s m, vec3s pivot, float angle, vec3s axis);
+   CGLM_INLINE mat4s glms_rotate_atm(mat4s m, vec3s pivot, float angle, vec3s axis);
+   CGLM_INLINE vec3s glms_decompose_scalev(mat4s m);
+   CGLM_INLINE bool  glms_uniscaled(mat4s m);
+   CGLM_INLINE void  glms_decompose_rs(mat4s m, mat4s * r, vec3s * s);
+   CGLM_INLINE void  glms_decompose(mat4s m, vec4s t, mat4s * r, vec3s * s);
  */
 
 #ifndef cglms_affines_h
@@ -291,7 +291,7 @@ glms_decompose_scalev(mat4s m) {
  * @brief returns true if matrix is uniform scaled. This is helpful for
  *        creating normal matrix.
  *
- * @param[in] m pose
+ * @param[in] m m
  *
  * @return boolean
  */

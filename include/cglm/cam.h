@@ -87,7 +87,7 @@ glm_frustum(float left,    float right,
 }
 
 /*!
- * @brief set up orthographic camera_p matrix
+ * @brief set up orthographic projection matrix
  *
  * @param[in]  left    viewport.left
  * @param[in]  right   viewport.right
@@ -121,7 +121,7 @@ glm_ortho(float left,    float right,
 }
 
 /*!
- * @brief set up orthographic camera_p matrix using bounding box
+ * @brief set up orthographic projection matrix using bounding box
  *
  * bounding box (AABB) must be in view space
  *
@@ -138,7 +138,7 @@ glm_ortho_aabb(vec3 box[2], mat4 dest) {
 }
 
 /*!
- * @brief set up orthographic camera_p matrix using bounding box
+ * @brief set up orthographic projection matrix using bounding box
  *
  * bounding box (AABB) must be in view space
  *
@@ -156,7 +156,7 @@ glm_ortho_aabb_p(vec3 box[2], float padding, mat4 dest) {
 }
 
 /*!
- * @brief set up orthographic camera_p matrix using bounding box
+ * @brief set up orthographic projection matrix using bounding box
  *
  * bounding box (AABB) must be in view space
  *
@@ -174,7 +174,7 @@ glm_ortho_aabb_pz(vec3 box[2], float padding, mat4 dest) {
 }
 
 /*!
- * @brief set up unit orthographic camera_p matrix
+ * @brief set up unit orthographic projection matrix
  *
  * @param[in]  aspect aspect ration ( width / height )
  * @param[out] dest   result matrix
@@ -193,7 +193,7 @@ glm_ortho_default(float aspect, mat4 dest) {
 }
 
 /*!
- * @brief set up orthographic camera_p matrix with given CUBE size
+ * @brief set up orthographic projection matrix with given CUBE size
  *
  * @param[in]  aspect aspect ratio ( width / height )
  * @param[in]  size   cube size
@@ -223,7 +223,7 @@ glm_ortho_default_s(float aspect, float size, mat4 dest) {
 }
 
 /*!
- * @brief set up perspective camera_p matrix
+ * @brief set up perspective projection matrix
  *
  * @param[in]  fovy    field of view angle
  * @param[in]  aspect  aspect ratio ( width / height )
@@ -253,11 +253,11 @@ glm_perspective(float fovy,
 }
 
 /*!
- * @brief extend perspective camera_p matrix's far distance
+ * @brief extend perspective projection matrix's far distance
  *
  * this function does not guarantee far >= near, be aware of that!
  *
- * @param[in, out] proj      camera_p matrix to extend
+ * @param[in, out] proj      projection matrix to extend
  * @param[in]      deltaFar  distance from existing far (negative to shink)
  */
 CGLM_INLINE
@@ -277,7 +277,7 @@ glm_persp_move_far(mat4 proj, float deltaFar) {
 }
 
 /*!
- * @brief set up perspective camera_p matrix with default near/far
+ * @brief set up perspective projection matrix with default near/far
  *        and angle values
  *
  * @param[in]  aspect aspect ratio ( width / height )
@@ -295,7 +295,7 @@ glm_perspective_default(float aspect, mat4 dest) {
  *        reized
  *
  * @param[in]      aspect aspect ratio ( width / height )
- * @param[in, out] proj   perspective camera_p matrix
+ * @param[in, out] proj   perspective projection matrix
  */
 CGLM_INLINE
 void
@@ -385,9 +385,9 @@ glm_look_anyup(vec3 eye, vec3 dir, mat4 dest) {
 }
 
 /*!
- * @brief decomposes frustum values of perspective camera_p.
+ * @brief decomposes frustum values of perspective projection.
  *
- * @param[in]  proj    perspective camera_p matrix
+ * @param[in]  proj    perspective projection matrix
  * @param[out] nearVal near
  * @param[out] farVal  far
  * @param[out] top     top
@@ -426,10 +426,10 @@ glm_persp_decomp(mat4 proj,
 }
 
 /*!
- * @brief decomposes frustum values of perspective camera_p.
+ * @brief decomposes frustum values of perspective projection.
  *        this makes easy to get all values at once
  *
- * @param[in]  proj   perspective camera_p matrix
+ * @param[in]  proj   perspective projection matrix
  * @param[out] dest   array
  */
 CGLM_INLINE
@@ -440,10 +440,10 @@ glm_persp_decompv(mat4 proj, float dest[6]) {
 }
 
 /*!
- * @brief decomposes left and right values of perspective camera_p.
+ * @brief decomposes left and right values of perspective projection.
  *        x stands for x axis (left / right axis)
  *
- * @param[in]  proj  perspective camera_p matrix
+ * @param[in]  proj  perspective projection matrix
  * @param[out] left  left
  * @param[out] right right
  */
@@ -463,10 +463,10 @@ glm_persp_decomp_x(mat4 proj,
 }
 
 /*!
- * @brief decomposes top and bottom values of perspective camera_p.
+ * @brief decomposes top and bottom values of perspective projection.
  *        y stands for y axis (top / botom axis)
  *
- * @param[in]  proj   perspective camera_p matrix
+ * @param[in]  proj   perspective projection matrix
  * @param[out] top    top
  * @param[out] bottom bottom
  */
@@ -486,10 +486,10 @@ glm_persp_decomp_y(mat4 proj,
 }
 
 /*!
- * @brief decomposes near and far values of perspective camera_p.
+ * @brief decomposes near and far values of perspective projection.
  *        z stands for z axis (near / far axis)
  *
- * @param[in]  proj    perspective camera_p matrix
+ * @param[in]  proj    perspective projection matrix
  * @param[out] nearVal near
  * @param[out] farVal  far
  */
@@ -508,9 +508,9 @@ glm_persp_decomp_z(mat4 proj,
 }
 
 /*!
- * @brief decomposes far value of perspective camera_p.
+ * @brief decomposes far value of perspective projection.
  *
- * @param[in]  proj   perspective camera_p matrix
+ * @param[in]  proj   perspective projection matrix
  * @param[out] farVal far
  */
 CGLM_INLINE
@@ -520,9 +520,9 @@ glm_persp_decomp_far(mat4 proj, float * __restrict farVal) {
 }
 
 /*!
- * @brief decomposes near value of perspective camera_p.
+ * @brief decomposes near value of perspective projection.
  *
- * @param[in]  proj    perspective camera_p matrix
+ * @param[in]  proj    perspective projection matrix
  * @param[out] nearVal near
  */
 CGLM_INLINE
@@ -537,7 +537,7 @@ glm_persp_decomp_near(mat4 proj, float * __restrict nearVal) {
  * if you need to degrees, use glm_deg to convert it or use this:
  * fovy_deg = glm_deg(glm_persp_fovy(projMatrix))
  *
- * @param[in] proj perspective camera_p matrix
+ * @param[in] proj perspective projection matrix
  */
 CGLM_INLINE
 float
@@ -546,9 +546,9 @@ glm_persp_fovy(mat4 proj) {
 }
 
 /*!
- * @brief returns aspect ratio of perspective camera_p
+ * @brief returns aspect ratio of perspective projection
  *
- * @param[in] proj perspective camera_p matrix
+ * @param[in] proj perspective projection matrix
  */
 CGLM_INLINE
 float
@@ -557,9 +557,9 @@ glm_persp_aspect(mat4 proj) {
 }
 
 /*!
- * @brief returns sizes of near and far planes of perspective camera_p
+ * @brief returns sizes of near and far planes of perspective projection
  *
- * @param[in]  proj perspective camera_p matrix
+ * @param[in]  proj perspective projection matrix
  * @param[in]  fovy fovy (see brief)
  * @param[out] dest sizes order: [Wnear, Hnear, Wfar, Hfar]
  */
