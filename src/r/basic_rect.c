@@ -29,58 +29,67 @@ static void update_pos(rBasicRect *self) {
 }
 
 void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp) {
+    glm_mat3_identity(self->mat);
 
     self->vp = vp;
-    glm_mat3_identity(self->mat);
-    update_pos(self);
-    update_uv(self);
 
     self->program = r_compile_glsl_from_files((char *[]) {
             "res/shader/r/basic_rect.vsh",
             "res/shader/r/basic_rect.fsh",
             NULL
     });
+    const int loc_position = 0;
+    const int loc_tex_coord = 1;
 
     self->tex = r_load_texture_from_file(tex_file);
 
-    glGenVertexArrays(1, &self->vao);
-    glBindVertexArray(self->vao);
+    update_pos(self);
+    update_uv(self);
 
-    glGenBuffers(1, &self->vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
-    glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(self->buffer),
-                 self->buffer,
-                 GL_STREAM_DRAW);
+    // vao scope
+    {
+        glGenVertexArrays(1, &self->vao);
+        glBindVertexArray(self->vao);
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,
-                          sizeof(struct rBasicRectVertex_s), NULL);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
-                          sizeof(struct rBasicRectVertex_s),
-                          (void *) offsetof(struct rBasicRectVertex_s, u));
-                          
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+        // texture
+        glUniform1i(glGetUniformLocation(self->program, tex_file), self->tex);
 
-    glUniform1i(glGetUniformLocation(self->program, tex_file), self->tex);
+        // vbo scope = xyuv
+        {
+            glGenBuffers(1, &self->vbo);
+            glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
+            glBufferData(GL_ARRAY_BUFFER,
+                         sizeof(self->buffer),
+                         self->buffer,
+                         GL_STREAM_DRAW);
 
-    // unbind
-    glBindVertexArray(0);
+            glEnableVertexAttribArray(loc_position);
+            glVertexAttribPointer(loc_position, 2, GL_FLOAT, GL_FALSE,
+                                  sizeof(struct rBasicRectVertex_s), NULL);
+            glEnableVertexAttribArray(loc_tex_coord);
+            glVertexAttribPointer(loc_tex_coord, 2, GL_FLOAT, GL_FALSE,
+                                  sizeof(struct rBasicRectVertex_s),
+                                  (void *) offsetof(
+            struct rBasicRectVertex_s, u));
+
+            glBindBuffer(GL_ARRAY_BUFFER, 0);
+        }
+        glBindVertexArray(0);
+    }
 }
 
 
 void r_basic_rect_kill(rBasicRect *self) {
-	glDeleteProgram(self->program);
-	glDeleteVertexArrays(1, &self->vao);
-	glDeleteBuffers(1, &self->vbo);
-	glDeleteTextures(1, &self->tex);
+    glDeleteProgram(self->program);
+    glDeleteVertexArrays(1, &self->vao);
+    glDeleteBuffers(1, &self->vbo);
+    glDeleteTextures(1, &self->tex);
 }
 
 void r_basic_rect_update(rBasicRect *self, int flags) {
-    if(flags & R_BASIC_RECT_UPDATE_XY)
+    if (flags & R_BASIC_RECT_UPDATE_XY)
         update_pos(self);
-    if(flags & R_BASIC_RECT_UPDATE_UV)
+    if (flags & R_BASIC_RECT_UPDATE_UV)
         update_uv(self);
 
     glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
@@ -90,17 +99,18 @@ void r_basic_rect_update(rBasicRect *self, int flags) {
 
 void r_basic_rect_render(rBasicRect *self) {
     glUseProgram(self->program);
-    
+
     glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),
                        1, GL_FALSE, self->vp);
 
     glActiveTexture(self->tex);
     glBindTexture(GL_TEXTURE_2D, self->tex);
 
-    
-    glBindVertexArray(self->vao);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindVertexArray(0);
-    
+    {
+        glBindVertexArray(self->vao);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glBindVertexArray(0);
+    }
+
     glUseProgram(0);
 }

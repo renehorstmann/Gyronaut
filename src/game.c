@@ -39,6 +39,7 @@ void game_init() {
 }
 
 void game_update(float dtime) {
+    meteorite_update(dtime);
 
     static float target = 0;
     if(input_right || rot_left)
@@ -60,12 +61,11 @@ void game_update(float dtime) {
     astronaut_rotate(target);
 
     astronaut_update(dtime);
-    meteorite_update(dtime);
     
 }
 
 void game_render() {
     background_render();
-    astronaut_render();
     meteorite_render();
+    astronaut_render();
 }

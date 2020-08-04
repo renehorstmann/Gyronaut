@@ -5,9 +5,8 @@
 #include "core.h"
 
 
-
 struct rBatchRectsInstance_s {
-    mat4 m;    
+    mat4 m;
 };
 
 typedef struct rBatchRects {
