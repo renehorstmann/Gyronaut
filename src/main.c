@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 #include "r/r.h"
 #include "camera.h"
 #include "input.h"
@@ -12,13 +13,19 @@ int main() {
         SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_Init failed: %s", SDL_GetError());
         return 1;
     }
-    //Initialize PNG loading
+    
+    // initialize IMG
     int imgFlags = IMG_INIT_PNG;
-    if( !( IMG_Init( imgFlags ) & imgFlags ) )
-    {
+    if( !( IMG_Init( imgFlags ) & imgFlags ) ) {
         SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "IMG_Init failed: %s", IMG_GetError());
         return 1;
     }
+    
+    // initialize TTF
+    if (TTF_Init() == -1) {
+		SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "TTF_Init failed: %s", TTF_GetError());
+        return 1;
+	}
 
     // setup OpenGL usage
     SDL_Log("OpenGL minimal version: %d.%d", R_GL_MAJOR_VERSION, R_GL_MINOR_VERSION);

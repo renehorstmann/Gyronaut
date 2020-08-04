@@ -36,13 +36,16 @@ endif ()
 find_package(SDL2 REQUIRED)
 if (GL_LIB)
     find_library(SDL2_IMAGE_LIBRARIES SDL2_image)
+    find_library(SDL2_TTF_LIBRARIES SDL2_ttf)
 else ()
     find_package(SDL2_image REQUIRED)
+    find_package(SDL2_ttf REQUIRED)
 endif ()
 include_directories(${SDL2_INCLUDE_DIRS})
 target_link_libraries(gyronaut m
         ${SDL2_LIBRARIES}
         ${SDL2_IMAGE_LIBRARIES}
+        ${SDL2_TTF_LIBRARIES}
         )
 
 # res
