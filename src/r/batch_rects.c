@@ -39,6 +39,7 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
     const int loc_tex_coord = 1;
     const int loc_m = 2;
     const int loc_color = 6;
+    const int loc_uv_offset = 7;
 
     self->tex = r_load_texture_from_file(tex_file);
 
@@ -91,8 +92,15 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
 
             glEnableVertexAttribArray(loc_color);
             glVertexAttribPointer(loc_color, 4, GL_FLOAT, GL_FALSE,
-                                  sizeof(struct rBatchRectsInstance_s), (void *) sizeof(mat4));
+                                  sizeof(struct rBatchRectsInstance_s),
+                                  (void *) offsetof(struct rBatchRectsInstance_s, color));
             glVertexAttribDivisor(loc_color, 1);
+
+            glEnableVertexAttribArray(loc_uv_offset);
+            glVertexAttribPointer(loc_uv_offset, 2, GL_FLOAT, GL_FALSE,
+                                  sizeof(struct rBatchRectsInstance_s),
+                                          (void *) offsetof(struct rBatchRectsInstance_s, uv_offset));
+            glVertexAttribDivisor(loc_uv_offset, 1);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
