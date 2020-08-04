@@ -1,66 +1,102 @@
+#include "utilc/alloc.h"
 #include "render/render.h"
 #include "render/batch_rects.h"
 #include "cglm/cglm.h"
 
+// x, y, u, v
+static const float buffer[] = {
+	-1, -1, 0, 1,
+	+1, -1, 1, 1,
+	-1, +1, 0, 0,
+	-1, +1, 0, 0,
+	+1, -1, 1, 1,
+	+1, +1, 1, 0
+};
 
 void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const float *vp) {
+	self->instances = New(struct rBatchRectsInstance_s, num);
+	self->num = num;
+	self->vp = vp;
 	
+	
+	for(int i=0; i<num; i++)
+	glm_mat4_identity(self->instances[i].m);
+	
+	self->program = r_compile_glsl_from_files((char *[]){
+		"res/shader/render/batch_rects.vsh",
+		"res/shader/render/batch_rects.fsh",
+		NULL});
 
-    self->vp = vp;
-    glm_mat3_identity(self->mat);
-    //update_pos(self);
-    //update_uv(self);
-    puts("1");
-    self->program = r_compile_glsl_from_files((char *[]) {
-            "res/shader/render/batch_rects.vsh",
-            "res/shader/render/batch_rects.fsh",
-            NULL
-    });
-    puts("2");
+	self->tex = r_load_texture_from_file(tex_file);
 
-    self->tex = r_load_texture_from_file(tex_file);
+	glGenVertexArrays(1, &self->vao);
+	glBindVertexArray(self->vao);
 
-    glGenVertexArrays(1, &self->vao);
-    glBindVertexArray(self->vao);
+	glGenBuffers(1, &self->vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
+	glBufferData(GL_ARRAY_BUFFER,
+				 sizeof(buffer),
+				 buffer,
+				 GL_STATIC_DRAW);
 
-    glGenBuffers(1, &self->vbo);
-    glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
-    glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(self->buffer),
-                 self->buffer,
-                 GL_STREAM_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,
+						  4 * sizeof(float), NULL);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
+						  4 * sizeof(float),
+						  (void *)(2 * sizeof(float)));
+						 
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	
+	// instanced
+	glGenBuffers(1, &self->instance_bo);
+	glBindBuffer(GL_ARRAY_BUFFER, self->instance_bo);
+	glBufferData(GL_ARRAY_BUFFER,
+				 num * sizeof(struct rBatchRectsInstance_s),
+				 self->instances,
+				 GL_STREAM_DRAW);
+	
+	glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 16, GL_FLOAT, GL_FALSE, sizeof(struct rBatchRectsInstance_s), NULL);
+    glVertexAttribDivisor(2, 1);  
+	
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE,
-                          sizeof(struct rBasicRectVertex_s), NULL);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE,
-                          sizeof(struct rBasicRectVertex_s),
-                          (void *) offsetof(struct rBasicRectVertex_s, u));
 
-    glUniform1i(glGetUniformLocation(self->program, tex_file), self->tex);
+	glUniform1i(glGetUniformLocation(self->program, tex_file), self->tex);
 
-    // unbind
-    glBindVertexArray(0);
+	// unbind
+	glBindVertexArray(0);
 }
 
-
 void r_batch_rects_kill(rBatchRects *self) {
+	free(self->instances);
 	glDeleteProgram(self->program);
 	glDeleteVertexArrays(1, &self->vao);
 	glDeleteBuffers(1, &self->vbo);
+	glDeleteBuffers(1, &self->instance_bo);
 	glDeleteTextures(1, &self->tex);
+	*self = (rBatchRects) {0};
+}
+
+void r_batch_rects_update(rBatchRects *self) {
+    glBindBuffer(GL_ARRAY_BUFFER, self->instance_bo);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, 
+        self->num * sizeof(struct rBatchRectsInstance_s), self->instances);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void r_batch_rects_render(rBatchRects *self) {
-    glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),
-                       1, GL_FALSE, self->vp);
+	glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),
+					   1, GL_FALSE, self->vp);
 
-    glActiveTexture(self->tex);
-    glBindTexture(GL_TEXTURE_2D, self->tex);
+	glActiveTexture(self->tex);
+	glBindTexture(GL_TEXTURE_2D, self->tex);
 
-    glUseProgram(self->program);
-    glBindVertexArray(self->vao);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindVertexArray(0);
+	glUseProgram(self->program);
+	glBindVertexArray(self->vao);
+	//glDrawArraysInstanced(GL_TRIANGLES, 0, 6, self->num);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
 }
