@@ -41,7 +41,7 @@ void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp) 
     const int loc_position = 0;
     const int loc_tex_coord = 1;
 
-    self->tex = r_load_texture_from_file(tex_file);
+    self->tex = r_texture_from_file(tex_file);
 
     update_pos(self);
     update_uv(self);

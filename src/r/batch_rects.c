@@ -41,7 +41,7 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
     const int loc_color = 6;
     const int loc_uv_offset = 7;
 
-    self->tex = r_load_texture_from_file(tex_file);
+    self->tex = r_texture_from_file(tex_file);
 
     // vao scope
     {

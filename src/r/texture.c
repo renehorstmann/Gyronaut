@@ -1,7 +1,7 @@
 #include <SDL_image.h>
 #include "r/texture.h"
 
-GLuint r_load_texture_from_img(SDL_Surface *img) {
+GLuint r_texture_from_img(SDL_Surface *img) {
 	SDL_PixelFormat *f = img->format;
     if (f->Rmask != 0xff || f->Gmask != 0xff00 || f->Bmask != 0xff0000 || (f->Amask != 0 && f->Amask != 0xff000000)) {
         SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,
@@ -35,7 +35,7 @@ GLuint r_load_texture_from_img(SDL_Surface *img) {
 }
 
 
-GLuint r_load_texture_from_file(const char *file) {
+GLuint r_texture_from_file(const char *file) {
     SDL_Surface *img = IMG_Load(file);
     if (!img) {
         SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,
@@ -43,7 +43,7 @@ GLuint r_load_texture_from_file(const char *file) {
         return 0;
     }
     
-    GLuint tex = r_load_texture_from_img(img);
+    GLuint tex = r_texture_from_img(img);
     SDL_FreeSurface(img);
     return tex;
 }

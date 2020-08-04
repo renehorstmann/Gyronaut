@@ -1,7 +1,12 @@
-
+#include "r/texture.h"
 #include "r/text.h"
 
 TTF_Font *r_text_default_font;
+
+static GLuint create_tex(TTF_Font *font, const char *text) {
+    
+    return 0;
+}
 
 
 void r_text_init(rText *self, const char *text, const float *vp) {
