@@ -19,8 +19,8 @@ void meteorite_kill() {
 	r_batch_rects_kill(&batch);
 }
 
-void meteorite_update(double dt) {
-    for(int i=0; i<batch.num; i++) {
+void color(int start, int cnt, float dt) {
+	for(int i=start; i<start+cnt; i++) {
         for(int rgba=0; rgba<4; rgba++) {
             float col_shift = dt * rand() / RAND_MAX;
             if(rand() % 2 == 0) {
@@ -34,6 +34,18 @@ void meteorite_update(double dt) {
             }
         }
     }
+}
+
+
+void meteorite_update(double dt) {
+    static int block = 0;
+    int max = 100;
+    int cnt = batch.num / max;
+    color(cnt * block, cnt, dt * max);
+    block++;
+    if(block >= max)
+        block = 0;
+    
 	r_batch_rects_update(&batch);
 }
 
