@@ -12,15 +12,15 @@ void r_text_init(rText *self, const char *text, const float *vp) {
 }
 
 void r_text_kill(rText *self) {
-	
+	r_basic_rect_kill(&self->rect);
 }
 
 void r_text_update(rText *self) {
-	
+	r_basic_rect_update(&self->rect, R_BASIC_RECT_UPDATE_XY);
 }
 
 void r_text_render(rText *self) {
-	
+	r_basic_rect_render(&self->rect);
 }
 
 void r_text_set_text(rText *self, const char *text) {
