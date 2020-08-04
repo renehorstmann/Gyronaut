@@ -5,14 +5,14 @@
 static rBatchRects batch;
 
 void meteorite_init(int num) {
-    r_batch_rects_init(&batch, 2, "res/meteorite_test.png", &camera_vp.m00);
-    
-    batch.instances[0].m[0][0] = 50;
-    batch.instances[0].m[1][1] = 50;
+    r_batch_rects_init(&batch, num, "res/meteorite_test.png", &camera_vp.m00);
 
-    batch.instances[1].m[0][0] = 50;
-    batch.instances[1].m[1][1] = 50;
-    batch.instances[1].m[3][0] = 100;
+    for(int i=0; i<num; i++) {
+        batch.instances[i].pose[0][0] = 2;
+        batch.instances[i].pose[1][1] = 2;
+        batch.instances[i].pose[3][0] = -200.0f + 400.0f * rand() / RAND_MAX;
+        batch.instances[i].pose[3][1] = -200.0f + 400.0f * rand() / RAND_MAX;
+    }
 }
 
 void meteorite_kill() {
@@ -20,6 +20,20 @@ void meteorite_kill() {
 }
 
 void meteorite_update(double dt) {
+    for(int i=0; i<batch.num; i++) {
+        for(int rgba=0; rgba<4; rgba++) {
+            float col_shift = dt * rand() / RAND_MAX;
+            if(rand() % 2 == 0) {
+                batch.instances[i].color[rgba] += col_shift;
+                if(batch.instances[i].color[rgba] > 1)
+                    batch.instances[i].color[rgba] = 1;
+            } else {
+                batch.instances[i].color[rgba] -= col_shift;
+                if(batch.instances[i].color[rgba] < 0)
+                    batch.instances[i].color[rgba] = 0;
+            }
+        }
+    }
 	r_batch_rects_update(&batch);
 }
 

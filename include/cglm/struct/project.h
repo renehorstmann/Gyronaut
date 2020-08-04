@@ -24,12 +24,12 @@
  * else, this is why glm_unprojecti exists to save save inversion cost
  *
  * [1] space:
- *  1- if m = invProj:     View Space
- *  2- if m = invViewProj: World Space
- *  3- if m = invMVP:      Object Space
+ *  1- if pose = invProj:     View Space
+ *  2- if pose = invViewProj: World Space
+ *  3- if pose = invMVP:      Object Space
  *
  * You probably want to map the coordinates into object space
- * so use invMVP as m
+ * so use invMVP as pose
  *
  * Computing viewProj:
  *   glm_mat4_mul(proj, view, viewProj);
@@ -57,12 +57,12 @@ glms_unprojecti(vec3s pos, mat4s invMat, vec4s vp) {
  * you.
  *
  * [1] space:
- *  1- if m = proj:     View Space
- *  2- if m = viewProj: World Space
- *  3- if m = MVP:      Object Space
+ *  1- if pose = proj:     View Space
+ *  2- if pose = viewProj: World Space
+ *  3- if pose = MVP:      Object Space
  *
  * You probably want to map the coordinates into object space
- * so use MVP as m
+ * so use MVP as pose
  *
  * Computing viewProj and MVP:
  *   glm_mat4_mul(proj, view, viewProj);

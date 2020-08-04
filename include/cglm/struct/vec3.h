@@ -49,8 +49,8 @@
    CGLM_INLINE vec3s glms_vec3_crossn(vec3s a, vec3s b);
    CGLM_INLINE float glms_vec3_angle(vec3s a, vec3s b);
    CGLM_INLINE vec3s glms_vec3_rotate(vec3s v, float angle, vec3s axis);
-   CGLM_INLINE vec3s glms_vec3_rotate_m4(mat4s m, vec3s v);
-   CGLM_INLINE vec3s glms_vec3_rotate_m3(mat3s m, vec3s v);
+   CGLM_INLINE vec3s glms_vec3_rotate_m4(mat4s pose, vec3s v);
+   CGLM_INLINE vec3s glms_vec3_rotate_m3(mat3s pose, vec3s v);
    CGLM_INLINE vec3s glms_vec3_proj(vec3s a, vec3s b);
    CGLM_INLINE vec3s glms_vec3_center(vec3s a, vec3s b);
    CGLM_INLINE float glms_vec3_distance(vec3s a, vec3s b);

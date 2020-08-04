@@ -6,7 +6,9 @@
 
 
 struct rBatchRectsInstance_s {
-    mat4 m;
+    mat4 pose;
+    vec4 color;
+    vec2 uv_offset;
 };
 
 typedef struct rBatchRects {

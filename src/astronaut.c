@@ -14,10 +14,10 @@ static float alpha;
 static float alpha_dest;
 
 static void set_angle(float alpha_rad) {
-    rect.mat[0][0] = cos(alpha_rad) * scale;
-    rect.mat[0][1] = sin(alpha_rad) * scale;
-    rect.mat[1][0] = -sin(alpha_rad) * scale;
-    rect.mat[1][1] = cos(alpha_rad) * scale;
+    rect.pose[0][0] = cos(alpha_rad) * scale;
+    rect.pose[0][1] = sin(alpha_rad) * scale;
+    rect.pose[1][0] = -sin(alpha_rad) * scale;
+    rect.pose[1][1] = cos(alpha_rad) * scale;
 }
 
 void astronaut_init() {
@@ -32,14 +32,14 @@ void astronaut_update(float dtime) {
     set_angle(alpha);
     r_basic_rect_update(&rect, R_BASIC_RECT_UPDATE_XY);
 
-    rect.mat[2][0] += speed * cos(alpha) * dtime;
-    rect.mat[2][1] += speed * sin(alpha) * dtime;
+    rect.pose[2][0] += speed * cos(alpha) * dtime;
+    rect.pose[2][1] += speed * sin(alpha) * dtime;
 
     // check collision
 
 
     // set camera position
-    camera_set_pos(rect.mat[2][0], rect.mat[2][1]);
+    camera_set_pos(rect.pose[2][0], rect.pose[2][1]);
     camera_set_angle(-alpha_dest);
 }
 

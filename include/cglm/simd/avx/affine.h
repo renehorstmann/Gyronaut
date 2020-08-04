@@ -22,14 +22,14 @@ glm_mul_avx(mat4 m1, mat4 m2, mat4 dest) {
   __m256 y0, y1, y2, y3, y4, y5, y6, y7, y8, y9;
 
   y0 = glmm_load256(m2[0]); /* h g f e d c b a */
-  y1 = glmm_load256(m2[2]); /* p o n m l k j i */
+  y1 = glmm_load256(m2[2]); /* p o n pose l k j i */
 
   y2 = glmm_load256(m1[0]); /* h g f e d c b a */
-  y3 = glmm_load256(m1[2]); /* p o n m l k j i */
+  y3 = glmm_load256(m1[2]); /* p o n pose l k j i */
 
   /* 0x03: 0b00000011 */
   y4 = _mm256_permute2f128_ps(y2, y2, 0x03); /* d c b a h g f e */
-  y5 = _mm256_permute2f128_ps(y3, y3, 0x03); /* l k j i p o n m */
+  y5 = _mm256_permute2f128_ps(y3, y3, 0x03); /* l k j i p o n pose */
 
   /* f f f f a a a a */
   /* h h h h c c c c */
@@ -48,7 +48,7 @@ glm_mul_avx(mat4 m1, mat4 m2, mat4 dest) {
 
   /* n n n n i i i i */
   /* p p p p k k k k */
-  /* m m m m j j j j */
+  /* pose pose pose pose j j j j */
   /* o o o o l l l l */
   y6 = _mm256_permutevar_ps(y1, _mm256_set_epi32(1, 1, 1, 1, 0, 0, 0, 0));
   y7 = _mm256_permutevar_ps(y1, _mm256_set_epi32(3, 3, 3, 3, 2, 2, 2, 2));

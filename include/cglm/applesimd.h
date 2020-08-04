@@ -21,28 +21,28 @@
 */
 CGLM_INLINE
 simd_float4x4
-glm_mat4_applesimd(mat4 m) {
+glm_mat4_applesimd(mat4 pose) {
   simd_float4x4 t;
   
-  t.columns[0][0] = m[0][0];
-  t.columns[0][1] = m[0][1];
-  t.columns[0][2] = m[0][2];
-  t.columns[0][3] = m[0][3];
+  t.columns[0][0] = pose[0][0];
+  t.columns[0][1] = pose[0][1];
+  t.columns[0][2] = pose[0][2];
+  t.columns[0][3] = pose[0][3];
 
-  t.columns[1][0] = m[1][0];
-  t.columns[1][1] = m[1][1];
-  t.columns[1][2] = m[1][2];
-  t.columns[1][3] = m[1][3];
+  t.columns[1][0] = pose[1][0];
+  t.columns[1][1] = pose[1][1];
+  t.columns[1][2] = pose[1][2];
+  t.columns[1][3] = pose[1][3];
 
-  t.columns[2][0] = m[2][0];
-  t.columns[2][1] = m[2][1];
-  t.columns[2][2] = m[2][2];
-  t.columns[2][3] = m[2][3];
+  t.columns[2][0] = pose[2][0];
+  t.columns[2][1] = pose[2][1];
+  t.columns[2][2] = pose[2][2];
+  t.columns[2][3] = pose[2][3];
 
-  t.columns[3][0] = m[3][0];
-  t.columns[3][1] = m[3][1];
-  t.columns[3][2] = m[3][2];
-  t.columns[3][3] = m[3][3];
+  t.columns[3][0] = pose[3][0];
+  t.columns[3][1] = pose[3][1];
+  t.columns[3][2] = pose[3][2];
+  t.columns[3][3] = pose[3][3];
 
   return t;
 }
@@ -53,20 +53,20 @@ glm_mat4_applesimd(mat4 m) {
 */
 CGLM_INLINE
 simd_float3x3
-glm_mat3_applesimd(mat3 m) {
+glm_mat3_applesimd(mat3 pose) {
   simd_float3x3 t;
   
-  t.columns[0][0] = m[0][0];
-  t.columns[0][1] = m[0][1];
-  t.columns[0][2] = m[0][2];
+  t.columns[0][0] = pose[0][0];
+  t.columns[0][1] = pose[0][1];
+  t.columns[0][2] = pose[0][2];
 
-  t.columns[1][0] = m[1][0];
-  t.columns[1][1] = m[1][1];
-  t.columns[1][2] = m[1][2];
+  t.columns[1][0] = pose[1][0];
+  t.columns[1][1] = pose[1][1];
+  t.columns[1][2] = pose[1][2];
 
-  t.columns[2][0] = m[2][0];
-  t.columns[2][1] = m[2][1];
-  t.columns[2][2] = m[2][2];
+  t.columns[2][0] = pose[2][0];
+  t.columns[2][1] = pose[2][1];
+  t.columns[2][2] = pose[2][2];
 
   return t;
 }

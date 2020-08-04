@@ -22,14 +22,14 @@ static void update_pos(rBasicRect *self) {
     for (int i = 0; i < 6; i++) {
         vec3 from = {v[i * 2], v[i * 2 + 1], 1};
         vec3 to;
-        glm_mat3_mulv(self->mat, from, to);
+        glm_mat3_mulv(self->pose, from, to);
         self->buffer[i].x = to[0];
         self->buffer[i].y = to[1];
     }
 }
 
 void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp) {
-    glm_mat3_identity(self->mat);
+    glm_mat3_identity(self->pose);
 
     self->vp = vp;
 

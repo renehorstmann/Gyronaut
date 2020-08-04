@@ -14,7 +14,7 @@ struct rBasicRectVertex_s {
 
 typedef struct rBasicRect {
     struct rBasicRectVertex_s buffer[6];
-    mat3 mat;
+    mat3 pose;
     const float *vp;
     GLuint program;
     GLuint vao;

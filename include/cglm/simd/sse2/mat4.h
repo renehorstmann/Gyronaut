@@ -107,13 +107,13 @@ glm_mat4_det_sse2(mat4 mat) {
   r0 = glmm_load(mat[0]); /* d c b a */
   r1 = glmm_load(mat[1]); /* h g f e */
   r2 = glmm_load(mat[2]); /* l k j i */
-  r3 = glmm_load(mat[3]); /* p o n m */
+  r3 = glmm_load(mat[3]); /* p o n pose */
 
   /*
    t[1] = j * p - n * l;
    t[2] = j * o - n * k;
-   t[3] = i * p - m * l;
-   t[4] = i * o - m * k;
+   t[3] = i * p - pose * l;
+   t[4] = i * o - pose * k;
    */
   x0 = _mm_sub_ps(_mm_mul_ps(glmm_shuff1(r2, 0, 0, 1, 1),
                              glmm_shuff1(r3, 2, 3, 2, 3)),
@@ -122,8 +122,8 @@ glm_mat4_det_sse2(mat4 mat) {
   /*
    t[0] = k * p - o * l;
    t[0] = k * p - o * l;
-   t[5] = i * n - m * j;
-   t[5] = i * n - m * j;
+   t[5] = i * n - pose * j;
+   t[5] = i * n - pose * j;
    */
   x1 = _mm_sub_ps(_mm_mul_ps(glmm_shuff1(r2, 0, 0, 2, 2),
                              glmm_shuff1(r3, 1, 1, 3, 3)),
@@ -165,7 +165,7 @@ glm_mat4_inv_fast_sse2(mat4 mat, mat4 dest) {
   r0 = glmm_load(mat[0]); /* d c b a */
   r1 = glmm_load(mat[1]); /* h g f e */
   r2 = glmm_load(mat[2]); /* l k j i */
-  r3 = glmm_load(mat[3]); /* p o n m */
+  r3 = glmm_load(mat[3]); /* p o n pose */
 
   x0 = _mm_shuffle_ps(r2, r3, _MM_SHUFFLE(3, 2, 3, 2));  /* p o l k */
   x1 = glmm_shuff1(x0, 1, 3, 3, 3);                      /* l p p p */
@@ -196,23 +196,23 @@ glm_mat4_inv_fast_sse2(mat4 mat, mat4 dest) {
   t2 = _mm_sub_ps(_mm_mul_ps(x5, x2), _mm_mul_ps(x4, x3));
 
   x6 = _mm_shuffle_ps(r2, r1, _MM_SHUFFLE(0, 0, 0, 0)); /* e e i i */
-  x7 = glmm_shuff2(r3, r2, 0, 0, 0, 0, 2, 0, 0, 0);     /* i m m m */
+  x7 = glmm_shuff2(r3, r2, 0, 0, 0, 0, 2, 0, 0, 0);     /* i pose pose pose */
 
-  /* t1[3] = i * p - m * l;
-     t1[3] = i * p - m * l;
-     t2[3] = e * p - m * h;
+  /* t1[3] = i * p - pose * l;
+     t1[3] = i * p - pose * l;
+     t2[3] = e * p - pose * h;
      t3[3] = e * l - i * h; */
   t3 = _mm_sub_ps(_mm_mul_ps(x6, x1), _mm_mul_ps(x7, x0));
 
-  /* t1[4] = i * o - m * k;
-     t1[4] = i * o - m * k;
-     t2[4] = e * o - m * g;
+  /* t1[4] = i * o - pose * k;
+     t1[4] = i * o - pose * k;
+     t2[4] = e * o - pose * g;
      t3[4] = e * k - i * g; */
   t4 = _mm_sub_ps(_mm_mul_ps(x6, x2), _mm_mul_ps(x7, x3));
 
-  /* t1[5] = i * n - m * j;
-     t1[5] = i * n - m * j;
-     t2[5] = e * n - m * f;
+  /* t1[5] = i * n - pose * j;
+     t1[5] = i * n - pose * j;
+     t2[5] = e * n - pose * f;
      t3[5] = e * j - i * f; */
   t5 = _mm_sub_ps(_mm_mul_ps(x6, x4), _mm_mul_ps(x7, x5));
 
@@ -289,7 +289,7 @@ glm_mat4_inv_sse2(mat4 mat, mat4 dest) {
   r0 = glmm_load(mat[0]); /* d c b a */
   r1 = glmm_load(mat[1]); /* h g f e */
   r2 = glmm_load(mat[2]); /* l k j i */
-  r3 = glmm_load(mat[3]); /* p o n m */
+  r3 = glmm_load(mat[3]); /* p o n pose */
 
   x0 = _mm_shuffle_ps(r2, r3, _MM_SHUFFLE(3, 2, 3, 2));  /* p o l k */
   x1 = glmm_shuff1(x0, 1, 3, 3, 3);                      /* l p p p */
@@ -320,23 +320,23 @@ glm_mat4_inv_sse2(mat4 mat, mat4 dest) {
   t2 = _mm_sub_ps(_mm_mul_ps(x5, x2), _mm_mul_ps(x4, x3));
 
   x6 = _mm_shuffle_ps(r2, r1, _MM_SHUFFLE(0, 0, 0, 0)); /* e e i i */
-  x7 = glmm_shuff2(r3, r2, 0, 0, 0, 0, 2, 0, 0, 0);     /* i m m m */
+  x7 = glmm_shuff2(r3, r2, 0, 0, 0, 0, 2, 0, 0, 0);     /* i pose pose pose */
 
-  /* t1[3] = i * p - m * l;
-     t1[3] = i * p - m * l;
-     t2[3] = e * p - m * h;
+  /* t1[3] = i * p - pose * l;
+     t1[3] = i * p - pose * l;
+     t2[3] = e * p - pose * h;
      t3[3] = e * l - i * h; */
   t3 = _mm_sub_ps(_mm_mul_ps(x6, x1), _mm_mul_ps(x7, x0));
 
-  /* t1[4] = i * o - m * k;
-     t1[4] = i * o - m * k;
-     t2[4] = e * o - m * g;
+  /* t1[4] = i * o - pose * k;
+     t1[4] = i * o - pose * k;
+     t2[4] = e * o - pose * g;
      t3[4] = e * k - i * g; */
   t4 = _mm_sub_ps(_mm_mul_ps(x6, x2), _mm_mul_ps(x7, x3));
 
-  /* t1[5] = i * n - m * j;
-     t1[5] = i * n - m * j;
-     t2[5] = e * n - m * f;
+  /* t1[5] = i * n - pose * j;
+     t1[5] = i * n - pose * j;
+     t2[5] = e * n - pose * f;
      t3[5] = e * j - i * f; */
   t5 = _mm_sub_ps(_mm_mul_ps(x6, x4), _mm_mul_ps(x7, x5));
 

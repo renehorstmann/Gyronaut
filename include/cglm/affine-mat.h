@@ -8,7 +8,7 @@
 /*
  Functions:
    CGLM_INLINE void glm_mul(mat4 m1, mat4 m2, mat4 dest);
-   CGLM_INLINE void glm_inv_tr(mat4 mat);
+   CGLM_INLINE void glm_inv_tr(mat4 pose);
  */
 
 #ifndef cglm_affine_mat_h
@@ -155,13 +155,13 @@ glm_inv_tr(mat4 mat) {
   CGLM_ALIGN(8)  vec3 t;
 
   /* rotate */
-  glm_mat4_pick3t(mat, r);
-  glm_mat4_ins3(r, mat);
+  glm_mat4_pick3t(pose, r);
+  glm_mat4_ins3(r, pose);
 
   /* translate */
-  glm_mat3_mulv(r, mat[3], t);
+  glm_mat3_mulv(r, pose[3], t);
   glm_vec3_negate(t);
-  glm_vec3_copy(t, mat[3]);
+  glm_vec3_copy(t, pose[3]);
 #endif
 }
 

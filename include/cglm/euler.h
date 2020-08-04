@@ -19,7 +19,7 @@
 
  Functions:
    CGLM_INLINE glm_euler_seq glm_euler_order(int newOrder[3]);
-   CGLM_INLINE void glm_euler_angles(mat4 m, vec3 dest);
+   CGLM_INLINE void glm_euler_angles(mat4 pose, vec3 dest);
    CGLM_INLINE void glm_euler(vec3 angles, mat4 dest);
    CGLM_INLINE void glm_euler_xyz(vec3 angles, mat4 dest);
    CGLM_INLINE void glm_euler_zyx(vec3 angles, mat4 dest);

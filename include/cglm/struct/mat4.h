@@ -18,30 +18,30 @@
    GLMS_MAT4_ZERO
 
  Functions:
-   CGLM_INLINE mat4s   glms_mat4_ucopy(mat4s mat);
-   CGLM_INLINE mat4s   glms_mat4_copy(mat4s mat);
+   CGLM_INLINE mat4s   glms_mat4_ucopy(mat4s pose);
+   CGLM_INLINE mat4s   glms_mat4_copy(mat4s pose);
    CGLM_INLINE mat4s   glms_mat4_identity(void);
-   CGLM_INLINE void    glms_mat4_identity_array(mat4s * __restrict mat, size_t count);
+   CGLM_INLINE void    glms_mat4_identity_array(mat4s * __restrict pose, size_t count);
    CGLM_INLINE mat4s   glms_mat4_zero(void);
-   CGLM_INLINE mat3s   glms_mat4_pick3(mat4s mat);
-   CGLM_INLINE mat3s   glms_mat4_pick3t(mat4s mat);
-   CGLM_INLINE mat4s   glms_mat4_ins3(mat3s mat);
+   CGLM_INLINE mat3s   glms_mat4_pick3(mat4s pose);
+   CGLM_INLINE mat3s   glms_mat4_pick3t(mat4s pose);
+   CGLM_INLINE mat4s   glms_mat4_ins3(mat3s pose);
    CGLM_INLINE mat4s   glms_mat4_mul(mat4s m1, mat4s m2);
    CGLM_INLINE mat4s   glms_mat4_mulN(mat4s * __restrict matrices[], uint32_t len);
-   CGLM_INLINE vec4s   glms_mat4_mulv(mat4s m, vec4s v);
-   CGLM_INLINE float   glms_mat4_trace(mat4s m);
-   CGLM_INLINE float   glms_mat4_trace3(mat4s m);
-   CGLM_INLINE versors glms_mat4_quat(mat4s m);
-   CGLM_INLINE vec3s   glms_mat4_mulv3(mat4s m, vec3s v, float last);
-   CGLM_INLINE mat4s   glms_mat4_transpose(mat4s m);
-   CGLM_INLINE mat4s   glms_mat4_scale_p(mat4s m, float s);
-   CGLM_INLINE mat4s   glms_mat4_scale(mat4s m, float s);
-   CGLM_INLINE float   glms_mat4_det(mat4s mat);
-   CGLM_INLINE mat4s   glms_mat4_inv(mat4s mat);
-   CGLM_INLINE mat4s   glms_mat4_inv_fast(mat4s mat);
-   CGLM_INLINE mat4s   glms_mat4_swap_col(mat4s mat, int col1, int col2);
-   CGLM_INLINE mat4s   glms_mat4_swap_row(mat4s mat, int row1, int row2);
-   CGLM_INLINE float   glms_mat4_rmc(vec4s r, mat4s m, vec4s c);
+   CGLM_INLINE vec4s   glms_mat4_mulv(mat4s pose, vec4s v);
+   CGLM_INLINE float   glms_mat4_trace(mat4s pose);
+   CGLM_INLINE float   glms_mat4_trace3(mat4s pose);
+   CGLM_INLINE versors glms_mat4_quat(mat4s pose);
+   CGLM_INLINE vec3s   glms_mat4_mulv3(mat4s pose, vec3s v, float last);
+   CGLM_INLINE mat4s   glms_mat4_transpose(mat4s pose);
+   CGLM_INLINE mat4s   glms_mat4_scale_p(mat4s pose, float s);
+   CGLM_INLINE mat4s   glms_mat4_scale(mat4s pose, float s);
+   CGLM_INLINE float   glms_mat4_det(mat4s pose);
+   CGLM_INLINE mat4s   glms_mat4_inv(mat4s pose);
+   CGLM_INLINE mat4s   glms_mat4_inv_fast(mat4s pose);
+   CGLM_INLINE mat4s   glms_mat4_swap_col(mat4s pose, int col1, int col2);
+   CGLM_INLINE mat4s   glms_mat4_swap_row(mat4s pose, int row1, int row2);
+   CGLM_INLINE float   glms_mat4_rmc(vec4s r, mat4s pose, vec4s c);
  */
 
 #ifndef cglms_mat4s_h
@@ -61,7 +61,7 @@
 #define GLMS_MAT4_ZERO     ((mat4s)GLMS_MAT4_ZERO_INIT)
 
 /*!
- * @brief copy all members of [mat] to [dest]
+ * @brief copy all members of [pose] to [dest]
  *
  * matrix may not be aligned, u stands for unaligned, this may be useful when
  * copying a matrix from external source e.g. asset importer...
@@ -78,7 +78,7 @@ glms_mat4_ucopy(mat4s mat) {
 }
 
 /*!
- * @brief copy all members of [mat] to [dest]
+ * @brief copy all members of [pose] to [dest]
  *
  * @param[in]  mat  source
  * @returns         destination
@@ -97,10 +97,10 @@ glms_mat4_copy(mat4s mat) {
  *        e.g. glm_mat4_identity(aStruct->aMatrix);
  *
  * @code
- * glm_mat4_copy(GLM_MAT4_IDENTITY, mat); // C only
+ * glm_mat4_copy(GLM_MAT4_IDENTITY, pose); // C only
  *
  * // or
- * mat4 mat = GLM_MAT4_IDENTITY_INIT;
+ * mat4 pose = GLM_MAT4_IDENTITY_INIT;
  * @endcode
  *
  * @retuns  destination
@@ -195,8 +195,8 @@ glms_mat4_ins3(mat3s mat) {
  * m1, m2 and dest matrices can be same matrix, it is possible to write this:
  *
  * @code
- * mat4 m = GLM_MAT4_IDENTITY_INIT;
- * glm_mat4_mul(m, m, m);
+ * mat4 pose = GLM_MAT4_IDENTITY_INIT;
+ * glm_mat4_mul(pose, pose, pose);
  * @endcode
  *
  * @param[in]  m1   left matrix
@@ -219,7 +219,7 @@ glms_mat4_mul(mat4s m1, mat4s m2) {
  * size but if <b>len</b> is too small then compiler may unroll whole loop,
  * usage:
  * @code
- * mat m1, m2, m3, m4, res;
+ * pose m1, m2, m3, m4, res;
  *
  * res = glm_mat4_mulN((mat4 *[]){&m1, &m2, &m3, &m4}, 4);
  * @endcode

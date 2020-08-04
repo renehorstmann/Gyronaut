@@ -54,11 +54,11 @@
  * @brief extracts view frustum planes
  *
  * planes' space:
- *  1- if m = proj:     View Space
- *  2- if m = viewProj: World Space
- *  3- if m = MVP:      Object Space
+ *  1- if pose = proj:     View Space
+ *  2- if pose = viewProj: World Space
+ *  3- if pose = MVP:      Object Space
  *
- * You probably want to extract planes in world space so use viewProj as m
+ * You probably want to extract planes in world space so use viewProj as pose
  * Computing viewProj:
  *   glm_mat4_mul(proj, view, viewProj);
  *
@@ -93,8 +93,8 @@ glm_frustum_planes(mat4 m, vec4 dest[6]) {
  * @brief extracts view frustum corners using clip-space coordinates
  *
  * corners' space:
- *  1- if m = invViewProj: World Space
- *  2- if m = invMVP:      Object Space
+ *  1- if pose = invViewProj: World Space
+ *  2- if pose = invMVP:      Object Space
  *
  * You probably want to extract corners in world space so use invViewProj
  * Computing invViewProj:
@@ -174,7 +174,7 @@ glm_frustum_center(vec4 corners[8], vec4 dest) {
 }
 
 /*!
- * @brief finds bounding box of frustum relative to given matrix e.g. view mat
+ * @brief finds bounding box of frustum relative to given matrix e.g. view pose
  *
  * @param[in]  corners view frustum corners
  * @param[in]  m       matrix to convert existing conners

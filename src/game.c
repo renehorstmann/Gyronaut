@@ -35,7 +35,7 @@ void game_init() {
     
     background_init();
     astronaut_init();
-    meteorite_init(10);
+    meteorite_init(100000);
 }
 
 void game_update(float dtime) {

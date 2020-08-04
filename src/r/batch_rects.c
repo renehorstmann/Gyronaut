@@ -15,10 +15,18 @@ static const float buffer[] = {
         +1, +1, 1, 0
 };
 
+
+static void init_instances(struct rBatchRectsInstance_s *instances, int num) {
+    for (int i = 0; i < num; i++) {
+        glm_mat4_identity(instances[i].pose);
+        glm_vec4_one(instances[i].color);
+        glm_vec2_zero(instances[i].uv_offset);
+    }
+}
+
 void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const float *vp) {
     self->instances = New(struct rBatchRectsInstance_s, num);
-    for (int i = 0; i < num; i++)
-        glm_mat4_identity(self->instances[i].m);
+    init_instances(self->instances, num);
 
     self->num = num;
     self->vp = vp;
@@ -30,6 +38,7 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
     const int loc_position = 0;
     const int loc_tex_coord = 1;
     const int loc_m = 2;
+    const int loc_color = 6;
 
     self->tex = r_load_texture_from_file(tex_file);
 
@@ -75,9 +84,15 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
             for (int c = 0; c < 4; c++) {
                 int loc = loc_m + c;
                 glEnableVertexAttribArray(loc);
-                glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE, sizeof(mat4), (void *) (c * sizeof(vec4)));
+                glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
+                                      sizeof(struct rBatchRectsInstance_s), (void *) (c * sizeof(vec4)));
                 glVertexAttribDivisor(loc, 1);
             }
+
+            glEnableVertexAttribArray(loc_color);
+            glVertexAttribPointer(loc_color, 4, GL_FLOAT, GL_FALSE,
+                                  sizeof(struct rBatchRectsInstance_s), (void *) sizeof(mat4));
+            glVertexAttribDivisor(loc_color, 1);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }

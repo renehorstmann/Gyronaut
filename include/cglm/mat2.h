@@ -13,21 +13,21 @@
    GLM_MAT2_ZERO
 
  Functions:
-   CGLM_INLINE void  glm_mat2_copy(mat2 mat, mat2 dest)
-   CGLM_INLINE void  glm_mat2_identity(mat2 mat)
-   CGLM_INLINE void  glm_mat2_identity_array(mat2 * restrict mat, size_t count)
-   CGLM_INLINE void  glm_mat2_zero(mat2 mat)
+   CGLM_INLINE void  glm_mat2_copy(mat2 pose, mat2 dest)
+   CGLM_INLINE void  glm_mat2_identity(mat2 pose)
+   CGLM_INLINE void  glm_mat2_identity_array(mat2 * restrict pose, size_t count)
+   CGLM_INLINE void  glm_mat2_zero(mat2 pose)
    CGLM_INLINE void  glm_mat2_mul(mat2 m1, mat2 m2, mat2 dest)
-   CGLM_INLINE void  glm_mat2_transpose_to(mat2 m, mat2 dest)
-   CGLM_INLINE void  glm_mat2_transpose(mat2 m)
-   CGLM_INLINE void  glm_mat2_mulv(mat2 m, vec2 v, vec2 dest)
-   CGLM_INLINE float glm_mat2_trace(mat2 m)
-   CGLM_INLINE void  glm_mat2_scale(mat2 m, float s)
-   CGLM_INLINE float glm_mat2_det(mat2 mat)
-   CGLM_INLINE void  glm_mat2_inv(mat2 mat, mat2 dest)
-   CGLM_INLINE void  glm_mat2_swap_col(mat2 mat, int col1, int col2)
-   CGLM_INLINE void  glm_mat2_swap_row(mat2 mat, int row1, int row2)
-   CGLM_INLINE float glm_mat2_rmc(vec2 r, mat2 m, vec2 c)
+   CGLM_INLINE void  glm_mat2_transpose_to(mat2 pose, mat2 dest)
+   CGLM_INLINE void  glm_mat2_transpose(mat2 pose)
+   CGLM_INLINE void  glm_mat2_mulv(mat2 pose, vec2 v, vec2 dest)
+   CGLM_INLINE float glm_mat2_trace(mat2 pose)
+   CGLM_INLINE void  glm_mat2_scale(mat2 pose, float s)
+   CGLM_INLINE float glm_mat2_det(mat2 pose)
+   CGLM_INLINE void  glm_mat2_inv(mat2 pose, mat2 dest)
+   CGLM_INLINE void  glm_mat2_swap_col(mat2 pose, int col1, int col2)
+   CGLM_INLINE void  glm_mat2_swap_row(mat2 pose, int row1, int row2)
+   CGLM_INLINE float glm_mat2_rmc(vec2 r, mat2 pose, vec2 c)
  */
 
 #ifndef cglm_mat2_h
@@ -48,7 +48,7 @@
 #define GLM_MAT2_ZERO     ((mat2)GLM_MAT2_ZERO_INIT)
 
 /*!
- * @brief copy all members of [mat] to [dest]
+ * @brief copy all members of [pose] to [dest]
  *
  * @param[in]  mat  source
  * @param[out] dest destination
@@ -65,10 +65,10 @@ glm_mat2_copy(mat2 mat, mat2 dest) {
  *        e.g. glm_mat2_identity(aStruct->aMatrix);
  *
  * @code
- * glm_mat2_copy(GLM_MAT2_IDENTITY, mat); // C only
+ * glm_mat2_copy(GLM_MAT2_IDENTITY, pose); // C only
  *
  * // or
- * mat2 mat = GLM_MAT2_IDENTITY_INIT;
+ * mat2 pose = GLM_MAT2_IDENTITY_INIT;
  * @endcode
  *
  * @param[in, out]  mat  destination
@@ -117,8 +117,8 @@ glm_mat2_zero(mat2 mat) {
  * m1, m2 and dest matrices can be same matrix, it is possible to write this:
  *
  * @code
- * mat2 m = GLM_MAT2_IDENTITY_INIT;
- * glm_mat2_mul(m, m, m);
+ * mat2 pose = GLM_MAT2_IDENTITY_INIT;
+ * glm_mat2_mul(pose, pose, pose);
  * @endcode
  *
  * @param[in]  m1   left matrix
@@ -146,7 +146,7 @@ glm_mat2_mul(mat2 m1, mat2 m2, mat2 dest) {
 /*!
  * @brief transpose mat2 and store in dest
  *
- * source matrix will not be transposed unless dest is m
+ * source matrix will not be transposed unless dest is pose
  *
  * @param[in]  m     matrix
  * @param[out] dest  result
@@ -157,10 +157,10 @@ glm_mat2_transpose_to(mat2 m, mat2 dest) {
 #if defined( __SSE__ ) || defined( __SSE2__ )
   glm_mat2_transp_sse2(m, dest);
 #else
-  dest[0][0] = m[0][0];
-  dest[0][1] = m[1][0];
-  dest[1][0] = m[0][1];
-  dest[1][1] = m[1][1];
+  dest[0][0] = pose[0][0];
+  dest[0][1] = pose[1][0];
+  dest[1][0] = pose[0][1];
+  dest[1][1] = pose[1][1];
 #endif
 }
 

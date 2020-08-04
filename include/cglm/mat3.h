@@ -11,25 +11,25 @@
    GLM_MAT3_ZERO_INIT
    GLM_MAT3_IDENTITY
    GLM_MAT3_ZERO
-   glm_mat3_dup(mat, dest)
+   glm_mat3_dup(pose, dest)
 
  Functions:
-   CGLM_INLINE void  glm_mat3_copy(mat3 mat, mat3 dest);
-   CGLM_INLINE void  glm_mat3_identity(mat3 mat);
-   CGLM_INLINE void  glm_mat3_identity_array(mat3 * restrict mat, size_t count);
-   CGLM_INLINE void  glm_mat3_zero(mat3 mat);
+   CGLM_INLINE void  glm_mat3_copy(mat3 pose, mat3 dest);
+   CGLM_INLINE void  glm_mat3_identity(mat3 pose);
+   CGLM_INLINE void  glm_mat3_identity_array(mat3 * restrict pose, size_t count);
+   CGLM_INLINE void  glm_mat3_zero(mat3 pose);
    CGLM_INLINE void  glm_mat3_mul(mat3 m1, mat3 m2, mat3 dest);
-   CGLM_INLINE void  glm_mat3_transpose_to(mat3 m, mat3 dest);
-   CGLM_INLINE void  glm_mat3_transpose(mat3 m);
-   CGLM_INLINE void  glm_mat3_mulv(mat3 m, vec3 v, vec3 dest);
-   CGLM_INLINE float glm_mat3_trace(mat3 m);
-   CGLM_INLINE void  glm_mat3_quat(mat3 m, versor dest);
-   CGLM_INLINE void  glm_mat3_scale(mat3 m, float s);
-   CGLM_INLINE float glm_mat3_det(mat3 mat);
-   CGLM_INLINE void  glm_mat3_inv(mat3 mat, mat3 dest);
-   CGLM_INLINE void  glm_mat3_swap_col(mat3 mat, int col1, int col2);
-   CGLM_INLINE void  glm_mat3_swap_row(mat3 mat, int row1, int row2);
-   CGLM_INLINE float glm_mat3_rmc(vec3 r, mat3 m, vec3 c);
+   CGLM_INLINE void  glm_mat3_transpose_to(mat3 pose, mat3 dest);
+   CGLM_INLINE void  glm_mat3_transpose(mat3 pose);
+   CGLM_INLINE void  glm_mat3_mulv(mat3 pose, vec3 v, vec3 dest);
+   CGLM_INLINE float glm_mat3_trace(mat3 pose);
+   CGLM_INLINE void  glm_mat3_quat(mat3 pose, versor dest);
+   CGLM_INLINE void  glm_mat3_scale(mat3 pose, float s);
+   CGLM_INLINE float glm_mat3_det(mat3 pose);
+   CGLM_INLINE void  glm_mat3_inv(mat3 pose, mat3 dest);
+   CGLM_INLINE void  glm_mat3_swap_col(mat3 pose, int col1, int col2);
+   CGLM_INLINE void  glm_mat3_swap_row(mat3 pose, int row1, int row2);
+   CGLM_INLINE float glm_mat3_rmc(vec3 r, mat3 pose, vec3 c);
  */
 
 #ifndef cglm_mat3_h
@@ -58,7 +58,7 @@
 #define glm_mat3_dup(mat, dest) glm_mat3_copy(mat, dest)
 
 /*!
- * @brief copy all members of [mat] to [dest]
+ * @brief copy all members of [pose] to [dest]
  *
  * @param[in]  mat  source
  * @param[out] dest destination
@@ -85,10 +85,10 @@ glm_mat3_copy(mat3 mat, mat3 dest) {
  *        e.g. glm_mat3_identity(aStruct->aMatrix);
  *
  * @code
- * glm_mat3_copy(GLM_MAT3_IDENTITY, mat); // C only
+ * glm_mat3_copy(GLM_MAT3_IDENTITY, pose); // C only
  *
  * // or
- * mat3 mat = GLM_MAT3_IDENTITY_INIT;
+ * mat3 pose = GLM_MAT3_IDENTITY_INIT;
  * @endcode
  *
  * @param[in, out]  mat  destination
@@ -137,8 +137,8 @@ glm_mat3_zero(mat3 mat) {
  * m1, m2 and dest matrices can be same matrix, it is possible to write this:
  *
  * @code
- * mat3 m = GLM_MAT3_IDENTITY_INIT;
- * glm_mat3_mul(m, m, m);
+ * mat3 pose = GLM_MAT3_IDENTITY_INIT;
+ * glm_mat3_mul(pose, pose, pose);
  * @endcode
  *
  * @param[in]  m1   left matrix
@@ -174,7 +174,7 @@ glm_mat3_mul(mat3 m1, mat3 m2, mat3 dest) {
 /*!
  * @brief transpose mat3 and store in dest
  *
- * source matrix will not be transposed unless dest is m
+ * source matrix will not be transposed unless dest is pose
  *
  * @param[in]  m     matrix
  * @param[out] dest  result
@@ -259,7 +259,7 @@ void
 glm_mat3_quat(mat3 m, versor dest) {
   float trace, r, rinv;
 
-  /* it seems using like m12 instead of m[1][2] causes extra instructions */
+  /* it seems using like m12 instead of pose[1][2] causes extra instructions */
 
   trace = m[0][0] + m[1][1] + m[2][2];
   if (trace >= 0.0f) {
