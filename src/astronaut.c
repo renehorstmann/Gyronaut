@@ -1,6 +1,6 @@
 #define DEBUG
 #include "cglm/struct.h"
-#include "render/basic_rect.h"
+#include "r/basic_rect.h"
 #include "camera.h"
 #include "input.h"
 

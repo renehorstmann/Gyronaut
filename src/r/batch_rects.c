@@ -1,7 +1,7 @@
 #define DEBUG
 #include "utilc/alloc.h"
-#include "render/render.h"
-#include "render/batch_rects.h"
+#include "r/r.h"
+#include "r/batch_rects.h"
 #include "cglm/cglm.h"
 
 // x, y, u, v
@@ -24,8 +24,8 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
 	    glm_mat4_identity(self->instances[i].m);
 	
 	self->program = r_compile_glsl_from_files((char *[]){
-		"res/shader/render/batch_rects.vsh",
-		"res/shader/render/batch_rects.fsh",
+		"res/shader/r/batch_rects.vsh",
+		"res/shader/r/batch_rects.fsh",
 		NULL});
 
 	self->tex = r_load_texture_from_file(tex_file);

@@ -1,5 +1,5 @@
 #include <SDL_image.h>
-#include "render/texture.h"
+#include "r/texture.h"
 
 GLuint r_load_texture_from_img(SDL_Surface *img) {
 	SDL_PixelFormat *f = img->format;

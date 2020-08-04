@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <SDL_image.h>
-#include "render/render.h"
+#include "r/r.h"
 #include "camera.h"
 #include "input.h"
 #include "game.h"
@@ -97,7 +97,7 @@ int main() {
         game_update(dtime);
         camera_update(width, height);
 
-        // render
+        // r
         glClearColor(1.0f, 0.5f * rand() / RAND_MAX, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         game_render();

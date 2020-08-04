@@ -1,5 +1,5 @@
-#include "render/render.h"
-#include "render/basic_rect.h"
+#include "r/r.h"
+#include "r/basic_rect.h"
 #include "cglm/cglm.h"
 
 
@@ -36,8 +36,8 @@ void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp) 
     update_uv(self);
 
     self->program = r_compile_glsl_from_files((char *[]) {
-            "res/shader/render/basic_rect.vsh",
-            "res/shader/render/basic_rect.fsh",
+            "res/shader/r/basic_rect.vsh",
+            "res/shader/r/basic_rect.fsh",
             NULL
     });
 

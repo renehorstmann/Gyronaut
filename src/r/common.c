@@ -1,4 +1,4 @@
-#include "render/common.h"
+#include "r/common.h"
 
 void r_setup_blending() {
     glEnable(GL_BLEND);

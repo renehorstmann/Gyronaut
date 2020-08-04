@@ -1,5 +1,5 @@
 #include "utilc/strviu.h"
-#include "render/shader.h"
+#include "r/shader.h"
 
 
 static char *file_read(const char *filename) {
