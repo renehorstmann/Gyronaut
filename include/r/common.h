@@ -1,8 +1,8 @@
-#ifndef RENDER_COMMON_H
-#define RENDER_COMMON_H
+#ifndef R_COMMON_H
+#define R_COMMON_H
 
 #include "core.h"
 
 void r_setup_blending();
 
-#endif //RENDER_COMMON_H
+#endif //R_COMMON_H

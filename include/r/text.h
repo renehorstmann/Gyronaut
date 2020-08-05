@@ -2,13 +2,13 @@
 #define R_TEXT_H
 
 #include "SDL_ttf.h"
-#include "basic_rect.h"
+#include "rect.h"
 
 
 extern TTF_Font *r_text_default_font;
 
 typedef struct rText {
-	rBasicRect rect;
+	rRect rect;
 	TTF_Font *font;
 } rText;
 

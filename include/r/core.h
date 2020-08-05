@@ -1,5 +1,5 @@
-#ifndef RENDER_GL_H
-#define RENDER_GL_H
+#ifndef R_GL_H
+#define R_GL_H
 
 #define GL_GLEXT_PROTOTYPES
 #include <SDL.h>
@@ -25,4 +25,4 @@ static const int R_GL_PROFILE = SDL_GL_CONTEXT_PROFILE_CORE;
 #endif
 
 
-#endif //RENDER_GL_H
+#endif //R_GL_H

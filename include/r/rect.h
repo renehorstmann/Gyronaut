@@ -1,5 +1,5 @@
-#ifndef RENDER_BASIC_RECT_H
-#define RENDER_BASIC_RECT_H
+#ifndef R_RECT_H
+#define R_RECT_H
 
 #include "cglm/mat3.h"
 #include "core.h"
@@ -12,7 +12,7 @@ struct rBasicRectVertex_s {
     float x, y, u, v;
 };
 
-typedef struct rBasicRect {
+typedef struct rRect {
     struct rBasicRectVertex_s buffer[6];
     mat3 pose;
     const float *vp;
@@ -20,16 +20,16 @@ typedef struct rBasicRect {
     GLuint vao;
     GLuint vbo;
     GLuint tex;
-} rBasicRect;
+} rRect;
 
 // test
-void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp);
+void r_rect_init(rRect *self, const char *tex_file, const float *vp);
 
-void r_basic_rect_kill(rBasicRect *self);
+void r_rect_kill(rRect *self);
 
 // use flags above
-void r_basic_rect_update(rBasicRect *self, int flags);
+void r_rect_update(rRect *self, int flags);
 
-void r_basic_rect_render(rBasicRect *self);
+void r_rect_render(rRect *self);
 
-#endif //RENDER_BASIC_RECT_H
+#endif //R_RECT_H

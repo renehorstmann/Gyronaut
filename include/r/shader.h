@@ -1,5 +1,5 @@
-#ifndef RENDER_SHADER_H
-#define RENDER_SHADER_H
+#ifndef R_SHADER_H
+#define R_SHADER_H
 
 #include "core.h"
 
@@ -16,4 +16,4 @@ GLuint r_compile_shader_from_file(const char *file);
 
 GLuint r_compile_glsl_from_files(char **files);
 
-#endif //RENDER_SHADER_H
+#endif //R_SHADER_H

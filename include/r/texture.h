@@ -1,5 +1,5 @@
-#ifndef RENDER_TEXTURE_H
-#define RENDER_TEXTURE_H
+#ifndef R_TEXTURE_H
+#define R_TEXTURE_H
 
 #include "core.h"
 
@@ -7,4 +7,4 @@ GLuint r_texture_from_img(SDL_Surface *img);
 
 GLuint r_texture_from_file(const char *file);
 
-#endif //RENDER_TEXTURE_H
+#endif //R_TEXTURE_H

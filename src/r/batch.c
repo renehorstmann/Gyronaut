@@ -2,7 +2,7 @@
 
 #include "utilc/alloc.h"
 #include "r/r.h"
-#include "r/batch_rects.h"
+#include "r/batch.h"
 #include "cglm/cglm.h"
 
 // x, y, u, v
@@ -16,7 +16,7 @@ static const float buffer[] = {
 };
 
 
-static void init_instances(struct rBatchRectsInstance_s *instances, int num) {
+static void init_instances(struct rBatchRect_s *instances, int num) {
     for (int i = 0; i < num; i++) {
         glm_mat4_identity(instances[i].pose);
         glm_vec4_one(instances[i].color);
@@ -24,16 +24,16 @@ static void init_instances(struct rBatchRectsInstance_s *instances, int num) {
     }
 }
 
-void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const float *vp) {
-    self->instances = New(struct rBatchRectsInstance_s, num);
+void r_batch_init(rBatch *self, int num, const char *tex_file, const float *vp) {
+    self->instances = New(struct rBatchRect_s, num);
     init_instances(self->instances, num);
 
     self->num = num;
     self->vp = vp;
 
     self->program = r_compile_glsl_from_files((char *[]) {
-            "res/shader/r/batch_rects.vsh",
-            "res/shader/r/batch_rects.fsh",
+            "res/shader/r/batch.vsh",
+            "res/shader/r/batch.fsh",
             NULL});
     const int loc_position = 0;
     const int loc_tex_coord = 1;
@@ -76,7 +76,7 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
             glGenBuffers(1, &self->instance_bo);
             glBindBuffer(GL_ARRAY_BUFFER, self->instance_bo);
             glBufferData(GL_ARRAY_BUFFER,
-                         num * sizeof(struct rBatchRectsInstance_s),
+                         num * sizeof(struct rBatchRect_s),
                          self->instances,
                          GL_STREAM_DRAW);
 
@@ -86,20 +86,20 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
                 int loc = loc_m + c;
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
-                                      sizeof(struct rBatchRectsInstance_s), (void *) (c * sizeof(vec4)));
+                                      sizeof(struct rBatchRect_s), (void *) (c * sizeof(vec4)));
                 glVertexAttribDivisor(loc, 1);
             }
 
             glEnableVertexAttribArray(loc_color);
             glVertexAttribPointer(loc_color, 4, GL_FLOAT, GL_FALSE,
-                                  sizeof(struct rBatchRectsInstance_s),
-                                  (void *) offsetof(struct rBatchRectsInstance_s, color));
+                                  sizeof(struct rBatchRect_s),
+                                  (void *) offsetof(struct rBatchRect_s, color));
             glVertexAttribDivisor(loc_color, 1);
 
             glEnableVertexAttribArray(loc_uv_offset);
             glVertexAttribPointer(loc_uv_offset, 2, GL_FLOAT, GL_FALSE,
-                                  sizeof(struct rBatchRectsInstance_s),
-                                          (void *) offsetof(struct rBatchRectsInstance_s, uv_offset));
+                                  sizeof(struct rBatchRect_s),
+                                          (void *) offsetof(struct rBatchRect_s, uv_offset));
             glVertexAttribDivisor(loc_uv_offset, 1);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -109,24 +109,24 @@ void r_batch_rects_init(rBatchRects *self, int num, const char *tex_file, const 
     }
 }
 
-void r_batch_rects_kill(rBatchRects *self) {
+void r_batch_kill(rBatch *self) {
     free(self->instances);
     glDeleteProgram(self->program);
     glDeleteVertexArrays(1, &self->vao);
     glDeleteBuffers(1, &self->vbo);
     glDeleteBuffers(1, &self->instance_bo);
     glDeleteTextures(1, &self->tex);
-    *self = (rBatchRects) {0};
+    *self = (rBatch) {0};
 }
 
-void r_batch_rects_update(rBatchRects *self) {
+void r_batch_update(rBatch *self) {
     glBindBuffer(GL_ARRAY_BUFFER, self->instance_bo);
     glBufferSubData(GL_ARRAY_BUFFER, 0,
-                    self->num * sizeof(struct rBatchRectsInstance_s), self->instances);
+                    self->num * sizeof(struct rBatchRect_s), self->instances);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void r_batch_rects_render(rBatchRects *self) {
+void r_batch_render(rBatch *self) {
     glUseProgram(self->program);
 
     glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),

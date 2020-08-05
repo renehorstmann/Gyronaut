@@ -1,12 +1,12 @@
 #define DEBUG
 #include "cglm/struct.h"
-#include "r/basic_rect.h"
+#include "r/rect.h"
 #include "camera.h"
 #include "input.h"
 
 const static float ALPHA_SPEED_P = 1;
 
-static rBasicRect rect;
+static rRect rect;
 static float scale = 20;
 
 static float speed;
@@ -21,7 +21,7 @@ static void set_angle(float alpha_rad) {
 }
 
 void astronaut_init() {
-    r_basic_rect_init(&rect, "res/test_astronaut.png", &camera_vp.m00);
+    r_rect_init(&rect, "res/test_astronaut.png", &camera_vp.m00);
     speed = 10;
 }
 
@@ -30,7 +30,7 @@ void astronaut_update(float dtime) {
     float angular_speed = (alpha_dest - alpha) * ALPHA_SPEED_P;
     alpha += angular_speed * dtime;
     set_angle(alpha);
-    r_basic_rect_update(&rect, R_BASIC_RECT_UPDATE_XY);
+    r_rect_update(&rect, R_BASIC_RECT_UPDATE_XY);
 
     rect.pose[2][0] += speed * cos(alpha) * dtime;
     rect.pose[2][1] += speed * sin(alpha) * dtime;
@@ -44,7 +44,7 @@ void astronaut_update(float dtime) {
 }
 
 void astronaut_render() {
-    r_basic_rect_render(&rect);
+    r_rect_render(&rect);
 }
 
 

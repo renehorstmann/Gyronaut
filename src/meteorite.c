@@ -1,11 +1,11 @@
-#include "r/batch_rects.h"
+#include "r/batch.h"
 #include "camera.h"
 #include "meteorite.h"
 
-static rBatchRects batch;
+static rBatch batch;
 
 void meteorite_init(int num) {
-    r_batch_rects_init(&batch, num, "res/meteorite_test.png", &camera_vp.m00);
+    r_batch_init(&batch, num, "res/meteorite_test.png", &camera_vp.m00);
 
     for(int i=0; i<num; i++) {
         batch.instances[i].pose[0][0] = 2;
@@ -16,7 +16,7 @@ void meteorite_init(int num) {
 }
 
 void meteorite_kill() {
-	r_batch_rects_kill(&batch);
+    r_batch_kill(&batch);
 }
 
 void color(int start, int cnt, float dt) {
@@ -45,12 +45,12 @@ void meteorite_update(double dt) {
     block++;
     if(block >= max)
         block = 0;
-    
-	r_batch_rects_update(&batch);
+
+    r_batch_update(&batch);
 }
 
 void meteorite_render() {
-	r_batch_rects_render(&batch);
+    r_batch_render(&batch);
 }
 
 // ... meteroite_collision_test(...);

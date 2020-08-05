@@ -1,9 +1,9 @@
 #include "r/r.h"
-#include "r/basic_rect.h"
+#include "r/rect.h"
 #include "cglm/cglm.h"
 
 
-static void update_uv(rBasicRect *self) {
+static void update_uv(rRect *self) {
     float uv[] = {
             0, 1, 1, 1, 0, 0,
             0, 0, 1, 1, 1, 0
@@ -14,7 +14,7 @@ static void update_uv(rBasicRect *self) {
     }
 }
 
-static void update_pos(rBasicRect *self) {
+static void update_pos(rRect *self) {
     static const float v[] = {
             -1, -1, +1, -1, -1, +1,
             -1, +1, +1, -1, +1, +1
@@ -28,14 +28,14 @@ static void update_pos(rBasicRect *self) {
     }
 }
 
-void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp) {
+void r_rect_init(rRect *self, const char *tex_file, const float *vp) {
     glm_mat3_identity(self->pose);
 
     self->vp = vp;
 
     self->program = r_compile_glsl_from_files((char *[]) {
-            "res/shader/r/basic_rect.vsh",
-            "res/shader/r/basic_rect.fsh",
+            "res/shader/r/rect.vsh",
+            "res/shader/r/rect.fsh",
             NULL
     });
     const int loc_position = 0;
@@ -79,14 +79,14 @@ void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp) 
 }
 
 
-void r_basic_rect_kill(rBasicRect *self) {
+void r_rect_kill(rRect *self) {
     glDeleteProgram(self->program);
     glDeleteVertexArrays(1, &self->vao);
     glDeleteBuffers(1, &self->vbo);
     glDeleteTextures(1, &self->tex);
 }
 
-void r_basic_rect_update(rBasicRect *self, int flags) {
+void r_rect_update(rRect *self, int flags) {
     if (flags & R_BASIC_RECT_UPDATE_XY)
         update_pos(self);
     if (flags & R_BASIC_RECT_UPDATE_UV)
@@ -97,7 +97,7 @@ void r_basic_rect_update(rBasicRect *self, int flags) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void r_basic_rect_render(rBasicRect *self) {
+void r_rect_render(rRect *self) {
     glUseProgram(self->program);
 
     glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),
