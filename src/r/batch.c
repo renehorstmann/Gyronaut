@@ -150,3 +150,10 @@ void r_batch_render(rBatch *self) {
 
     glUseProgram(0);
 }
+
+void r_batch_set_texture(rBatch *self, GLuint tex) {
+    if(self->owns_tex)
+        glDeleteTextures(1, &self->tex);
+    self->tex = tex;
+}
+

@@ -19,8 +19,8 @@ void r_rect_init(rRect *self, const float *vp, GLuint tex_sink);
 
 void r_rect_kill(rRect *self);
 
-void r_rect_update(rRect *self);
-
 void r_rect_render(rRect *self);
+
+void r_rect_set_texture(rRect *self, GLuint tex);
 
 #endif //R_RECT_H

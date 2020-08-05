@@ -26,4 +26,6 @@ void r_batch_update(rBatch *self);
 
 void r_batch_render(rBatch *self);
 
+void r_batch_set_texture(rBatch *self, GLuint tex);
+
 #endif //R_BATCH_H

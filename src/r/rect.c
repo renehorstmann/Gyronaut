@@ -1,32 +1,6 @@
 #include "r/r.h"
 #include "r/rect.h"
 
-
-//static void update_uv(rRect *self) {
-//    float uv[] = {
-//            0, 1, 1, 1, 0, 0,
-//            0, 0, 1, 1, 1, 0
-//    };
-//    for (int i = 0; i < 6; i++) {
-//        self->buffer[i].u = uv[i * 2];
-//        self->buffer[i].v = uv[i * 2 + 1];
-//    }
-//}
-//
-//static void update_pos(rRect *self) {
-//    static const float v[] = {
-//            -1, -1, +1, -1, -1, +1,
-//            -1, +1, +1, -1, +1, +1
-//    };
-//    for (int i = 0; i < 6; i++) {
-//        vec3 from = {v[i * 2], v[i * 2 + 1], 1};
-//        vec3 to;
-//        glm_mat3_mulv(self->pose, from, to);
-//        self->buffer[i].x = to[0];
-//        self->buffer[i].y = to[1];
-//    }
-//}
-
 static float buffer[] = {
     -1, -1, 0, 1, 0, 1, 0, 1,
     +1, -1, 0, 1, 1, 1, 0, 1,
@@ -99,17 +73,6 @@ void r_rect_kill(rRect *self) {
     *self = (rRect) {0};
 }
 
-void r_rect_update(rRect *self) {
-//    if (flags & R_BASIC_RECT_UPDATE_XY)
-//        update_pos(self);
-//    if (flags & R_BASIC_RECT_UPDATE_UV)
-//        update_uv(self);
-//
-//    glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
-//    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(self->buffer), self->buffer);
-//    glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
 void r_rect_render(rRect *self) {
     glUseProgram(self->program);
 
@@ -135,4 +98,10 @@ void r_rect_render(rRect *self) {
     }
 
     glUseProgram(0);
+}
+
+void r_rect_set_texture(rRect *self, GLuint tex) {
+    if(self->owns_tex)
+        glDeleteTextures(1, &self->tex);
+    self->tex = tex;
 }
