@@ -22,6 +22,7 @@ typedef struct rBasicRect {
     GLuint tex;
 } rBasicRect;
 
+// test
 void r_basic_rect_init(rBasicRect *self, const char *tex_file, const float *vp);
 
 void r_basic_rect_kill(rBasicRect *self);
