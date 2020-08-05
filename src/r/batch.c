@@ -16,17 +16,17 @@ static const float buffer[] = {
 };
 
 
-static void init_instances(struct rBatchRect_s *instances, int num) {
+static void init_rects(struct rRect_s *instances, int num) {
     for (int i = 0; i < num; i++) {
         glm_mat4_identity(instances[i].pose);
+        glm_mat4_identity(instances[i].uv);
         glm_vec4_one(instances[i].color);
-        glm_vec2_zero(instances[i].uv_offset);
     }
 }
 
-void r_batch_init(rBatch *self, int num, const char *tex_file, const float *vp) {
-    self->instances = New(struct rBatchRect_s, num);
-    init_instances(self->instances, num);
+void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
+    self->rects = New(struct rRect_s, num);
+    init_rects(self->rects, num);
 
     self->num = num;
     self->vp = vp;
@@ -38,10 +38,11 @@ void r_batch_init(rBatch *self, int num, const char *tex_file, const float *vp) 
     const int loc_position = 0;
     const int loc_tex_coord = 1;
     const int loc_m = 2;
-    const int loc_color = 6;
-    const int loc_uv_offset = 7;
+    const int loc_uv = 6;
+    const int loc_color = 10;
 
-    self->tex = r_texture_from_file(tex_file);
+    self->tex = tex_sink;
+    self->owns_tex = true;
 
     // vao scope
     {
@@ -71,36 +72,41 @@ void r_batch_init(rBatch *self, int num, const char *tex_file, const float *vp) 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
 
-        // instance_bo = mat4
+        // rects_bo
         {
-            glGenBuffers(1, &self->instance_bo);
-            glBindBuffer(GL_ARRAY_BUFFER, self->instance_bo);
+            glGenBuffers(1, &self->rects_bo);
+            glBindBuffer(GL_ARRAY_BUFFER, self->rects_bo);
             glBufferData(GL_ARRAY_BUFFER,
-                         num * sizeof(struct rBatchRect_s),
-                         self->instances,
+                         num * sizeof(struct rRect_s),
+                         self->rects,
                          GL_STREAM_DRAW);
 
             glBindVertexArray(self->vao);
 
+            // pose
             for (int c = 0; c < 4; c++) {
                 int loc = loc_m + c;
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
-                                      sizeof(struct rBatchRect_s), (void *) (c * sizeof(vec4)));
+                                      sizeof(rRect_s), (void *) (c * sizeof(vec4)));
                 glVertexAttribDivisor(loc, 1);
             }
 
+            // uv
+            for (int c = 0; c < 4; c++) {
+                int loc = loc_uv + c;
+                glEnableVertexAttribArray(loc);
+                glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
+                                      sizeof(rRect_s), (void *) (offsetof(rRect_s, uv) + c * sizeof(vec4)));
+                glVertexAttribDivisor(loc, 1);
+            }
+
+            // color
             glEnableVertexAttribArray(loc_color);
             glVertexAttribPointer(loc_color, 4, GL_FLOAT, GL_FALSE,
-                                  sizeof(struct rBatchRect_s),
-                                  (void *) offsetof(struct rBatchRect_s, color));
+                                  sizeof(struct rRect_s),
+                                  (void *) offsetof(struct rRect_s, color));
             glVertexAttribDivisor(loc_color, 1);
-
-            glEnableVertexAttribArray(loc_uv_offset);
-            glVertexAttribPointer(loc_uv_offset, 2, GL_FLOAT, GL_FALSE,
-                                  sizeof(struct rBatchRect_s),
-                                          (void *) offsetof(struct rBatchRect_s, uv_offset));
-            glVertexAttribDivisor(loc_uv_offset, 1);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }
@@ -110,19 +116,20 @@ void r_batch_init(rBatch *self, int num, const char *tex_file, const float *vp) 
 }
 
 void r_batch_kill(rBatch *self) {
-    free(self->instances);
+    free(self->rects);
     glDeleteProgram(self->program);
     glDeleteVertexArrays(1, &self->vao);
     glDeleteBuffers(1, &self->vbo);
-    glDeleteBuffers(1, &self->instance_bo);
-    glDeleteTextures(1, &self->tex);
+    glDeleteBuffers(1, &self->rects_bo);
+    if(self->owns_tex)
+        glDeleteTextures(1, &self->tex);
     *self = (rBatch) {0};
 }
 
 void r_batch_update(rBatch *self) {
-    glBindBuffer(GL_ARRAY_BUFFER, self->instance_bo);
+    glBindBuffer(GL_ARRAY_BUFFER, self->rects_bo);
     glBufferSubData(GL_ARRAY_BUFFER, 0,
-                    self->num * sizeof(struct rBatchRect_s), self->instances);
+                    self->num * sizeof(struct rRect_s), self->rects);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

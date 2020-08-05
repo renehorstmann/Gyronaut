@@ -1,5 +1,5 @@
-#ifndef R_RECT_H
-#define R_RECT_H
+#ifndef R_RECT_S_H
+#define R_RECT_S_H
 
 #include "cglm/cglm.h"
 
@@ -9,4 +9,4 @@ typedef struct rRect_s {
     vec4 color;
 } rRect_s;
 
-#endif //R_RECT_H
+#endif //R_RECT_S_H

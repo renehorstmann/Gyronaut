@@ -1,28 +1,24 @@
 #ifndef R_BATCH_H
 #define R_BATCH_H
 
-#include "cglm/mat4.h"
+#include <stdbool.h>
+#include "rect_s.h"
 #include "core.h"
 
 
-struct rBatchRect_s {
-    mat4 pose;
-    vec4 color;
-    vec2 uv_offset;
-};
-
 typedef struct rBatch {
-    struct rBatchRect_s *instances;
+    struct rRect_s *rects;
     int num;
     const float *vp;
     GLuint program;
     GLuint vao;
     GLuint vbo;
-    GLuint instance_bo;
+    GLuint rects_bo;
     GLuint tex;
+    bool owns_tex;
 } rBatch;
 
-void r_batch_init(rBatch *self, int num, const char *tex_file, const float *vp);
+void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink);
 
 void r_batch_kill(rBatch *self);
 

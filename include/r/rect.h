@@ -1,5 +1,5 @@
-#ifndef R_SINGLE_H
-#define R_SINGLE_H
+#ifndef R_RECT_H
+#define R_RECT_H
 
 #include <stdbool.h>
 #include "rect_s.h"
@@ -15,7 +15,7 @@ typedef struct rRect {
     bool owns_tex;
 } rRect;
 
-void r_rect_init(rRect *self, GLuint tex_sink, const float *vp);
+void r_rect_init(rRect *self, const float *vp, GLuint tex_sink);
 
 void r_rect_kill(rRect *self);
 
@@ -23,4 +23,4 @@ void r_rect_update(rRect *self);
 
 void r_rect_render(rRect *self);
 
-#endif //R_SINGLE_H
+#endif //R_RECT_H

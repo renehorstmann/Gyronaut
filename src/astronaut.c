@@ -22,8 +22,11 @@ static void set_angle(float alpha_rad) {
 }
 
 void astronaut_init() {
-    r_rect_init(&rect, r_texture_from_file("res/test_astronaut.png"), &camera_vp.m00);
+    r_rect_init(&rect, &camera_vp.m00, r_texture_from_file("res/test_astronaut.png"));
     speed = 10;
+
+//    rect.rect.uv[0][0] = 0.5;
+//    rect.rect.uv[1][1] = 0.5;
 }
 
 void astronaut_update(float dtime) {
@@ -33,9 +36,11 @@ void astronaut_update(float dtime) {
     set_angle(alpha);
     r_rect_update(&rect);
 
-    rect.rect.pose[2][0] += speed * cos(alpha) * dtime;
-    rect.rect.pose[2][1] += speed * sin(alpha) * dtime;
+    rect.rect.pose[3][0] += speed * cos(alpha) * dtime;
+    rect.rect.pose[3][1] += speed * sin(alpha) * dtime;
 
+//    rect.rect.uv[3][0] += dtime;
+//    rect.rect.uv[3][1] += dtime;
     // check collision
 
 

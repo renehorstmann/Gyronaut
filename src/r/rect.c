@@ -36,7 +36,7 @@ static float buffer[] = {
     +1, +1, 0, 1, 1, 0, 0, 1
 };
 
-void r_rect_init(rRect *self, GLuint tex_sink, const float *vp) {
+void r_rect_init(rRect *self, const float *vp, GLuint tex_sink) {
     glm_mat4_identity(self->rect.pose);
     glm_mat4_identity(self->rect.uv);
     glm_vec4_one(self->rect.color);
@@ -96,7 +96,7 @@ void r_rect_kill(rRect *self) {
     glDeleteBuffers(1, &self->vbo);
     if(self->owns_tex)
         glDeleteTextures(1, &self->tex);
-    memset(self, 0, sizeof(rRect));
+    *self = (rRect) {0};
 }
 
 void r_rect_update(rRect *self) {
