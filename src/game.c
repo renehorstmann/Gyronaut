@@ -42,6 +42,7 @@ void game_init() {
 
     r_text_init(&text, &camera_vp.m00, rRED, "FPS: 123456");
     r_text_set_size(&text, 10);
+    R_PoseY(text.r.rect.pose) = 50;
 }
 
 void game_update(float dtime) {
@@ -58,9 +59,9 @@ void game_update(float dtime) {
     // todo: running mean not works for alpha
     // rotation should effect the gyronaut, not the bg in that mode 
     static float ax=0, ay=0;
-    ax = ax*0.95f + input_accel[0] *0.05f;
-    ay = ay*0.95f + input_accel[1] *0.05f;
-    float rot = atan2(ay, ax);
+    ax = ax*0.9f + input_accel[0] *0.1f;
+    ay = ay*0.9f + input_accel[1] *0.1f;
+    float rot = atan2(ay, ax) - M_PI/2;
     target = - rot;
     
     
@@ -73,7 +74,7 @@ void game_update(float dtime) {
         char msg[64];
         sprintf(msg, "FPS: %f", 1.0f / dtime);
         r_text_set_text(&text, rRED, msg);
-        r_pose_set_left(text.r.rect.pose, 50);
+        r_pose_set_left(text.r.rect.pose, -50);
     }
 }
 
