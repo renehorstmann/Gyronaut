@@ -1,4 +1,4 @@
-#include "r/rect_s.h"
+#include "r/r.h"
 #include "camera.h"
 #include "input.h"
 #include "background.h"
@@ -30,12 +30,19 @@ static void pointer(Pointer_s p, void *ud) {
 #endif
 }
 
+
+static rText text;
+
 void game_init() {
     input_register_pointer_event(pointer, NULL);
     
     background_init();
     astronaut_init();
     meteorite_init(100000);
+
+    r_text_init(&text, &camera_vp.m00, rWHITE, "Hello World");
+    text.rect.rect.pose[0][0] = 100;
+    text.rect.rect.pose[1][1] = 10;
 }
 
 void game_update(float dtime) {
@@ -68,4 +75,5 @@ void game_render() {
     background_render();
     meteorite_render();
     astronaut_render();
+    r_text_render(&text);
 }

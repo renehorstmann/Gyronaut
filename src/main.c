@@ -59,9 +59,11 @@ int main() {
 
     // init
     r_setup_blending();
+    r_text_default_font = TTF_OpenFont("res/fnf.ttf", 64);
     input_init();
     camera_init();
     game_init();
+
 
 
     Uint32 last_time = SDL_GetTicks();

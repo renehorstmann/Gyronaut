@@ -1,7 +1,7 @@
 #ifndef R_RECT_S_H
 #define R_RECT_S_H
 
-#include "cglm/cglm.h"
+#include "cglm/types.h"
 
 typedef struct rRect_s {
     mat4 pose;

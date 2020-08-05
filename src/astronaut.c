@@ -34,7 +34,6 @@ void astronaut_update(float dtime) {
     float angular_speed = (alpha_dest - alpha) * ALPHA_SPEED_P;
     alpha += angular_speed * dtime;
     set_angle(alpha);
-    r_rect_update(&rect);
 
     rect.rect.pose[3][0] += speed * cos(alpha) * dtime;
     rect.rect.pose[3][1] += speed * sin(alpha) * dtime;
