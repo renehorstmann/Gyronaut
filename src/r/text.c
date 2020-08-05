@@ -4,8 +4,10 @@
 TTF_Font *r_text_default_font;
 
 GLuint r_text_create_texture(TTF_Font *font, const vec4 color, const char *text) {
+
+    // SDL_ttf seems to render in BGRA format, so we just swap r and b
     SDL_Surface *img = TTF_RenderText_Blended(font, text,
-            (SDL_Color) {color[0]*255, color[1]*255, color[2]*255, color[3]*255});
+            (SDL_Color) {color[2]*255, color[1]*255, color[0]*255, color[3]*255});
     return r_texture_from_img(img);
 }
 

@@ -45,7 +45,7 @@ GLuint r_texture_from_img(SDL_Surface *img) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, out_format, img->w, img->h, 0, in_format, GL_UNSIGNED_BYTE, img->pixels);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, img->w, img->h, 0, GL_RGBA, GL_UNSIGNED_BYTE, img->pixels);
     glGenerateMipmap(GL_TEXTURE_2D);
 
     return tex;
