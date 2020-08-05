@@ -41,8 +41,7 @@ void game_init() {
     meteorite_init(100000);
 
     r_text_init(&text, &camera_vp.m00, rRED, "FPS: 123456");
-    text.rect.rect.pose[0][0] = text.ratio * 10;
-    text.rect.rect.pose[1][1] = 10;
+    r_text_set_size(&text, 10);
 }
 
 void game_update(float dtime) {
@@ -74,6 +73,7 @@ void game_update(float dtime) {
         char msg[64];
         sprintf(msg, "FPS: %6.2f", 1.0f / dtime);
         r_text_set_text(&text, rRED, msg);
+        r_pose_set_left(text.r.rect.pose, 50);
     }
 }
 

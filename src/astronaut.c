@@ -7,23 +7,19 @@
 
 const static float ALPHA_SPEED_P = 1;
 
-static rSingle rect;
+static rSingle r;
 static float scale = 20;
 
 static float speed;
 static float alpha;
 static float alpha_dest;
 
-static void set_angle(float alpha_rad) {
-    rect.rect.pose[0][0] = cos(alpha_rad) * scale;
-    rect.rect.pose[0][1] = sin(alpha_rad) * scale;
-    rect.rect.pose[1][0] = -sin(alpha_rad) * scale;
-    rect.rect.pose[1][1] = cos(alpha_rad) * scale;
-}
 
 void astronaut_init() {
-    r_single_init(&rect, &camera_vp.m00, r_texture_from_file("res/test_astronaut.png"));
+    r_single_init(&r, &camera_vp.m00, r_texture_from_file("res/test_astronaut.png"));
     speed = 10;
+    
+    r_pose_set_size_angle(r.rect.pose, scale, scale, 0);
 
 //    rect.rect.uv[0][0] = 0.5;
 //    rect.rect.uv[1][1] = 0.5;
@@ -33,10 +29,15 @@ void astronaut_update(float dtime) {
     // set position and rotation
     float angular_speed = (alpha_dest - alpha) * ALPHA_SPEED_P;
     alpha += angular_speed * dtime;
-    set_angle(alpha);
-
-    rect.rect.pose[3][0] += speed * cos(alpha) * dtime;
-    rect.rect.pose[3][1] += speed * sin(alpha) * dtime;
+    
+    r_pose_set_angle(r.rect.pose, alpha);
+    
+    r_pose_print(r.rect.pose);
+	r_pose_shift_xy(r.rect.pose,
+	speed * cos(alpha) *dtime, 
+	speed * sin(alpha) * dtime);
+	
+	//R_PoseY(r.rect.pose) = 50;
 
 //    rect.rect.uv[3][0] += dtime;
 //    rect.rect.uv[3][1] += dtime;
@@ -44,12 +45,12 @@ void astronaut_update(float dtime) {
 
 
     // set camera position
-    camera_set_pos(rect.rect.pose[2][0], rect.rect.pose[2][1]);
+    camera_set_pos(r.rect.pose[2][0], r.rect.pose[2][1]);
     camera_set_angle(-alpha_dest);
 }
 
 void astronaut_render() {
-    r_single_render(&rect);
+    r_single_render(&r);
 }
 
 
