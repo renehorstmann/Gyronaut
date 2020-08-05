@@ -13,6 +13,9 @@ GLuint r_text_create_texture(TTF_Font *font, const vec4 color, const char *text)
 void r_text_init(rText *self, const float *vp, const vec4 color, const char *text) {
     self->font = r_text_default_font;
     r_rect_init(&self->rect, vp, r_text_create_texture(self->font, color, text));
+    int w, h;
+    r_texture_get_size(self->rect.tex, &w, &h);
+    self->ratio = (float) w / h;
 }
 
 void r_text_kill(rText *self) {
@@ -25,5 +28,8 @@ void r_text_render(rText *self) {
 
 void r_text_set_text(rText *self, const vec4 color, const char *text) {
 	r_rect_set_texture(&self->rect, r_text_create_texture(self->font, color, text));
+    int w, h;
+    r_texture_get_size(self->rect.tex, &w, &h);
+    self->ratio = (float) w / h;
 }
 

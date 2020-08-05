@@ -14,6 +14,7 @@ GLuint r_text_create_texture(TTF_Font *font, const vec4 color, const char *text)
 typedef struct rText {
 	rRect rect;
 	TTF_Font *font;
+	float ratio;    // width / height
 } rText;
 
 void r_text_init(rText *self, const float *vp, const vec4 color, const char *text);

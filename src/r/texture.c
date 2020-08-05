@@ -64,3 +64,10 @@ GLuint r_texture_from_file(const char *file) {
     SDL_FreeSurface(img);
     return tex;
 }
+
+
+void r_texture_get_size(GLuint tex, int *w, int *h) {
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, w);
+    glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, h);
+}

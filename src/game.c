@@ -41,7 +41,7 @@ void game_init() {
     meteorite_init(100000);
 
     r_text_init(&text, &camera_vp.m00, rWHITE, "Hello World");
-    text.rect.rect.pose[0][0] = 100;
+    text.rect.rect.pose[0][0] = text.ratio * 10;
     text.rect.rect.pose[1][1] = 10;
 }
 
