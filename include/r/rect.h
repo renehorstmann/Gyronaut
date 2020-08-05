@@ -1,26 +1,12 @@
 #ifndef R_RECT_H
 #define R_RECT_H
 
-#include <stdbool.h>
-#include "rect_s.h"
-#include "core.h"
+#include "cglm/types.h"
 
-typedef struct rRect {
-    rRect_s rect;
-    const float *vp;
-    GLuint program;
-    GLuint vao;
-    GLuint vbo;
-    GLuint tex;
-    bool owns_tex;
-} rRect;
-
-void r_rect_init(rRect *self, const float *vp, GLuint tex_sink);
-
-void r_rect_kill(rRect *self);
-
-void r_rect_render(rRect *self);
-
-void r_rect_set_texture(rRect *self, GLuint tex);
+typedef struct rRect_s {
+    mat4 pose;
+    mat4 uv;
+    vec4 color;
+} rRect_s;
 
 #endif //R_RECT_H

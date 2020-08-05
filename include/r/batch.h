@@ -2,7 +2,7 @@
 #define R_BATCH_H
 
 #include <stdbool.h>
-#include "rect_s.h"
+#include "rect.h"
 #include "core.h"
 
 

@@ -1,13 +1,13 @@
 #define DEBUG
 #include "cglm/struct.h"
-#include "r/rect.h"
+#include "r/single.h"
 #include "r/texture.h"
 #include "camera.h"
 #include "input.h"
 
 const static float ALPHA_SPEED_P = 1;
 
-static rRect rect;
+static rSingle rect;
 static float scale = 20;
 
 static float speed;
@@ -22,7 +22,7 @@ static void set_angle(float alpha_rad) {
 }
 
 void astronaut_init() {
-    r_rect_init(&rect, &camera_vp.m00, r_texture_from_file("res/test_astronaut.png"));
+    r_single_init(&rect, &camera_vp.m00, r_texture_from_file("res/test_astronaut.png"));
     speed = 10;
 
 //    rect.rect.uv[0][0] = 0.5;
@@ -49,7 +49,7 @@ void astronaut_update(float dtime) {
 }
 
 void astronaut_render() {
-    r_rect_render(&rect);
+    r_single_render(&rect);
 }
 
 

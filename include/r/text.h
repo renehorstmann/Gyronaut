@@ -4,7 +4,7 @@
 #include "SDL_ttf.h"
 #include "SDL_opengl.h"
 #include "cglm/types.h"
-#include "rect.h"
+#include "single.h"
 
 
 extern TTF_Font *r_text_default_font;
@@ -12,7 +12,7 @@ extern TTF_Font *r_text_default_font;
 GLuint r_text_create_texture(TTF_Font *font, const vec4 color, const char *text);
 
 typedef struct rText {
-	rRect rect;
+	rSingle rect;
 	TTF_Font *font;
 	float ratio;    // width / height
 } rText;

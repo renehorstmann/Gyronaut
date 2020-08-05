@@ -1,6 +1,6 @@
 #include "cglm/cglm.h"
 #include "r/r.h"
-#include "r/rect.h"
+#include "r/single.h"
 
 static float buffer[] = {
     -1, -1, 0, 1, 0, 1, 0, 1,
@@ -11,7 +11,7 @@ static float buffer[] = {
     +1, +1, 0, 1, 1, 0, 0, 1
 };
 
-void r_rect_init(rRect *self, const float *vp, GLuint tex_sink) {
+void r_single_init(rSingle *self, const float *vp, GLuint tex_sink) {
     glm_mat4_identity(self->rect.pose);
     glm_mat4_identity(self->rect.uv);
     glm_vec4_one(self->rect.color);
@@ -60,21 +60,21 @@ void r_rect_init(rRect *self, const float *vp, GLuint tex_sink) {
     }
 }
 
-void r_rect_update(rRect *self);
+void r_rect_update(rSingle *self);
 
-void r_rect_render(rRect *self);
+void r_single_render(rSingle *self);
 
 
-void r_rect_kill(rRect *self) {
+void r_single_kill(rSingle *self) {
     glDeleteProgram(self->program);
     glDeleteVertexArrays(1, &self->vao);
     glDeleteBuffers(1, &self->vbo);
     if(self->owns_tex)
         glDeleteTextures(1, &self->tex);
-    *self = (rRect) {0};
+    *self = (rSingle) {0};
 }
 
-void r_rect_render(rRect *self) {
+void r_single_render(rSingle *self) {
     glUseProgram(self->program);
 
     glUniformMatrix4fv(glGetUniformLocation(self->program, "m"),
@@ -101,7 +101,7 @@ void r_rect_render(rRect *self) {
     glUseProgram(0);
 }
 
-void r_rect_set_texture(rRect *self, GLuint tex) {
+void r_single_set_texture(rSingle *self, GLuint tex) {
     if(self->owns_tex)
         glDeleteTextures(1, &self->tex);
     self->tex = tex;
