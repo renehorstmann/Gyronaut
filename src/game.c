@@ -1,4 +1,4 @@
-#include "r/rect.h"
+#include "r/rect_s.h"
 #include "camera.h"
 #include "input.h"
 #include "background.h"

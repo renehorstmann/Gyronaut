@@ -1,13 +1,14 @@
 #include "r/rect.h"
+#include "r/texture.h"
 #include "camera.h"
 #include "background.h"
 
 static rRect background;
 
 void background_init() {
-    r_rect_init(&background, "res/test_bg.png", &camera_vp.m00);
-    background.pose[0][0] = background.pose[1][1] = 200;
-    r_rect_update(&background, R_BASIC_RECT_UPDATE_XY);
+    r_rect_init(&background, r_texture_from_file("res/test_bg.png"), &camera_vp.m00);
+    background.rect.pose[0][0] = background.rect.pose[1][1] = 200;
+    r_rect_update(&background);
 }
 
 void background_render() {

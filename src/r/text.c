@@ -12,7 +12,7 @@ static GLuint create_tex(TTF_Font *font, const char *text) {
 void r_text_init(rText *self, const char *text, const float *vp) {
 	
 	// todo
-    r_rect_init(&self->rect, NULL, vp);
+//    r_rect_init(&self->rect, NULL, vp);
 	self->font = r_text_default_font;
 }
 
@@ -21,7 +21,7 @@ void r_text_kill(rText *self) {
 }
 
 void r_text_update(rText *self) {
-    r_rect_update(&self->rect, R_BASIC_RECT_UPDATE_XY);
+    r_rect_update(&self->rect);
 }
 
 void r_text_render(rText *self) {

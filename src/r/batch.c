@@ -49,7 +49,7 @@ void r_batch_init(rBatch *self, int num, const char *tex_file, const float *vp) 
         glBindVertexArray(self->vao);
 
         // texture
-        glUniform1i(glGetUniformLocation(self->program, tex_file), self->tex);
+        glUniform1i(glGetUniformLocation(self->program, "tex"), self->tex);
 
         // vbo scope = xyuv
         {
