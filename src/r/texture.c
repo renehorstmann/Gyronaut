@@ -3,36 +3,10 @@
 
 GLuint r_texture_from_img(SDL_Surface *img) {
 	SDL_PixelFormat *f = img->format;
-
-    GLenum in_format = 0;
-
-    if(f->Rmask == 0xff && f->Gmask == 0xff00 && f->Bmask == 0xff0000) {
-        if(f->Amask == 0)
-            in_format = GL_RGB;
-        else if(f->Amask == 0xff000000)
-            in_format = GL_RGBA;
-    }
-
-    if(f->Rmask == 0xff0000 && f->Gmask == 0xff00 && f->Bmask == 0xff) {
-        if(f->Amask == 0)
-            in_format = GL_BGR;
-        else if(f->Amask == 0xff000000)
-            in_format = GL_BGRA;
-    }
-
-    if (!in_format) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,
-                "load tex failed: wrong format, needed GL_RGB(A) or GL_BGR(A)");
-        return 0;
-    }
-
-    GLenum out_format = f->Amask != 0 ? GL_RGBA : GL_RGB;
-
-    // todo:
-    if(out_format == GL_RGB) {
-        SDL_LogWarn(SDL_LOG_CATEGORY_RENDER,
-                "load tex may have failed, no alpha channel");
-    }
+	if(f->BitsPerPixel != 32 || f->Amask == 0) {
+        SDL_LogError(SDL_LOG_CATEGORY_RENDER, "load texture failed, 8bpp and alpha needed");
+	    return 0;
+	}
 
     GLuint tex;
     glGenTextures(1, &tex);

@@ -13,6 +13,7 @@ int main() {
         SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_Init failed: %s", SDL_GetError());
         return 1;
     }
+    SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
     
     // initialize IMG
     int imgFlags = IMG_INIT_PNG;
