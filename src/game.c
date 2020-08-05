@@ -71,7 +71,7 @@ void game_update(float dtime) {
     static int cnt = 0;
     if(cnt++ % 20 == 0) {
         char msg[64];
-        sprintf(msg, "FPS: %6.2f", 1.0f / dtime);
+        sprintf(msg, "FPS: %f", 1.0f / dtime);
         r_text_set_text(&text, rRED, msg);
         r_pose_set_left(text.r.rect.pose, 50);
     }
