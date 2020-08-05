@@ -39,7 +39,7 @@ void color(int start, int cnt, float dt) {
 
 void meteorite_update(double dt) {
     static int block = 0;
-    int max = 100;
+    int max = 10;
     int cnt = batch.num / max;
     color(cnt * block, cnt, dt * max);
     block++;

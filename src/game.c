@@ -38,7 +38,7 @@ void game_init() {
     
     background_init();
     astronaut_init();
-    meteorite_init(100000);
+    meteorite_init(1000);
 
     r_text_init(&text, &camera_vp.m00, rRED, "FPS: 123456");
     r_text_set_size(&text, 10);
