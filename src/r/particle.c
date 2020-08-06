@@ -14,7 +14,7 @@ static void init_rects(rParticleRect_s *instances, int num) {
         glm_mat4_identity(r->uv);
         glm_vec4_zero(r->speed);
         glm_vec4_zero(r->acc);
-        glm_quat_identity(r->axis_angle);
+        glm_vec4_copy((vec4){0, 0, 1, 0}, r->axis_angle);
         glm_vec4_one(r->color);
         glm_vec4_zero(r->color_speed);
         glm_vec2_zero(r->uv_step);

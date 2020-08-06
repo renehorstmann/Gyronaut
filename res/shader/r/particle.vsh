@@ -79,7 +79,11 @@ void main() {
   float dt = time - start_time;
 
   vec4 pos = vertices[gl_VertexID];
-  pos = vec4(rotate_vertex_position(pos.xyz, in_axis_angle.xyz, in_axis_angle.w * dt), 1);
+
+  // only rotate if rotation is given
+  if(abs(in_axis_angle.w) > 0)
+    pos = vec4(rotate_vertex_position(pos.xyz, in_axis_angle.xyz, in_axis_angle.w * dt), 1);
+
   pos = in_pose * pos;
   pos += in_speed * dt;
   pos += in_acc * (dt * dt);
