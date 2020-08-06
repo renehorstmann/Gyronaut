@@ -10,26 +10,29 @@ typedef struct rRect_s {
     vec4 color;
 } rRect_s;
 
+typedef mat4 r_const_mat4;
+#define R_Mat4(pointer) ((float(*)[4]) (pointer))
+
 #define R_PoseX(p) (*(((float *) p)+4*3))
 #define R_PoseY(p) (*(((float *) p)+4*3+1))
 
-static float r_pose_get_x(const mat4 p) {
+static float r_pose_get_x(r_const_mat4 p) {
 	return R_PoseX(p);
 }
 
-static float r_pose_get_y(const mat4 p) {
+static float r_pose_get_y(r_const_mat4 p) {
 	return R_PoseY(p);
 }
 
-static float r_pose_get_w(const mat4 p) {
+static float r_pose_get_w(r_const_mat4 p) {
 	return sqrtf(powf(p[0][0], 2) + powf(p[0][1], 2));
 }
 
-static float r_pose_get_h(const mat4 p) {
+static float r_pose_get_h(r_const_mat4 p) {
 	return sqrtf(powf(p[1][0], 2) + powf(p[1][1], 2));
 }
 
-static float r_pose_get_angle(const mat4 p) {
+static float r_pose_get_angle(r_const_mat4 p) {
 	return atan2(p[0][1], p[0][0]);
 }
 
