@@ -13,7 +13,6 @@ typedef struct rBatch {
     GLuint program;
     GLuint vao;
     GLuint vbo;
-    GLuint rects_bo;
     GLuint tex;
     bool owns_tex;
 } rBatch;

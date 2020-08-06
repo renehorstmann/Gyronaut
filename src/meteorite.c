@@ -8,10 +8,9 @@ void meteorite_init(int num) {
     r_batch_init(&batch, num, &camera_vp.m00, r_texture_from_file("res/meteorite_test.png"));
 
     for(int i=0; i<num; i++) {
-        batch.rects[i].pose[0][0] = 2;
-        batch.rects[i].pose[1][1] = 2;
-        batch.rects[i].pose[3][0] = -200.0f + 400.0f * rand() / RAND_MAX;
-        batch.rects[i].pose[3][1] = -200.0f + 400.0f * rand() / RAND_MAX;
+        r_pose_set_size(batch.rects[i].pose, 4, 4);
+        R_PoseX(batch.rects[i].pose) = -200.0f + 400.0f * rand() / RAND_MAX;
+        R_PoseY(batch.rects[i].pose) = -200.0f + 400.0f * rand() / RAND_MAX;
     }
 }
 

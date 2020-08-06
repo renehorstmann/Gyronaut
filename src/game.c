@@ -32,6 +32,8 @@ static void pointer(Pointer_s p, void *ud) {
 
 
 static rText text;
+static rParticle particle;
+static float time;
 
 void game_init() {
     input_register_pointer_event(pointer, NULL);
@@ -43,6 +45,10 @@ void game_init() {
     r_text_init(&text, &camera_vp.m00, rRED, "FPS: 123456");
     r_text_set_size(&text, 10);
     R_PoseY(text.r.rect.pose) = 50;
+
+    r_particle_init(&particle, 1, &camera_vp.m00, r_texture_from_file("res/meteorite_test.png"));
+    r_pose_set_size(particle.rects[0].pose, 10, 10);
+    r_pose_set_xy(particle.rects[0].pose_speed, 10, 50);
 }
 
 void game_update(float dtime) {
@@ -67,7 +73,7 @@ void game_update(float dtime) {
     
     astronaut_rotate(target);
 
-    astronaut_update(dtime);
+//    astronaut_update(dtime);
 
     static int cnt = 0;
     if(cnt++ % 20 == 0) {
@@ -76,11 +82,15 @@ void game_update(float dtime) {
         r_text_set_text(&text, rRED, msg);
         r_pose_set_left(text.r.rect.pose, -50);
     }
+
+    time += dtime;
 }
 
 void game_render() {
-    background_render();
-    meteorite_render();
-    astronaut_render();
-    r_text_render(&text);
+//    background_render();
+//    meteorite_render();
+//    astronaut_render();
+//    r_text_render(&text);
+
+    r_particle_render(&particle, 0);
 }

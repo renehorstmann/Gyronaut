@@ -5,16 +5,6 @@
 #include "r/r.h"
 #include "r/batch.h"
 
-// x, y, u, v
-static const float buffer[] = {
-        -1, -1, 0, 1,
-        +1, -1, 1, 1,
-        -1, +1, 0, 0,
-        -1, +1, 0, 0,
-        +1, -1, 1, 1,
-        +1, +1, 1, 0
-};
-
 
 static void init_rects(rRect_s *instances, int num) {
     for (int i = 0; i < num; i++) {
@@ -36,11 +26,9 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
             "res/shader/r/batch.vsh",
             "res/shader/r/batch.fsh",
             NULL});
-    const int loc_position = 0;
-    const int loc_tex_coord = 1;
-    const int loc_pose = 2;
-    const int loc_uv = 6;
-    const int loc_color = 10;
+    const int loc_pose = 0;
+    const int loc_uv = 4;
+    const int loc_color = 8;
 
     self->tex = tex_sink;
     self->owns_tex = true;
@@ -53,30 +41,10 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
         // texture
         glUniform1i(glGetUniformLocation(self->program, "tex"), self->tex);
 
-        // vbo scope = xyuv
+        // vbo
         {
             glGenBuffers(1, &self->vbo);
             glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
-            glBufferData(GL_ARRAY_BUFFER,
-                         sizeof(buffer),
-                         buffer,
-                         GL_STATIC_DRAW);
-
-            glEnableVertexAttribArray(loc_position);
-            glVertexAttribPointer(loc_position, 2, GL_FLOAT, GL_FALSE,
-                                  4 * sizeof(float), NULL);
-            glEnableVertexAttribArray(loc_tex_coord);
-            glVertexAttribPointer(loc_tex_coord, 2, GL_FLOAT, GL_FALSE,
-                                  4 * sizeof(float),
-                                  (void *) (2 * sizeof(float)));
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-        }
-
-        // rects_bo
-        {
-            glGenBuffers(1, &self->rects_bo);
-            glBindBuffer(GL_ARRAY_BUFFER, self->rects_bo);
             glBufferData(GL_ARRAY_BUFFER,
                          num * sizeof(rRect_s),
                          self->rects,
@@ -121,14 +89,13 @@ void r_batch_kill(rBatch *self) {
     glDeleteProgram(self->program);
     glDeleteVertexArrays(1, &self->vao);
     glDeleteBuffers(1, &self->vbo);
-    glDeleteBuffers(1, &self->rects_bo);
     if(self->owns_tex)
         glDeleteTextures(1, &self->tex);
     *self = (rBatch) {0};
 }
 
 void r_batch_update(rBatch *self) {
-    glBindBuffer(GL_ARRAY_BUFFER, self->rects_bo);
+    glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
     glBufferSubData(GL_ARRAY_BUFFER, 0,
                     self->num * sizeof(rRect_s), self->rects);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

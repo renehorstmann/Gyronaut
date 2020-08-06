@@ -32,7 +32,7 @@ void astronaut_update(float dtime) {
     
     r_pose_set_angle(r.rect.pose, alpha);
     
-    r_pose_print(r.rect.pose);
+//    r_pose_print(r.rect.pose);
 	r_pose_shift_xy(r.rect.pose,
 	speed * cos(alpha) *dtime, 
 	speed * sin(alpha) * dtime);

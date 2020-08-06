@@ -8,6 +8,7 @@
 #include "rect.h"
 #include "single.h"
 #include "batch.h"
+#include "particle.h"
 #include "text.h"
 
 

@@ -55,6 +55,9 @@ int main() {
     // Not necessary, but recommended to create a gl context:
     SDL_GL_CreateContext(window);
     SDL_Log("OpenGL version: %s", glGetString(GL_VERSION));
+    int attribs;
+    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &attribs);
+    SDL_Log("OpenGL max vertex attribs: %d", attribs);
     SDL_GL_SetSwapInterval(1);  // (0=off, 1=V-Sync, -1=addaptive V-Sync)
 
 
