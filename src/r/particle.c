@@ -14,7 +14,7 @@ static void init_rects(rParticleRect_s *instances, int num) {
         glm_mat4_identity(r->uv);
         glm_vec4_zero(r->speed);
         glm_vec4_zero(r->acc);
-        glm_quat_identity(r->rot_quat);
+        glm_quat_identity(r->axis_angle);
         glm_vec4_one(r->color);
         glm_vec4_zero(r->color_speed);
         glm_vec2_zero(r->uv_step);
@@ -38,7 +38,7 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
     const int loc_uv = 4;
     const int loc_speed = 8;
     const int loc_acc = 9;
-    const int loc_rot_quat = 10;
+    const int loc_axis_angle = 10;
     const int loc_color = 11;
     const int loc_color_speed = 12;
     const int loc_uv_step = 13;
@@ -100,12 +100,12 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
                                   (void *) offsetof(rParticleRect_s, acc));
             glVertexAttribDivisor(loc_acc, 1);
 
-            // rot_quat
-            glEnableVertexAttribArray(loc_rot_quat);
-            glVertexAttribPointer(loc_rot_quat, 4, GL_FLOAT, GL_FALSE,
+            // axis_angle
+            glEnableVertexAttribArray(loc_axis_angle);
+            glVertexAttribPointer(loc_axis_angle, 4, GL_FLOAT, GL_FALSE,
                                   sizeof(rParticleRect_s),
-                                  (void *) offsetof(rParticleRect_s, rot_quat));
-            glVertexAttribDivisor(loc_rot_quat, 1);
+                                  (void *) offsetof(rParticleRect_s, axis_angle));
+            glVertexAttribDivisor(loc_axis_angle, 1);
 
             // color
             glEnableVertexAttribArray(loc_color);

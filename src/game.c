@@ -1,3 +1,5 @@
+#define DEBUG
+
 #include "r/r.h"
 #include "camera.h"
 #include "input.h"
@@ -53,13 +55,14 @@ void game_init() {
         R_PoseY(particle.rects[i].pose) = -100.0f + 200.0f * rand() / RAND_MAX;
 
         glm_vec4_copy((float *) rYELLOW, particle.rects[i].color);
-        glm_vec4_copy((vec4) {-1, 0, 0, -0.5}, particle.rects[i].color_speed);
+        glm_vec4_copy((vec4) {-0.2, 0, 0, -0.1}, particle.rects[i].color_speed);
 
         glm_vec2_copy((vec2) {0.1, 0.05}, particle.rects[i].uv_step);
         particle.rects[i].uv_time = 0.2;
 
         particle.rects[i].speed[1] = 10;
         particle.rects[i].acc[1] = -20;
+        glm_vec4_copy((vec4){0, 0, 1, M_PI}, particle.rects[i].axis_angle);
     }
 
     r_particle_update(&particle);
