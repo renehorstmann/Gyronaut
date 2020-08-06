@@ -33,7 +33,7 @@ static void pointer(Pointer_s p, void *ud) {
 
 static rText text;
 static rParticle particle;
-static float time;
+static float game_time;
 
 void game_init() {
     input_register_pointer_event(pointer, NULL);
@@ -92,7 +92,7 @@ void game_update(float dtime) {
         r_pose_set_left(text.r.rect.pose, -50);
     }
 
-    time += dtime;
+    game_time += dtime;
 }
 
 void game_render() {
@@ -101,5 +101,5 @@ void game_render() {
 //    astronaut_render();
 //    r_text_render(&text);
 
-    r_particle_render(&particle, time);
+    r_particle_render(&particle, game_time);
 }
