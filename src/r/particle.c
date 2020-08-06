@@ -12,8 +12,9 @@ static void init_rects(rParticleRect_s *instances, int num) {
         rParticleRect_s *r = &instances[i];
         glm_mat4_identity(r->pose);
         glm_mat4_identity(r->uv);
-        glm_mat4_identity(r->pose_speed);
-        glm_vec4_zero(r->pose_acc);
+        glm_vec4_zero(r->speed);
+        glm_vec4_zero(r->acc);
+        glm_quat_identity(r->rot_quat);
         glm_vec4_one(r->color);
         glm_vec4_zero(r->color_speed);
         glm_vec2_zero(r->uv_step);
@@ -35,15 +36,14 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
             NULL});
     const int loc_pose = 0;
     const int loc_uv = 4;
-    const int loc_pose_speed = 8;
-    const int loc_pose_acc = 12;
-    const int loc_color = 13;
-    const int loc_color_speed = 14;
-    const int loc_uvstep_uvtime_starttime = 15;
-    assume(offsetof(rParticleRect_s, start_time)
-           - offsetof(rParticleRect_s, uv_step)
-           == 3 * sizeof(float),
-           "particle struct error, uvstep_uvtime_starttime not packed");
+    const int loc_speed = 8;
+    const int loc_acc = 9;
+    const int loc_rot_quat = 10;
+    const int loc_color = 11;
+    const int loc_color_speed = 12;
+    const int loc_uv_step = 13;
+    const int loc_uv_time = 14;
+    const int loc_start_time = 15;
 
     self->tex = tex_sink;
     self->owns_tex = true;
@@ -86,22 +86,26 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
                 glVertexAttribDivisor(loc, 1);
             }
 
-            // pose_speed
-            for (int c = 0; c < 4; c++) {
-                int loc = loc_pose_speed + c;
-                glEnableVertexAttribArray(loc);
-                glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
-                                      sizeof(rParticleRect_s),
-                                      (void *) (offsetof(rParticleRect_s, pose_speed) + c * sizeof(vec4)));
-                glVertexAttribDivisor(loc, 1);
-            }
-
-            // pose_acc
-            glEnableVertexAttribArray(loc_pose_acc);
-            glVertexAttribPointer(loc_pose_acc, 4, GL_FLOAT, GL_FALSE,
+            // speed
+            glEnableVertexAttribArray(loc_speed);
+            glVertexAttribPointer(loc_speed, 4, GL_FLOAT, GL_FALSE,
                                   sizeof(rParticleRect_s),
-                                  (void *) offsetof(rParticleRect_s, pose_acc));
-            glVertexAttribDivisor(loc_pose_acc, 1);
+                                  (void *) offsetof(rParticleRect_s, speed));
+            glVertexAttribDivisor(loc_speed, 1);
+
+            // acc
+            glEnableVertexAttribArray(loc_acc);
+            glVertexAttribPointer(loc_acc, 4, GL_FLOAT, GL_FALSE,
+                                  sizeof(rParticleRect_s),
+                                  (void *) offsetof(rParticleRect_s, acc));
+            glVertexAttribDivisor(loc_acc, 1);
+
+            // rot_quat
+            glEnableVertexAttribArray(loc_rot_quat);
+            glVertexAttribPointer(loc_rot_quat, 4, GL_FLOAT, GL_FALSE,
+                                  sizeof(rParticleRect_s),
+                                  (void *) offsetof(rParticleRect_s, rot_quat));
+            glVertexAttribDivisor(loc_rot_quat, 1);
 
             // color
             glEnableVertexAttribArray(loc_color);
@@ -117,12 +121,26 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
                                   (void *) offsetof(rParticleRect_s, color_speed));
             glVertexAttribDivisor(loc_color_speed, 1);
 
-            // uv_step__uv_time__starttime
-            glEnableVertexAttribArray(loc_uvstep_uvtime_starttime);
-            glVertexAttribPointer(loc_uvstep_uvtime_starttime, 4, GL_FLOAT, GL_FALSE,
+            // uv_step
+            glEnableVertexAttribArray(loc_uv_step);
+            glVertexAttribPointer(loc_uv_step, 2, GL_FLOAT, GL_FALSE,
                                   sizeof(rParticleRect_s),
                                   (void *) offsetof(rParticleRect_s, uv_step));
-            glVertexAttribDivisor(loc_uvstep_uvtime_starttime, 1);
+            glVertexAttribDivisor(loc_uv_step, 1);
+
+            // uv_time
+            glEnableVertexAttribArray(loc_uv_time);
+            glVertexAttribPointer(loc_uv_time, 1, GL_FLOAT, GL_FALSE,
+                                  sizeof(rParticleRect_s),
+                                  (void *) offsetof(rParticleRect_s, uv_time));
+            glVertexAttribDivisor(loc_uv_time, 1);
+
+            // start_time
+            glEnableVertexAttribArray(loc_start_time);
+            glVertexAttribPointer(loc_start_time, 1, GL_FLOAT, GL_FALSE,
+                                  sizeof(rParticleRect_s),
+                                  (void *) offsetof(rParticleRect_s, start_time));
+            glVertexAttribDivisor(loc_start_time, 1);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
         }

@@ -8,8 +8,9 @@
 typedef struct rParticleRect_s {
     mat4 pose;
     mat4 uv;
-    mat4 pose_speed;
-    vec4 pose_acc;
+    vec4 speed;
+    vec4 acc;
+    vec4 rot_quat;
     vec4 color;
     vec4 color_speed;
     vec2 uv_step;

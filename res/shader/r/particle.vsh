@@ -4,14 +4,17 @@ layout(location = 0) in mat4 in_pose;
 layout(location = 4) in mat4 in_uv;
 // uses location [4:7] (for each col)
 
-layout(location = 8) in mat4 in_pose_speed;
-// uses location [8:11] (for each col)
+layout(location = 8) in vec4 in_speed;
+layout(location = 9) in vec4 in_acc;
+layout(location = 10) in vec4 in_rot_quat;
 
-layout(location = 12) in vec4 in_pose_acc;
+layout(location = 11) in vec4 in_color;
+layout(location = 12) in vec4 in_color_speed;
 
-layout(location = 13) in vec4 in_color;
-layout(location = 14) in vec4 in_color_speed;
-layout(location = 15) in vec4 in_uvstep_uvtime_starttime;
+layout(location = 13) in vec2 in_uv_step;
+layout(location = 14) in float in_uv_time;
+
+layout(location = 15) in float start_time;
 
 out vec2 v_tex_coord;
 out vec4 v_color;
@@ -38,7 +41,7 @@ const vec4 tex_coord[6] = vec4[](
 );
 
 void main() {
-  float dt = time - in_uvstep_uvtime_starttime[3];
+  float dt = time - start_time;
 
 //  mat4 speed_shift = in_pose_speed * dt;
 //  speed_shift[3][3] = 1;
@@ -48,7 +51,7 @@ void main() {
 //  gl_Position = vp * pose * position[gl_VertexID];
   gl_Position = vp * in_pose * position[gl_VertexID];
 
-  vec2 uv_step = in_uvstep_uvtime_starttime.xy * floor(dt / in_uvstep_uvtime_starttime[2]);
+  vec2 uv_step = in_uv_step * floor(dt / in_uv_time);
   v_tex_coord = (in_uv * tex_coord[gl_VertexID]).xy + uv_step;
 
   v_color = in_color + (in_color_speed * dt);
