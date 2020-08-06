@@ -47,9 +47,11 @@ void game_init() {
     r_text_init(&text, &camera_vp.m00, rRED, "FPS: 123456");
     r_text_set_size(&text, 10);
     R_PoseY(text.r.rect.pose) = 50;
+    
+    int pnum = 1000;
 
-    r_particle_init(&particle, 100, &camera_vp.m00, r_texture_from_file("res/meteorite_test.png"));
-    for(int i=0; i<100; i++) {
+    r_particle_init(&particle, pnum, &camera_vp.m00, r_texture_from_file("res/meteorite_test.png"));
+    for(int i=0; i<pnum; i++) {
         r_pose_set_size(particle.rects[i].pose, 5, 5);
         R_PoseX(particle.rects[i].pose) = -100.0f + 200.0f * rand() / RAND_MAX;
         R_PoseY(particle.rects[i].pose) = -100.0f + 200.0f * rand() / RAND_MAX;
@@ -107,7 +109,9 @@ void game_render() {
     background_render();
     meteorite_render();
     astronaut_render();
-    r_text_render(&text);
+    
 
     r_particle_render(&particle, game_time);
+    
+    r_text_render(&text);
 }
