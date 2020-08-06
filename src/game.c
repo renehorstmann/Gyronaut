@@ -97,10 +97,10 @@ void game_update(float dtime) {
 }
 
 void game_render() {
-//    background_render();
-//    meteorite_render();
-//    astronaut_render();
-//    r_text_render(&text);
+    background_render();
+    meteorite_render();
+    astronaut_render();
+    r_text_render(&text);
 
     r_particle_render(&particle, game_time);
 }

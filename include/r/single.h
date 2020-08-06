@@ -10,7 +10,6 @@ typedef struct rSingle {
     const float *vp;
     GLuint program;
     GLuint vao;
-    GLuint vbo;
     GLuint tex;
     bool owns_tex;
 } rSingle;

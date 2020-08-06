@@ -37,25 +37,6 @@ void r_single_init(rSingle *self, const float *vp, GLuint tex_sink) {
         // texture
         glUniform1i(glGetUniformLocation(self->program, "tex"), self->tex);
 
-        // vbo scope = xyuv
-        {
-            glGenBuffers(1, &self->vbo);
-            glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
-            glBufferData(GL_ARRAY_BUFFER,
-                         sizeof(buffer),
-                         buffer,
-                         GL_STATIC_DRAW);
-
-            glEnableVertexAttribArray(loc_position);
-            glVertexAttribPointer(loc_position, 2, GL_FLOAT, GL_FALSE,
-                                  8 * sizeof(float), NULL);
-            glEnableVertexAttribArray(loc_tex_coord);
-            glVertexAttribPointer(loc_tex_coord, 2, GL_FLOAT, GL_FALSE,
-                                  8 * sizeof(float),
-                                  (void *) (4 * sizeof(float)));
-
-            glBindBuffer(GL_ARRAY_BUFFER, 0);
-        }
         glBindVertexArray(0);
     }
 }
@@ -68,7 +49,6 @@ void r_single_render(rSingle *self);
 void r_single_kill(rSingle *self) {
     glDeleteProgram(self->program);
     glDeleteVertexArrays(1, &self->vao);
-    glDeleteBuffers(1, &self->vbo);
     if(self->owns_tex)
         glDeleteTextures(1, &self->tex);
     *self = (rSingle) {0};
