@@ -7,13 +7,13 @@
 
 typedef struct rParticleRect_s {
     mat4 pose;
-    mat4 pose_speed;
-    mat4 pose_acc;
     mat4 uv;
+    mat4 pose_speed;
+    vec4 pose_acc;
     vec4 color;
     vec4 color_speed;
-    vec2 uv_offset_step;
-    float uv_offset_time;
+    vec2 uv_step;
+    float uv_time;
     float start_time;
 } rParticleRect_s;
 
@@ -24,7 +24,6 @@ typedef struct rParticle {
     GLuint program;
     GLuint vao;
     GLuint vbo;
-    GLuint rects_bo;
     GLuint tex;
     bool owns_tex;
 } rParticle;

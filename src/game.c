@@ -47,8 +47,17 @@ void game_init() {
     R_PoseY(text.r.rect.pose) = 50;
 
     r_particle_init(&particle, 1, &camera_vp.m00, r_texture_from_file("res/meteorite_test.png"));
-    r_pose_set_size(particle.rects[0].pose, 10, 10);
-    r_pose_set_xy(particle.rects[0].pose_speed, 10, 50);
+    r_pose_set_size(particle.rects[0].pose, 50, 50);
+
+    glm_vec4_copy(rYELLOW, particle.rects[0].color);
+    glm_vec4_copy((vec4){-0.2, 0, 0, -0.1}, particle.rects[0].color_speed);
+
+    glm_vec2_copy((vec2){0.1, 0.05}, particle.rects[0].uv_step);
+    particle.rects->uv_time = 0.2;
+
+//    r_pose_set_xy(particle.rects[0].pose_speed, 1, 0);
+
+    r_particle_update(&particle);
 }
 
 void game_update(float dtime) {
@@ -92,5 +101,5 @@ void game_render() {
 //    astronaut_render();
 //    r_text_render(&text);
 
-    r_particle_render(&particle, 0);
+    r_particle_render(&particle, time);
 }
