@@ -19,8 +19,8 @@ void r_single_init(rSingle *self, const float *vp, GLuint tex_sink) {
     self->vp = vp;
 
     self->program = r_compile_glsl_from_files((char *[]) {
-            "res/shader/r/rect.vsh",
-            "res/shader/r/rect.fsh",
+            "res/shader/r/single.vsh",
+            "res/shader/r/single.fsh",
             NULL
     });
     const int loc_position = 0;
@@ -77,7 +77,7 @@ void r_single_kill(rSingle *self) {
 void r_single_render(rSingle *self) {
     glUseProgram(self->program);
 
-    glUniformMatrix4fv(glGetUniformLocation(self->program, "m"),
+    glUniformMatrix4fv(glGetUniformLocation(self->program, "pose"),
                        1, GL_FALSE, &self->rect.pose[0][0]);
 
     glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),
