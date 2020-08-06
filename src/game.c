@@ -49,13 +49,14 @@ void game_init() {
     r_particle_init(&particle, 1, &camera_vp.m00, r_texture_from_file("res/meteorite_test.png"));
     r_pose_set_size(particle.rects[0].pose, 50, 50);
 
-    glm_vec4_copy(rYELLOW, particle.rects[0].color);
+    glm_vec4_copy((float *) rYELLOW, particle.rects[0].color);
     glm_vec4_copy((vec4){-0.2, 0, 0, -0.1}, particle.rects[0].color_speed);
 
     glm_vec2_copy((vec2){0.1, 0.05}, particle.rects[0].uv_step);
     particle.rects->uv_time = 0.2;
 
-//    r_pose_set_xy(particle.rects[0].pose_speed, 1, 0);
+    particle.rects[0].speed[1] = 10;
+    particle.rects[0].acc[1] = -20;
 
     r_particle_update(&particle);
 }

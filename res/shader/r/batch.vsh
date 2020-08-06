@@ -11,7 +11,7 @@ out vec4 v_color;
 
 uniform mat4 vp;
 
-const vec4 position[6] = vec4[](
+const vec4 vertices[6] = vec4[](
   vec4(-1, -1, 0, 1),
   vec4(+1, -1, 0, 1),
   vec4(-1, +1, 0, 1),
@@ -20,7 +20,7 @@ const vec4 position[6] = vec4[](
   vec4(+1, +1, 0, 1)
 );
 
-const vec4 tex_coord[6] = vec4[](
+const vec4 tex_coords[6] = vec4[](
   vec4(0, 1, 0, 1),
   vec4(1, 1, 0, 1),
   vec4(0, 0, 0, 1),
@@ -30,7 +30,7 @@ const vec4 tex_coord[6] = vec4[](
 );
 
 void main() {
-  gl_Position = vp * in_pose * position[gl_VertexID];
-  v_tex_coord = (in_uv * tex_coord[gl_VertexID]).xy;
+  gl_Position = vp * in_pose * vertices[gl_VertexID];
+  v_tex_coord = (in_uv * tex_coords[gl_VertexID]).xy;
   v_color = in_color;
 }

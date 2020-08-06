@@ -10,7 +10,7 @@ typedef struct rParticleRect_s {
     mat4 uv;
     vec4 speed;
     vec4 acc;
-    vec4 rot_quat;
+    vec4 rot_quat;  // not working in the moment...
     vec4 color;
     vec4 color_speed;
     vec2 uv_step;
