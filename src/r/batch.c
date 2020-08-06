@@ -1,9 +1,9 @@
 #define DEBUG
 
+#include "cglm/cglm.h"
 #include "utilc/alloc.h"
 #include "r/r.h"
 #include "r/batch.h"
-#include "cglm/cglm.h"
 
 // x, y, u, v
 static const float buffer[] = {
@@ -16,16 +16,17 @@ static const float buffer[] = {
 };
 
 
-static void init_rects(struct rRect_s *instances, int num) {
+static void init_rects(rRect_s *instances, int num) {
     for (int i = 0; i < num; i++) {
-        glm_mat4_identity(instances[i].pose);
-        glm_mat4_identity(instances[i].uv);
-        glm_vec4_one(instances[i].color);
+        rRect_s *r = &instances[i];
+        glm_mat4_identity(r->pose);
+        glm_mat4_identity(r->uv);
+        glm_vec4_one(r->color);
     }
 }
 
 void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
-    self->rects = New(struct rRect_s, num);
+    self->rects = New(rRect_s, num);
     init_rects(self->rects, num);
 
     self->num = num;
@@ -37,7 +38,7 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
             NULL});
     const int loc_position = 0;
     const int loc_tex_coord = 1;
-    const int loc_m = 2;
+    const int loc_pose = 2;
     const int loc_uv = 6;
     const int loc_color = 10;
 
@@ -77,7 +78,7 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
             glGenBuffers(1, &self->rects_bo);
             glBindBuffer(GL_ARRAY_BUFFER, self->rects_bo);
             glBufferData(GL_ARRAY_BUFFER,
-                         num * sizeof(struct rRect_s),
+                         num * sizeof(rRect_s),
                          self->rects,
                          GL_STREAM_DRAW);
 
@@ -85,7 +86,7 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
 
             // pose
             for (int c = 0; c < 4; c++) {
-                int loc = loc_m + c;
+                int loc = loc_pose + c;
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
                                       sizeof(rRect_s), (void *) (c * sizeof(vec4)));
@@ -104,8 +105,8 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
             // color
             glEnableVertexAttribArray(loc_color);
             glVertexAttribPointer(loc_color, 4, GL_FLOAT, GL_FALSE,
-                                  sizeof(struct rRect_s),
-                                  (void *) offsetof(struct rRect_s, color));
+                                  sizeof(rRect_s),
+                                  (void *) offsetof(rRect_s, color));
             glVertexAttribDivisor(loc_color, 1);
 
             glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -129,7 +130,7 @@ void r_batch_kill(rBatch *self) {
 void r_batch_update(rBatch *self) {
     glBindBuffer(GL_ARRAY_BUFFER, self->rects_bo);
     glBufferSubData(GL_ARRAY_BUFFER, 0,
-                    self->num * sizeof(struct rRect_s), self->rects);
+                    self->num * sizeof(rRect_s), self->rects);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

@@ -18,7 +18,7 @@ typedef struct rParticleRect_s {
 } rParticleRect_s;
 
 typedef struct rParticle {
-    struct rParticleRects_s *rects;
+    rParticleRect_s *rects;
     int num;
     const float *vp;
     GLuint program;
@@ -35,7 +35,7 @@ void r_particle_kill(rParticle *self);
 
 void r_particle_update(rParticle *self);
 
-void r_particle_render(rParticle *self);
+void r_particle_render(rParticle *self, float time);
 
 void r_particle_set_texture(rParticle *self, GLuint tex);
 

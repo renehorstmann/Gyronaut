@@ -7,7 +7,7 @@
 
 
 typedef struct rBatch {
-    struct rRect_s *rects;
+    rRect_s *rects;
     int num;
     const float *vp;
     GLuint program;
