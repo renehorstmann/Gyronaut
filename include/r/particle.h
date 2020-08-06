@@ -7,10 +7,10 @@
 
 typedef struct rParticleRect_s {
     mat4 pose;
-    mat4 uv;
-    vec4 color;
     mat4 pose_speed;
     mat4 pose_acc;
+    mat4 uv;
+    vec4 color;
     vec4 color_speed;
     vec2 uv_offset_step;
     float uv_offset_time;
