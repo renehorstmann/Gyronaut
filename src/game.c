@@ -37,6 +37,10 @@ static rText text;
 static rParticle particle;
 static float game_time;
 
+static float frand() {
+	return (float) rand() / RAND_MAX;
+}
+
 void game_init() {
     input_register_pointer_event(pointer, NULL);
     
@@ -48,23 +52,25 @@ void game_init() {
     r_text_set_size(&text, 10);
     R_PoseY(text.r.rect.pose) = 50;
     
-    int pnum = 1000;
+    int pnum = 10000;
 
     r_particle_init(&particle, pnum, &camera_vp.m00, r_texture_from_file("res/meteorite_test.png"));
     for(int i=0; i<pnum; i++) {
         r_pose_set_size(particle.rects[i].pose, 5, 5);
-        R_PoseX(particle.rects[i].pose) = -100.0f + 200.0f * rand() / RAND_MAX;
-        R_PoseY(particle.rects[i].pose) = -100.0f + 200.0f * rand() / RAND_MAX;
+        //R_PoseX(particle.rects[i].pose) = -10 + 20 * frand();
+        //R_PoseY(particle.rects[i].pose) = -10 + 20 * frand();
 
-        glm_vec4_copy((float *) rYELLOW, particle.rects[i].color);
-        glm_vec4_copy((vec4) {-0.2, 0, 0, -0.1}, particle.rects[i].color_speed);
+        glm_vec4_copy((vec4){frand(), frand(), frand(), 1}, particle.rects[i].color);
+        glm_vec4_copy((vec4) {-1+2*frand(), -1+2*frand(), -1+2*frand(), -0.1}, particle.rects[i].color_speed);
 
-        glm_vec2_copy((vec2) {0.1, 0.05}, particle.rects[i].uv_step);
-        particle.rects[i].uv_time = 0.2;
+        //glm_vec2_copy((vec2) {0.1, 0.05}, particle.rects[i].uv_step);
+        //particle.rects[i].uv_time = 0.2;
 
-        particle.rects[i].speed[1] = 10;
-        particle.rects[i].acc[1] = -20;
-        glm_vec4_copy((vec4){0, 0, 1, M_PI}, particle.rects[i].axis_angle);
+        particle.rects[i].speed[1] = -20 + 40 * frand();
+        particle.rects[i].speed[0] = -20 + 40 * frand();
+        particle.rects[i].acc[0] = -10 + 20 * frand();
+        particle.rects[i].acc[1] = -10 + 20 * frand();
+        glm_vec4_copy((vec4){0, 0, 1, M_PI*frand()}, particle.rects[i].axis_angle);
     }
 
     r_particle_update(&particle);
@@ -92,7 +98,7 @@ void game_update(float dtime) {
     
     astronaut_rotate(target);
 
-//    astronaut_update(dtime);
+    astronaut_update(dtime);
 
     static int cnt = 0;
     if(cnt++ % 20 == 0) {
@@ -111,7 +117,7 @@ void game_render() {
     astronaut_render();
     
 
-    r_particle_render(&particle, game_time);
+    r_particle_render(&particle, fabs(sin(game_time/4)*8));
     
     r_text_render(&text);
 }
