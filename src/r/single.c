@@ -23,8 +23,6 @@ void r_single_init(rSingle *self, const float *vp, GLuint tex_sink) {
             "res/shader/r/single.fsh",
             NULL
     });
-    const int loc_position = 0;
-    const int loc_tex_coord = 1;
 
     self->tex = tex_sink;
     self->owns_tex = true;
