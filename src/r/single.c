@@ -69,7 +69,7 @@ void r_single_render(rSingle *self) {
     glUniform4fv(glGetUniformLocation(self->program, "color"),
                        1, self->rect.color);
 
-    glActiveTexture(self->tex);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, self->tex);
 
     {

@@ -107,7 +107,7 @@ void r_batch_render(rBatch *self) {
     glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),
                        1, GL_FALSE, self->vp);
 
-    glActiveTexture(self->tex);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, self->tex);
 
     {

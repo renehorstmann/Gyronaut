@@ -174,7 +174,7 @@ void r_particle_render(rParticle *self, float time) {
 
     glUniform1f(glGetUniformLocation(self->program, "time"), time);
 
-    glActiveTexture(self->tex);
+    glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, self->tex);
 
     {
