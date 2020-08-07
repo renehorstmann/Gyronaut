@@ -53,8 +53,8 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
         glGenVertexArrays(1, &self->vao);
         glBindVertexArray(self->vao);
 
-        // texture
-        glUniform1i(glGetUniformLocation(self->program, "tex"), self->tex);
+        // texture (using only unit 0)
+        glUniform1i(glGetUniformLocation(self->program, "tex"), 0);
 
         // vbo
         {

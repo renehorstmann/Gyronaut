@@ -12,6 +12,15 @@
 #include "text.h"
 
 
+#define rglerrclear while(glGetError()!=GL_NO_ERROR);
+#define rglerr \
+{ \
+    GLenum err; \
+    while((err = glGetError()) != GL_NO_ERROR) \
+        SDL_Log("glError: 0x%04x", err); \
+}
+
+
 static const vec4 rWHITE = {1, 1, 1, 1};
 static const vec4 rBLACK = {0, 0, 0, 1};
 static const vec4 rRED = {1, 0, 0, 1};

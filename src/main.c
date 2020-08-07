@@ -149,6 +149,13 @@ static void main_loop() {
 
     // Swap buffers
     SDL_GL_SwapWindow(window);
+
+    // check for opengl errors:
+    {
+        GLenum err;
+        while((err = glGetError()) != GL_NO_ERROR)
+            SDL_LogWarn(SDL_LOG_CATEGORY_RENDER, "got an glError in this frame: 0x%04x", err);
+    }
 }
 
 

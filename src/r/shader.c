@@ -166,9 +166,12 @@ GLuint r_compile_glsl_from_files(char **files) {
         program = 0;
     }
 
+    glUseProgram(program);
+
     CLEAN_UP:
     for (int i = 0; i < n; i++)
         glDeleteShader(shaders[i]);
+
 
     return program;
 }

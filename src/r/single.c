@@ -23,6 +23,7 @@ void r_single_init(rSingle *self, const float *vp, GLuint tex_sink) {
             "res/shader/r/single.fsh",
             NULL
     });
+
     const int loc_position = 0;
     const int loc_tex_coord = 1;
 
@@ -34,8 +35,8 @@ void r_single_init(rSingle *self, const float *vp, GLuint tex_sink) {
         glGenVertexArrays(1, &self->vao);
         glBindVertexArray(self->vao);
 
-        // texture
-        glUniform1i(glGetUniformLocation(self->program, "tex"), self->tex);
+        // texture (using only unit 0)
+        glUniform1i(glGetUniformLocation(self->program, "tex"), 0);
 
         glBindVertexArray(0);
     }
