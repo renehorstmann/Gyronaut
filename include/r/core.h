@@ -5,7 +5,7 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-#ifdef R_GLES
+#if defined R_GLES || __EMSCRIPTEN__
 static const int R_GL_MAJOR_VERSION = 3;
 static const int R_GL_MINOR_VERSION = 0;
 static const int R_GL_PROFILE = SDL_GL_CONTEXT_PROFILE_ES;
@@ -16,7 +16,7 @@ static const int R_GL_PROFILE = SDL_GL_CONTEXT_PROFILE_CORE;
 #endif
 
 
-#ifdef R_GLES
+#if defined R_GLES || __EMSCRIPTEN__
 #define R_VERTEX_BEGIN "#version 300 es\n"
 #define R_FRAGMENT_BEGIN "#version 300 es\nprecision mediump float;\n"
 #else

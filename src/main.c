@@ -6,10 +6,21 @@
 #include "input.h"
 #include "game.h"
 
+#ifdef __EMSCRIPTEN__
+const Uint32 sdl_init_flags = SDL_INIT_VIDEO;
+#else
+const Uint32 sdl_init_flags = SDL_INIT_EVERYTHING;
+#endif
+
+static SDL_Window *window;
+static Uint32 last_time;
+static bool running;
+static void main_loop();
 
 int main() {
+    puts("Gyronaut");
 
-    if(SDL_Init(SDL_INIT_EVERYTHING) != 0) {
+    if(SDL_Init(sdl_init_flags) != 0) {
         SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_Init failed: %s", SDL_GetError());
         return 1;
     }
@@ -43,7 +54,7 @@ int main() {
 
 
     // create window
-    SDL_Window *window = SDL_CreateWindow("Gyronaut",
+    window = SDL_CreateWindow("Gyronaut",
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
             640, 480,
             SDL_WINDOW_OPENGL);
@@ -76,59 +87,68 @@ int main() {
 
 
 
-    Uint32 last_time = SDL_GetTicks();
-    while (true) {
+    last_time = SDL_GetTicks();
+    running = true;
 
-        // delta time
-        Uint32 time = SDL_GetTicks();
-        float dtime = (time - last_time) / 1000.0f;
-        last_time = time;
-
-        // current window size
-        int width, height;
-        SDL_GetWindowSize(window, &width, &height);
-
-        // inputs
-        SDL_Event event;
-        while (SDL_PollEvent(&event)) {
-            switch(event.type) {
-            	case SDL_QUIT:
-            	    goto BYE;
-            	case SDL_MOUSEBUTTONDOWN:
-            	case SDL_MOUSEMOTION:
-            	case SDL_MOUSEBUTTONUP:
-                case SDL_FINGERDOWN:
-                case SDL_FINGERMOTION:
-                case SDL_FINGERUP:
-                    input_handle_pointer(&event);
-            	    break;
-                case SDL_KEYDOWN:
-                case SDL_KEYUP:
-                    input_handle_keys(&event);
-                    break;
-                case SDL_SENSORUPDATE:
-                    input_handle_sensors(&event);
-                    break;
-            }
-        }
-
-        // simulate
-        game_update(dtime);
-        camera_update(width, height);
-
-        // r
-        glClearColor(1.0f, 0.5f * rand() / RAND_MAX, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        game_render();
-
-        // Swap buffers
-        SDL_GL_SwapWindow(window);
-    }
-    BYE:
-
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(main_loop, 0, true);
+#else
+    while (running)
+        main_loop();
+#endif
 
     SDL_DestroyWindow(window);
     SDL_Quit();
     return 0;
 }
+
+
+static void main_loop() {
+    // delta time
+    Uint32 time = SDL_GetTicks();
+    float dtime = (time - last_time) / 1000.0f;
+    last_time = time;
+
+    // current window size
+    int width, height;
+    SDL_GetWindowSize(window, &width, &height);
+
+    // inputs
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch(event.type) {
+            case SDL_QUIT:
+                running = false;
+                return;
+            case SDL_MOUSEBUTTONDOWN:
+            case SDL_MOUSEMOTION:
+            case SDL_MOUSEBUTTONUP:
+            case SDL_FINGERDOWN:
+            case SDL_FINGERMOTION:
+            case SDL_FINGERUP:
+                input_handle_pointer(&event);
+                break;
+            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+                input_handle_keys(&event);
+                break;
+            case SDL_SENSORUPDATE:
+                input_handle_sensors(&event);
+                break;
+        }
+    }
+
+    // simulate
+    game_update(dtime);
+    camera_update(width, height);
+
+    // r
+    glClearColor(1.0f, 0.5f * rand() / RAND_MAX, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    game_render();
+
+    // Swap buffers
+    SDL_GL_SwapWindow(window);
+}
+
 
