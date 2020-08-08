@@ -70,7 +70,7 @@ void game_init() {
         particle.rects[i].speed[0] = -20 + 40 * frand();
         particle.rects[i].acc[0] = -10 + 20 * frand();
         particle.rects[i].acc[1] = -10 + 20 * frand();
-        glm_vec4_copy((vec4){0, 0, 1, M_PI*frand()}, particle.rects[i].axis_angle);
+        glm_vec4_copy((vec4){0, 0, 1, M_PI * frand()}, particle.rects[i].axis_angle);
     }
 
     r_particle_update(&particle);

@@ -40,38 +40,22 @@ const vec4 tex_coords[6] = vec4[](
   vec4(1, 0, 0, 1)
 );
 
-vec4 quat_from_axis_angle(vec3 axis, float angle) {
-  vec4 qr;
-  float half_angle = angle * 0.5;
-  qr.x = axis.x * sin(half_angle);
-  qr.y = axis.y * sin(half_angle);
-  qr.z = axis.z * sin(half_angle);
-  qr.w = cos(half_angle);
-  return qr;
-}
 
-vec4 quat_conj(vec4 q) {
-  return vec4(-q.x, -q.y, -q.z, q.w);
-}
-
-vec4 quat_mult(vec4 q1, vec4 q2) {
-  vec4 qr;
-  qr.x = (q1.w * q2.x) + (q1.x * q2.w) + (q1.y * q2.z) - (q1.z * q2.y);
-  qr.y = (q1.w * q2.y) - (q1.x * q2.z) + (q1.y * q2.w) + (q1.z * q2.x);
-  qr.z = (q1.w * q2.z) + (q1.x * q2.y) - (q1.y * q2.x) + (q1.z * q2.w);
-  qr.w = (q1.w * q2.w) - (q1.x * q2.x) - (q1.y * q2.y) - (q1.z * q2.z);
-  return qr;
-}
-
-vec3 rotate_vertex_position(vec3 position, vec3 axis, float angle) {
-  vec4 qr = quat_from_axis_angle(axis, angle);
-  vec4 qr_conj = quat_conj(qr);
-  vec4 q_pos = vec4(position.x, position.y, position.z, 0);
-
-  vec4 q_tmp = quat_mult(qr, q_pos);
-  qr = quat_mult(q_tmp, qr_conj);
-
-  return vec3(qr.x, qr.y, qr.z);
+// axis must be normalized
+mat4 axis_angle_to_rot_mat(vec3 axis, float angle) {
+  // equation from: https://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToMatrix/index.htm
+  float c = cos(angle);
+  float s = sin(angle);
+  float t = 1.0f - c;
+  float x = axis.x;
+  float y = axis.y;
+  float z = axis.z;
+  return mat4(
+    t*x*x+c, t*x*y+z*s, t*x*z-y*s, 0, // col 0=x_axis
+    t*x*y-z*s, t*y*y+c, t*y*z+x*s, 0, // col 1=y_axis
+    t*x*z+y*s, t*y*z-x*s, t*z*z+c, 0, // col 2=z_axis
+    0, 0, 0, 1
+  );
 }
 
 
@@ -81,9 +65,9 @@ void main() {
   vec4 pos = vertices[gl_VertexID];
 
   // only rotate if rotation is given
-  if(abs(in_axis_angle.w) > 0.001f)
-    pos = vec4(rotate_vertex_position(pos.xyz, in_axis_angle.xyz, in_axis_angle.w * dt), 1);
-
+  if(abs(in_axis_angle.w) > 0.001f) {
+    pos = axis_angle_to_rot_mat(in_axis_angle.xyz, in_axis_angle.w * dt) * pos;
+  }
   pos = in_pose * pos;
   pos += in_speed * dt;
   pos += in_acc * (dt * dt);
