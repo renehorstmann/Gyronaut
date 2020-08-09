@@ -2,7 +2,6 @@
 #define R_TEXT_H
 
 #include "SDL_ttf.h"
-#include "SDL_opengl.h"
 #include "cglm/types.h"
 #include "single.h"
 

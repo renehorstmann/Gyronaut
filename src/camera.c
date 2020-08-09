@@ -1,10 +1,8 @@
-#define DEBUG
-
-#include "r/r.h"
+#include "e/window.h"
+#include "e/input.h"
 #include "camera.h"
 
 
-int camera_wnd_size[2];
 mat4s camera_v;
 mat4s camera_v_inv;
 mat4s camera_p;
@@ -19,11 +17,13 @@ void camera_init() {
     camera_p_inv = glms_mat4_identity();
     camera_vp = glms_mat4_identity();
 //    camera_vp_inv = glms_mat4_identity();
+
+    e_input_camera_p_inv_ptr = &camera_p_inv.m00;
 }
 
-void camera_update(int wnd_width, int wnd_height) {
-    camera_wnd_size[0] = wnd_width;
-    camera_wnd_size[1] = wnd_height;
+void camera_update() {
+    int wnd_width = e_window_size[0];
+    int wnd_height = e_window_size[1];
     
     float width, height;
     if (wnd_width > wnd_height) {

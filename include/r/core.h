@@ -1,32 +1,29 @@
-#ifndef R_GL_H
-#define R_GL_H
-
-#ifdef __EMSCRIPTEN__
-#include <emscripten.h>
-#endif
+#ifndef R_CORE_H
+#define R_CORE_H
 
 #define GL_GLEXT_PROTOTYPES
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-#if defined R_GLES || __EMSCRIPTEN__
-static const int R_GL_MAJOR_VERSION = 3;
-static const int R_GL_MINOR_VERSION = 0;
-static const int R_GL_PROFILE = SDL_GL_CONTEXT_PROFILE_ES;
-#else
-static const int R_GL_MAJOR_VERSION = 3;
-static const int R_GL_MINOR_VERSION = 3;
-static const int R_GL_PROFILE = SDL_GL_CONTEXT_PROFILE_CORE;
-#endif
+#include "cglm/types.h"
 
 
-#if defined R_GLES || __EMSCRIPTEN__
-#define R_VERTEX_BEGIN "#version 300 es\n"
-#define R_FRAGMENT_BEGIN "#version 300 es\nprecision mediump float;\n"
-#else
-#define R_VERTEX_BEGIN "#version 330 core\n"
-#define R_FRAGMENT_BEGIN "#version 330 core\n"
-#endif
+#define rglerrclear while(glGetError()!=GL_NO_ERROR);
+#define rglerr \
+{ \
+    GLenum err; \
+    while((err = glGetError()) != GL_NO_ERROR) \
+        SDL_Log("glerror: 0x%04x", err); \
+}
 
 
-#endif //R_GL_H
+static const vec4 rWHITE = {1, 1, 1, 1};
+static const vec4 rBLACK = {0, 0, 0, 1};
+static const vec4 rRED = {1, 0, 0, 1};
+static const vec4 rGREEN= {0, 1, 0, 1};
+static const vec4 rBLUE = {0, 0, 1, 1};
+static const vec4 rYELLOW = {1, 1, 0, 1};
+static const vec4 rCYAN = {0, 1, 1, 1};
+static const vec4 rMAGENTA = {1, 0, 1, 1};
+
+#endif //R_CORE_H

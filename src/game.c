@@ -1,8 +1,8 @@
 #define DEBUG
 
+#include "e/e.h"
 #include "r/r.h"
 #include "camera.h"
-#include "input.h"
 #include "background.h"
 #include "astronaut.h"
 #include "meteorite.h"
@@ -13,7 +13,7 @@
 static bool rot_left = false;
 static bool rot_right = false;
 
-static void pointer(Pointer_s p, void *ud) {
+static void pointer(ePointer_s p, void *ud) {
 #ifdef R_GLES
     if(rot_left) {
         if(p.action == POINTER_UP || p.x > -75)
@@ -42,7 +42,7 @@ static float frand() {
 }
 
 void game_init() {
-    input_register_pointer_event(pointer, NULL);
+    e_input_register_pointer_event(pointer, NULL);
     
     background_init();
     astronaut_init();
@@ -80,9 +80,9 @@ void game_update(float dtime) {
     meteorite_update(dtime);
 
     static float target = 0;
-    if(input_right || rot_left)
+    if(e_input_right || rot_left)
         target -= M_PI_2 * dtime;
-    if(input_left || rot_right)
+    if(e_input_left || rot_right)
         target += M_PI_2 * dtime;
 
     
@@ -90,8 +90,8 @@ void game_update(float dtime) {
     // todo: running mean not works for alpha
     // rotation should effect the gyronaut, not the bg in that mode 
     static float ax=0, ay=0;
-    ax = ax*0.9f + input_accel[0] *0.1f;
-    ay = ay*0.9f + input_accel[1] *0.1f;
+    ax = ax*0.9f + e_input_accel[0] *0.1f;
+    ay = ay*0.9f + e_input_accel[1] *0.1f;
     float rot = atan2(ay, ax) - M_PI/2;
     target = - rot;
     

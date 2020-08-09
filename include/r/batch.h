@@ -2,8 +2,8 @@
 #define R_BATCH_H
 
 #include <stdbool.h>
-#include "rect.h"
 #include "core.h"
+#include "rect.h"
 
 
 typedef struct rBatch {

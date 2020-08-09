@@ -3,7 +3,6 @@
 #include "r/single.h"
 #include "r/texture.h"
 #include "camera.h"
-#include "input.h"
 
 const static float ALPHA_SPEED_P = 1;
 

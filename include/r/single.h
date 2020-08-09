@@ -2,8 +2,8 @@
 #define R_SINGLE_H
 
 #include <stdbool.h>
-#include "rect.h"
 #include "core.h"
+#include "rect.h"
 
 typedef struct rSingle {
     rRect_s rect;

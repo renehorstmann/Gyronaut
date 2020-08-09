@@ -1,4 +1,5 @@
 #include "utilc/strviu.h"
+#include "r/definitions.h"
 #include "r/shader.h"
 
 

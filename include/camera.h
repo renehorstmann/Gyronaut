@@ -3,7 +3,6 @@
 
 #include "cglm/struct.h"
 
-extern int camera_wnd_size[2];
 extern mat4s camera_v;
 extern mat4s camera_v_inv;
 extern mat4s camera_p;
@@ -13,7 +12,7 @@ extern mat4s camera_vp;
 
 void camera_init();
 
-void camera_update(int wnd_width, int wnd_height);
+void camera_update();
 
 void camera_set_pos(float x, float y);
 

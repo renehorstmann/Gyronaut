@@ -13,6 +13,7 @@ include_directories(
 file(GLOB SRCS
         "${PROJECT_SOURCE_DIR}/include/*"
         "${PROJECT_SOURCE_DIR}/src/*"
+        "${PROJECT_SOURCE_DIR}/src/e/*"
         "${PROJECT_SOURCE_DIR}/src/r/*"
         )
 
@@ -26,7 +27,7 @@ if (GL_LIB)
     target_link_libraries(gyronaut ${GL_LIB})
 elseif (GLES_LIB)
     message("GLES found: Mobile mode")
-    add_compile_definitions(R_GLES)
+    add_compile_definitions(GLES)
     target_link_libraries(gyronaut ${GLES_LIB})
 else ()
     message(FATAL_ERROR "Neither GL nor GLESv3 found, exiting CMake")
