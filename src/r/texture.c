@@ -1,13 +1,13 @@
 #include <SDL_image.h>
 #include "r/texture.h"
 
-#define R_MAX_TEXTURES 1000
+
 static int tex_size[R_MAX_TEXTURES][2];
 
 GLuint r_texture_from_img(SDL_Surface *img) {
 	SDL_PixelFormat *f = img->format;
 	if(f->BitsPerPixel != 32 || f->Amask == 0) {
-        SDL_LogError(SDL_LOG_CATEGORY_RENDER, "load texture failed, 8bpp and alpha needed");
+        SDL_Log("Load texture failed, 8bpp and alpha needed");
 	    return 0;
 	}
 
@@ -35,8 +35,7 @@ GLuint r_texture_from_img(SDL_Surface *img) {
 GLuint r_texture_from_file(const char *file) {
     SDL_Surface *img = IMG_Load(file);
     if (!img) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_RENDER,
-                "load image (%s) failed: %s", file, IMG_GetError());
+        SDL_Log("Load image (%s) failed: %s", file, IMG_GetError());
         return 0;
     }
     

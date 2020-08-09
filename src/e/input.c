@@ -138,7 +138,7 @@ static void input_handle_sensors(SDL_Event *event) {
 	SDL_Sensor *sensor = SDL_SensorFromInstanceID(event->sensor.which);
     if (!sensor
         || SDL_SensorGetType(sensor) != SDL_SENSOR_ACCEL) {
-        SDL_LogWarn(SDL_LOG_CATEGORY_INPUT, "Couldn't get sensor for sensor event\n");
+        SDL_Log("Couldn't get sensor for sensor event\n");
         return;
     }
     
@@ -166,7 +166,7 @@ void e_input_init() {
 	
 	e_input_accel_active = accel_opened;
 	if(accel_opened)
-	    SDL_Log("opened accel sensor");
+	    SDL_Log("Opened acceleration sensor");
 }
 
 void e_input_update() {

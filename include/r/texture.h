@@ -3,6 +3,8 @@
 
 #include "core.h"
 
+#define R_MAX_TEXTURES 1000
+
 GLuint r_texture_from_img(SDL_Surface *img);
 
 GLuint r_texture_from_file(const char *file);

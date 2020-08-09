@@ -41,7 +41,7 @@ GLuint r_compile_shader(GLint type, const char *src) {
 
         char *buffer = malloc(log_len + 1);
         glGetShaderInfoLog(shader, log_len, NULL, buffer);
-        printf("Compile failure in %s shader: %s", type == GL_VERTEX_SHADER ? "vertex_s" : "fragment", buffer);
+        SDL_Log("Shader compile failure in %s shader: %s", type == GL_VERTEX_SHADER ? "vertex" : "fragment", buffer);
         free(buffer);
 
         glDeleteShader(shader);
@@ -78,7 +78,7 @@ GLuint r_compile_glsl(r_shader_source_s *sources, int n) {
 
         char *buffer = malloc(log_len + 1);
         glGetProgramInfoLog(program, log_len, NULL, buffer);
-        printf("Linking failure: %s", buffer);
+        SDL_Log("Shader linking failure: %s", buffer);
         free(buffer);
 
         glDeleteProgram(program);
@@ -105,16 +105,14 @@ GLuint r_compile_shader_from_file(const char *file) {
             type = GL_FRAGMENT_SHADER;
             shader_begin = R_FRAGMENT_BEGIN;
         } else {
-            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
-                            "compile shader failed, neither .vsh nor .fsh: %s", file);
+            SDL_Log("Compile shader failed, neither .vsh nor .fsh: %s", file);
             return 0;
         }
     }
 
     char *src = file_read(file);
     if (!src) {
-        SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION,
-                        "load shader file %s failed: %s", file, SDL_GetError());
+        SDL_Log("Load shader file %s failed: %s", file, SDL_GetError());
         return 0;
     }
 
@@ -160,7 +158,7 @@ GLuint r_compile_glsl_from_files(char **files) {
 
         char *buffer = malloc(log_len + 1);
         glGetProgramInfoLog(program, log_len, NULL, buffer);
-        printf("Linking failure: %s", buffer);
+        SDL_Log("Shader linking failure: %s", buffer);
         free(buffer);
 
         glDeleteProgram(program);
