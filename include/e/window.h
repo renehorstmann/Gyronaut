@@ -3,7 +3,7 @@
 
 #include "core.h"
 
-typedef void (*eWindowMainLoopFn)();
+typedef void (*eWindowMainLoopFn)(float delta_time);
 
 
 extern SDL_Window *e_window;

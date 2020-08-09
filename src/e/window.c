@@ -12,6 +12,17 @@ int e_window_size[2];
 
 static bool running;
 
+static eWindowMainLoopFn main_loop_fn;
+static Uint32 last_time;
+
+static void loop() {
+	Uint32 time = SDL_GetTicks();
+    float dtime = (time - last_time) / 1000.0f;
+    last_time = time;
+    
+    main_loop_fn(dtime);
+}
+
 
 void e_window_init(const char *name) {
 
@@ -76,13 +87,15 @@ void e_window_update() {
 }
 
 void e_window_main_loop(eWindowMainLoopFn main_loop) {
+    main_loop_fn = main_loop;
     running = true;
+    last_time = SDL_GetTicks();
 
 #ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop(main_loop, 0, true);
+    emscripten_set_main_loop(loop, 0, true);
 #else
     while (running)
-        main_loop();
+        loop();
 #endif
 
 
