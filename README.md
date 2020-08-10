@@ -14,12 +14,9 @@ He will constantly float forward (right) and the player can rotate his direction
   - Gyronaut
   - Asteroids
   - Background
-- Input 
-  - switch between:
-    - keys
-    - touch
-    - gyro
+- PseudoRandom
 - Meteorites
+  - generation with prand
   - collision detection
 - Space Station
   - Arrow to it
