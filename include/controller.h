@@ -6,7 +6,7 @@
 
 void controller_init(bool use_accel);
 
-void controller_update();
+void controller_update(float dtime);
 
 
 #endif //GYRONAUT_CONTROLLER_H

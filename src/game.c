@@ -20,7 +20,7 @@ static rText text;
 
 void game_init() {
     
-    controller_init(true);
+    controller_init(0);
     background_init();
     astronaut_init();
     meteorite_init(25);
@@ -32,7 +32,7 @@ void game_init() {
 }
 
 void game_update(float dtime) {
-    controller_update();
+    controller_update(dtime);
     
     meteorite_update(dtime);
 
@@ -45,6 +45,7 @@ void game_update(float dtime) {
         char fps[16];
         sprintf(fps, "FPS: %.1f", 1/dtime);
         r_text_set_text(&text, rWHITE, fps);
+        r_pose_set_left(text.r.rect.pose, 0);
     }
 }
 

@@ -12,51 +12,26 @@ static bool rot_left = false;
 static bool rot_right = false;
 
 static void pointer(ePointer_s p, void *ud) {
-#ifdef R_GLES
     if(rot_left) {
-        if(p.action == POINTER_UP || p.x > -75)
+        if(p.action == E_POINTER_UP || p.x > -25)
             rot_left = false;
     } else {
-        if(p.action != POINTER_UP && p.x < -75)
+        if(p.action == E_POINTER_DOWN && p.x < -25)
             rot_left = true;
     }
     if(rot_right) {
-        if(p.action == POINTER_UP || p.x < 75)
+        if(p.action == E_POINTER_UP || p.x < 25)
             rot_right = false;
     } else {
-        if(p.action != POINTER_UP && p.x > 75)
+        if(p.action == E_POINTER_DOWN && p.x > 25)
             rot_right = true;
     }
-#endif
 }
 
 
-/*
-void game_update(float dtime) {
-    meteorite_update(dtime);
-
-    static float target = 0;
-    if(e_input_right || rot_left)
-        target -= M_PI_2 * dtime;
-    if(e_input_left || rot_right)
-        target += M_PI_2 * dtime;
-
-    
-    
-    // todo: running mean not works for alpha
-    // rotation should effect the gyronaut, not the bg in that mode 
-    static float ax=0, ay=0;
-    ax = ax*0.9f + e_input_accel[0] *0.1f;
-    ay = ay*0.9f + e_input_accel[1] *0.1f;
-    float rot = atan2(ay, ax) - M_PI/2;
-    target = - rot;
-    
-    
-    astronaut_rotate(target);
-}
-*/
 
 static const float a_mean = 0.9f;
+static const float cam_mean = 0.8f;
 
 
 static bool accel;
@@ -74,7 +49,7 @@ void controller_init(bool use_accel) {
 	
 }
 
-void controller_update() {
+void controller_update(float dtime) {
     if(accel) {
     	ax = ax * a_mean + e_input_accel[0] * (1.0f - a_mean);
     	ay = ay * a_mean + e_input_accel[1] * (1.0f - a_mean);
@@ -82,11 +57,15 @@ void controller_update() {
         float rot = atan2f(ay, ax);
         
         target = rot - M_PI_2;
-        
-        // todo camera
     } else {
-    	
-    	// todo
+    	if(e_input_left || rot_left)
+    	    target -= M_PI_2 * dtime;
+    	if(e_input_right || rot_right)
+    	    target += M_PI_2 * dtime;
+    	    
+    	static float cam_target = 0;
+    	cam_target = cam_mean * cam_target + (1.0f - cam_mean) * target;
+    	camera_set_angle(cam_target);
     }
 	
 	astronaut_rotate(target);
