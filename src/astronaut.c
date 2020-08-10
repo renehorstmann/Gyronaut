@@ -3,6 +3,8 @@
 #include "r/single.h"
 #include "r/texture.h"
 #include "camera.h"
+#include "a_steam.h"
+#include "astronaut.h"
 
 const static float ALPHA_SPEED_P = 1;
 
@@ -23,6 +25,8 @@ static float clamp_rotation(float angle) {
 
 
 void astronaut_init() {
+    a_steam_init();
+    
     r_single_init(&r, &camera_vp.m00, r_texture_from_file("res/astronaut.png"));
     
     speed = 10;
@@ -31,6 +35,7 @@ void astronaut_init() {
 }
 
 void astronaut_update(float dtime) {
+    
     // set position and rotation
     float da = clamp_rotation(alpha_dest - alpha);
     
@@ -49,9 +54,13 @@ void astronaut_update(float dtime) {
 
     // set camera position
     camera_set_pos(R_PoseX(r.rect.pose), R_PoseY(r.rect.pose));
+    
+    
+    a_steam_update(dtime, r.rect.pose);
 }
 
 void astronaut_render() {
+    a_steam_render();
     r_single_render(&r);
 }
 

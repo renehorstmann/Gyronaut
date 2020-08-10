@@ -33,7 +33,7 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
 
 void r_particle_kill(rParticle *self);
 
-void r_particle_update(rParticle *self);
+void r_particle_update(rParticle *self, int offset, int size);
 
 void r_particle_render(rParticle *self, float time);
 
