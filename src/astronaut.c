@@ -14,20 +14,29 @@ static float alpha;
 static float alpha_dest;
 
 
+static float clamp_rotation(float angle) {
+    while(angle < -M_PI)
+        angle += 2*M_PI;
+    while(angle > M_PI)
+        angle -= 2*M_PI;
+    return angle;
+}
+
+
 void astronaut_init() {
     r_single_init(&r, &camera_vp.m00, r_texture_from_file("res/test_astronaut.png"));
+    
     speed = 10;
     
     r_pose_set_size_angle(r.rect.pose, scale, scale, 0);
-
-//    rect.rect.uv[0][0] = 0.5;
-//    rect.rect.uv[1][1] = 0.5;
 }
 
 void astronaut_update(float dtime) {
     // set position and rotation
-    float angular_speed = (alpha_dest - alpha) * ALPHA_SPEED_P;
-    alpha += angular_speed * dtime;
+    float da = clamp_rotation(alpha_dest - alpha);
+    
+    float angular_speed = da * ALPHA_SPEED_P;
+    alpha = clamp_rotation(alpha + angular_speed * dtime);
     
     r_pose_set_angle(r.rect.pose, alpha);
     
@@ -36,16 +45,11 @@ void astronaut_update(float dtime) {
 	speed * cos(alpha) *dtime, 
 	speed * sin(alpha) * dtime);
 	
-	//R_PoseY(r.rect.pose) = 50;
-
-//    rect.rect.uv[3][0] += dtime;
-//    rect.rect.uv[3][1] += dtime;
     // check collision
 
 
     // set camera position
-    camera_set_pos(r.rect.pose[2][0], r.rect.pose[2][1]);
-    camera_set_angle(-alpha_dest);
+    camera_set_pos(R_PoseX(r.rect.pose), R_PoseY(r.rect.pose));
 }
 
 void astronaut_render() {

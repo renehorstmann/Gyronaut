@@ -1,3 +1,4 @@
+#include "r/rect.h"
 #include "e/window.h"
 #include "e/input.h"
 #include "camera.h"
@@ -44,13 +45,9 @@ void camera_update() {
 }
 
 void camera_set_pos(float x, float y) {
-    camera_v.m30 = x;
-    camera_v.m31 = y;
+    r_pose_set_xy(camera_v.raw, x, y);
 }
 
 void camera_set_angle(float alpha) {
-    camera_v.m00 = cos(alpha);
-    camera_v.m01 = -sin(alpha);
-    camera_v.m10 = sin(alpha);
-    camera_v.m11 = cos(alpha);
+    r_pose_set_angle(camera_v.raw, alpha);
 }
