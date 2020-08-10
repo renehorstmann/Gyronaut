@@ -7,7 +7,6 @@
 const static float ALPHA_SPEED_P = 1;
 
 static rSingle r;
-static float scale = 20;
 
 static float speed;
 static float alpha;
@@ -24,11 +23,11 @@ static float clamp_rotation(float angle) {
 
 
 void astronaut_init() {
-    r_single_init(&r, &camera_vp.m00, r_texture_from_file("res/test_astronaut.png"));
+    r_single_init(&r, &camera_vp.m00, r_texture_from_file("res/astronaut.png"));
     
     speed = 10;
     
-    r_pose_set_size_angle(r.rect.pose, scale, scale, 0);
+    r_pose_set_size_angle(r.rect.pose, 10, 20, 0);
 }
 
 void astronaut_update(float dtime) {
