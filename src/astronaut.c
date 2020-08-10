@@ -29,7 +29,7 @@ void astronaut_init() {
     
     r_single_init(&r, &camera_vp.m00, r_texture_from_file("res/astronaut.png"));
     
-    speed = 10;
+    speed = 15;
     
     r_pose_set_size_angle(r.rect.pose, 10, 20, 0);
 }

@@ -21,7 +21,7 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink);
 
 void r_batch_kill(rBatch *self);
 
-void r_batch_update(rBatch *self);
+void r_batch_update(rBatch *self, int offset, int size);
 
 void r_batch_render(rBatch *self);
 

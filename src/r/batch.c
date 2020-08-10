@@ -94,12 +94,44 @@ void r_batch_kill(rBatch *self) {
     *self = (rBatch) {0};
 }
 
-void r_batch_update(rBatch *self) {
+static int clamp_range(int i, int begin, int end) {
+	if(i < begin)
+	    i = begin;
+	if(i >= end)
+	    i = end - 1;
+	return i;
+}
+
+void r_batch_update(rBatch *self, int offset, int size) {
     glBindBuffer(GL_ARRAY_BUFFER, self->vbo);
-    glBufferSubData(GL_ARRAY_BUFFER, 0,
-                    self->num * sizeof(rRect_s), self->rects);
+    
+    offset = clamp_range(offset, 0, self->num);
+    size = clamp_range(size, 1, self->num+1);
+    
+    if(offset + size > self->num) {
+        int to_end = self->num - offset;
+        int from_start = size - to_end;
+    	glBufferSubData(GL_ARRAY_BUFFER, 
+                        offset * sizeof(rRect_s),
+                        to_end * sizeof(rRect_s), 
+                        self->rects + offset);
+         
+    	glBufferSubData(GL_ARRAY_BUFFER, 
+                        0,
+                        from_start * sizeof(rRect_s), 
+                        self->rects);
+    } else {
+        glBufferSubData(GL_ARRAY_BUFFER, 
+                        offset * sizeof(rRect_s),
+                        size * sizeof(rRect_s), 
+                        self->rects + offset);
+                    
+    }
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+
+
 
 void r_batch_render(rBatch *self) {
     glUseProgram(self->program);
