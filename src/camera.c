@@ -1,4 +1,5 @@
 #include "r/rect.h"
+#include "u/pose.h"
 #include "e/window.h"
 #include "e/input.h"
 #include "camera.h"
@@ -45,9 +46,9 @@ void camera_update() {
 }
 
 void camera_set_pos(float x, float y) {
-    r_pose_set_xy(camera_v.raw, x, y);
+    u_pose_set_xy(camera_v.raw, x, y);
 }
 
 void camera_set_angle(float alpha) {
-    r_pose_set_angle(camera_v.raw, alpha);
+    u_pose_set_angle(camera_v.raw, alpha);
 }

@@ -2,7 +2,7 @@
 #include "cglm/types.h"
 #include "r/particle.h"
 #include "r/texture.h"
-#include "r/rect.h"
+#include "u/pose.h"
 #include "camera.h"
 #include "astronaut.h"
 #include "a_steam.h"
@@ -32,7 +32,7 @@ static rParticleRect_s *get_next() {
 }
 
 static void setup_particle(rParticleRect_s *p, vec2 pos, vec2 dir) {
-	r_pose_set(p->pose,
+	u_pose_set(p->pose,
 	    noise(pos[0], 1), 
 	    noise(pos[1], 1),
 	    noise(0.5, 0.2), noise(0.5, 0.2),
