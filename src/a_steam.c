@@ -31,9 +31,7 @@ static rParticleRect_s *get_next() {
     return &particles.rects[use];
 }
 
-static void setup_particle(rParticleRect_s *p, mat4 pose, float curve) {
-	vec4 pos = {-5/ASTRONAUT_W, (5+10*curve)/ASTRONAUT_H, 0, 1};
-	glm_mat4_mulv(pose, pos, pos);
+static void setup_particle(rParticleRect_s *p, vec2 pos, vec2 dir) {
 	r_pose_set(p->pose,
 	    noise(pos[0], 1), 
 	    noise(pos[1], 1),
@@ -41,16 +39,11 @@ static void setup_particle(rParticleRect_s *p, mat4 pose, float curve) {
 	    noise(0, M_PI)
 	);
 
-	vec2 dir = {
-		curve * pose[1][0] - (1-fabsf(curve)) * pose[0][0],
-		curve * pose[1][1] - (1-fabsf(curve)) * pose[0][1]
-	};
+	p->speed[0] = noise(dir[0] *5, 4);
+	p->speed[1] = noise(dir[1] *5, 4);
 	
-	p->speed[0] = noise(dir[0] *1, 4);
-	p->speed[1] = noise(dir[1] *1, 4);
-	
-	p->acc[0] = noise(-dir[0] * 0.1, 0.1);
-	p->acc[1] = noise(-dir[1] * 0.1, 0.1);
+	p->acc[0] = noise(-dir[0] *1, 0.1);
+	p->acc[1] = noise(-dir[1] *1, 0.1);
 	
 	p->axis_angle[3] = noise(0, M_PI);
 	
@@ -65,6 +58,7 @@ static void setup_particle(rParticleRect_s *p, mat4 pose, float curve) {
 	p->start_time = current_time;
 }
 
+
 void a_steam_init() {
 	r_particle_init(&particles, max_particles, &camera_vp.m00, r_texture_from_file("res/steam.png"));
 }
@@ -73,11 +67,23 @@ void a_steam_update(float dtime, mat4 pose, float curve) {
 	current_time += dtime;
 	int add = (int) ceilf(dtime * particles_ps);
 	
-	printf("%d\n", add);
+	vec4 pos = {
+		-5/ASTRONAUT_W, 
+		(5+10*curve)/ASTRONAUT_H, 
+		0, 1};
+	glm_mat4_mulv(pose, pos, pos);
+	
+	vec2 dir = {
+		curve * pose[1][0]/ASTRONAUT_H 
+		- (1-fabsf(curve)) * pose[0][0]/ASTRONAUT_W,
+		curve * pose[1][1]/ASTRONAUT_H 
+		- (1-fabsf(curve)) * pose[0][1]/ASTRONAUT_W
+	};
+	
 	
 	int offset = next;
 	for(int i=0; i<add; i++)
-	    setup_particle(get_next(), pose, curve);
+	    setup_particle(get_next(), pos, dir);
 	
 	r_particle_update(&particles, offset, add);
 }
