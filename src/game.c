@@ -20,7 +20,7 @@ static rText text;
 
 void game_init() {
     
-    controller_init(0);
+    controller_init(1);
     background_init();
     astronaut_init();
     meteorite_init(25);

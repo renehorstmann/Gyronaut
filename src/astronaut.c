@@ -31,7 +31,7 @@ void astronaut_init() {
     
     speed = 15;
     
-    r_pose_set_size_angle(r.rect.pose, 10, 20, 0);
+    r_pose_set_size_angle(r.rect.pose, ASTRONAUT_W, ASTRONAUT_H, 0);
 }
 
 void astronaut_update(float dtime) {
@@ -56,7 +56,7 @@ void astronaut_update(float dtime) {
     camera_set_pos(R_PoseX(r.rect.pose), R_PoseY(r.rect.pose));
     
     
-    a_steam_update(dtime, r.rect.pose);
+    a_steam_update(dtime, r.rect.pose, da / M_PI);
 }
 
 void astronaut_render() {

@@ -1,14 +1,15 @@
-
+#define DEBUG
 #include "cglm/types.h"
 #include "r/particle.h"
 #include "r/texture.h"
 #include "r/rect.h"
 #include "camera.h"
+#include "astronaut.h"
 #include "a_steam.h"
 
 static const int max_particles = 1000;
-static const float particles_ps = 200;
-static const float particle_life = 4;
+static const float particles_ps = 400;
+static const float particle_life = 2;
 
 static rParticle particles;
 static float current_time;
@@ -30,22 +31,26 @@ static rParticleRect_s *get_next() {
     return &particles.rects[use];
 }
 
-static void setup_particle(rParticleRect_s *p, mat4 pose) {
+static void setup_particle(rParticleRect_s *p, mat4 pose, float curve) {
+	vec4 pos = {-5/ASTRONAUT_W, (5+10*curve)/ASTRONAUT_H, 0, 1};
+	glm_mat4_mulv(pose, pos, pos);
 	r_pose_set(p->pose,
-	    noise(R_PoseX(pose), 1), noise(R_PoseY(pose), 1),
-	    noise(0.6, 0.2), noise(0.6, 0.2),
+	    noise(pos[0], 1), 
+	    noise(pos[1], 1),
+	    noise(0.5, 0.2), noise(0.5, 0.2),
 	    noise(0, M_PI)
 	);
+
+	vec2 dir = {
+		curve * pose[1][0] - (1-fabsf(curve)) * pose[0][0],
+		curve * pose[1][1] - (1-fabsf(curve)) * pose[0][1]
+	};
 	
-	glm_vec4_copy((vec4) {
-		noise(-pose[0][0] *1, 3),
-		noise(-pose[0][1] *1, 3)
-	}, p->speed);
+	p->speed[0] = noise(dir[0] *1, 4);
+	p->speed[1] = noise(dir[1] *1, 4);
 	
-	glm_vec4_copy((vec4) {
-		noise(pose[0][0] *0.1, 0.1),
-		noise(pose[0][1] *0.1, 0.1)
-	}, p->acc);
+	p->acc[0] = noise(-dir[0] * 0.1, 0.1);
+	p->acc[1] = noise(-dir[1] * 0.1, 0.1);
 	
 	p->axis_angle[3] = noise(0, M_PI);
 	
@@ -64,7 +69,7 @@ void a_steam_init() {
 	r_particle_init(&particles, max_particles, &camera_vp.m00, r_texture_from_file("res/steam.png"));
 }
 
-void a_steam_update(float dtime, mat4 pose) {
+void a_steam_update(float dtime, mat4 pose, float curve) {
 	current_time += dtime;
 	int add = (int) ceilf(dtime * particles_ps);
 	
@@ -72,7 +77,7 @@ void a_steam_update(float dtime, mat4 pose) {
 	
 	int offset = next;
 	for(int i=0; i<add; i++)
-	    setup_particle(get_next(), pose);
+	    setup_particle(get_next(), pose, curve);
 	
 	r_particle_update(&particles, offset, add);
 }
