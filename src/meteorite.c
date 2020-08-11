@@ -5,7 +5,7 @@
 static rBatch batch;
 
 void meteorite_init(int num) {
-    r_batch_init(&batch, num, &camera_vp.m00, r_texture_from_file("res/meteorite_test.png"));
+    r_batch_init(&batch, num, &camera_vp.m00, r_texture_from_file("res/meteorite.png"));
 
     for(int i=0; i<num; i++) {
         r_pose_set_size(batch.rects[i].pose, 20, 20);
@@ -19,6 +19,7 @@ void meteorite_kill() {
 }
 
 void color(int start, int cnt, float dt) {
+	return;
 	for(int i=start; i<start+cnt; i++) {
         for(int rgba=0; rgba<4; rgba++) {
             float col_shift = dt * rand() / RAND_MAX;
