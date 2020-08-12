@@ -3,6 +3,8 @@
 #include "r/batch.h"
 #include "r/texture.h"
 #include "u/pose.h"
+#include "u/color.h"
+#include "u/prandom.h"
 #include "camera.h"
 #include "meteorite.h"
 
@@ -16,13 +18,6 @@ typedef struct Meteorite_s {
 
 static Meteorite_s *m;
 
-static float randf() {
-    return (float) rand() / RAND_MAX;	
-}
-
-static float noise(float f, float amplitude) {
-	return f - amplitude + 2*amplitude*randf();
-}
 
 void meteorite_init(int num) {
     r_batch_init(&batch, num, &camera_vp.m00, r_texture_from_file("res/meteorite.png"));
@@ -31,20 +26,19 @@ void meteorite_init(int num) {
 
     for(int i=0; i<num; i++) {
         u_pose_set_size(batch.rects[i].pose, 20, 20);
-        U_PoseX(batch.rects[i].pose) = -300.0f + 600.0f * rand() / RAND_MAX;
-        U_PoseY(batch.rects[i].pose) = -300.0f + 600.0f * rand() / RAND_MAX;
+        U_PoseX(batch.rects[i].pose) = u_pnoise(0, 300);
+        U_PoseY(batch.rects[i].pose) = u_pnoise(0, 300);
         
-        glm_vec4_copy((vec4) {
-        	noise(0.9, 0.1),
-        	noise(0.9, 0.1),
-        	noise(0.9, 0.1),
-        	1
+        u_hsv2rgb((vec3) {
+        	u_prange(0, 360), 
+        	u_prange(0, 0.1),
+        	u_prange(0.5, 1),
         }, batch.rects[i].color);
         
         m[i].r = &batch.rects[i];
-        m[i].speed[0] = -10 + randf() * 20;
-        m[i].speed[1] = -10 + randf() * 20;
-        m[i].rot_speed = -M_PI_2 + randf() * M_PI;
+        m[i].speed[0] = u_pnoise(0, 10);
+        m[i].speed[1] = u_pnoise(0, 10);
+        m[i].rot_speed = u_pnoise(0, M_PI_2);
     }
 }
 

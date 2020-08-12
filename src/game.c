@@ -20,6 +20,7 @@ static rText text;
 
 
 void game_init() {
+    u_pseed(1234);
     
     controller_init(0);
     background_init();

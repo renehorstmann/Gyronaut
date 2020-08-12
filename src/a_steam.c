@@ -3,6 +3,7 @@
 #include "r/particle.h"
 #include "r/texture.h"
 #include "u/pose.h"
+#include "u/prandom.h"
 #include "camera.h"
 #include "astronaut.h"
 #include "a_steam.h"
@@ -16,13 +17,6 @@ static float current_time;
 static int next;
 
 
-static float randf() {
-	return (float) rand() / RAND_MAX;
-}
-
-static float noise(float f, float amplitude) {
-	return f - amplitude + 2*amplitude*randf();
-}
 
 static rParticleRect_s *get_next() {
     int use = next++;
@@ -33,22 +27,22 @@ static rParticleRect_s *get_next() {
 
 static void setup_particle(rParticleRect_s *p, vec2 pos, vec2 dir) {
 	u_pose_set(p->pose,
-	    noise(pos[0], 1), 
-	    noise(pos[1], 1),
-	    noise(0.5, 0.2), noise(0.5, 0.2),
-	    noise(0, M_PI)
+	    u_pnoise(pos[0], 1), 
+	    u_pnoise(pos[1], 1),
+	    u_pnoise(0.5, 0.2), u_pnoise(0.5, 0.2),
+	    u_pnoise(0, M_PI)
 	);
 
-	p->speed[0] = noise(dir[0] *5, 4);
-	p->speed[1] = noise(dir[1] *5, 4);
+	p->speed[0] = u_pnoise(dir[0] *5, 4);
+	p->speed[1] = u_pnoise(dir[1] *5, 4);
 	
-	p->acc[0] = noise(-dir[0] *1, 0.1);
-	p->acc[1] = noise(-dir[1] *1, 0.1);
+	p->acc[0] = u_pnoise(-dir[0] *1, 0.1);
+	p->acc[1] = u_pnoise(-dir[1] *1, 0.1);
 	
-	p->axis_angle[3] = noise(0, M_PI);
+	p->axis_angle[3] = u_pnoise(0, M_PI);
 	
 	glm_vec4_copy((vec4) {
-		noise(0.9, 0.1), noise(0.9, 0.1), noise(0.9, 0.1), 1
+		u_pnoise(0.9, 0.1), u_pnoise(0.9, 0.1), u_pnoise(0.9, 0.1), 1
 	}, p->color);
 	
 	glm_vec4_copy((vec4) {
