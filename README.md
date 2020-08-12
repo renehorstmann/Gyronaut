@@ -12,19 +12,7 @@ He will constantly float forward (right) and the player can rotate his direction
 ## Todo
 - Draw basic sprites
   - Background
-- u/ = Utilities
-  - pose.h (functions of r/rect.h)
-  - color.h
-    - hsv2rgb
-    - rgb2hsv
-  - prandom.h
-    - pseed
-    - prand with PRAND_MAX
-    - prandf
-    - prandrange
-    - prandnoise
 - Meteorites
-  - generation with prand
   - collision detection
 - Space Station
   - Arrow to it
