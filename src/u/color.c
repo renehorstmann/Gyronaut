@@ -33,10 +33,9 @@ void u_rgb2hsv(const vec3 rgb, vec3 dst_hsv) {
     }
     if(rgb[0] >= max )                           
         // > is bogus, just keeps compilor happy
-        dst_hsv[0] = (rgb[0] - rgb[1]) / delta;        
+        dst_hsv[0] = (rgb[1] - rgb[2]) / delta;        
         // between yellow & magenta
-    else
-    if(rgb[1] >= max )
+    else if(rgb[1] >= max )
         dst_hsv[0] = 2.0 + (rgb[2] - rgb[0]) / delta;  
         // between cyan & yellow
     else
