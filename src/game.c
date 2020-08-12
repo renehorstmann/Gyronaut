@@ -25,7 +25,7 @@ void game_init() {
     controller_init(0);
     background_init();
     astronaut_init();
-    meteorite_init(25);
+    meteorite_init(50);
 
     r_text_init(&text, &camera_vp.m00, rRED, "FPS: 123456");
     r_text_set_size(&text, 10);
