@@ -2,5 +2,7 @@
 #define U_U_H
 
 #include "pose.h"
+#include "color.h"
+#include "prandom.h"
 
 #endif //U_U_H

@@ -15,6 +15,7 @@ file(GLOB SRCS
         "${PROJECT_SOURCE_DIR}/src/*"
         "${PROJECT_SOURCE_DIR}/src/e/*"
         "${PROJECT_SOURCE_DIR}/src/r/*"
+        "${PROJECT_SOURCE_DIR}/src/u/*"
         )
 
 add_executable(gyronaut ${SRCS})
