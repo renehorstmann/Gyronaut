@@ -8,7 +8,7 @@
 #include "u/pose.h"
 #include "u/color.h"
 #include "u/prandom.h"
-#include "c/circle.h"
+#include "p/circle.h"
 #include "camera.h"
 #include "meteorite.h"
 
@@ -21,7 +21,7 @@ typedef struct Meteorite_s {
 } Meteorite_s;
 
 static Meteorite_s *m;
-static cCircle_s *mc;
+static pCircle_s *mc;
 
 
 static void update_meteorite(int idx, float dt) {
@@ -59,7 +59,7 @@ static void handle_collision(int a, int b, float dt) {
 static void self_collisions(float dt) {
     for(int i=0; i<batch.num; i++) {
     	int offset = i+1;
-    	cIndices_s res = c_circle_og(mc[i], mc+offset, batch.num-offset, -1);
+    	pIndices_s res = p_circle_og(mc[i], mc+offset, batch.num-offset);
     	
     	for(int c=0; c<res.num; c++) {
     		printf("%d - %d\n", i, c+offset);
@@ -73,7 +73,7 @@ void meteorite_init(int num) {
     r_batch_init(&batch, num, &camera_vp.m00, r_texture_from_file("res/meteorite.png"));
 
     m = New0(Meteorite_s, num);
-    mc = New0(cCircle_s, num);
+    mc = New0(pCircle_s, num);
 
     for(int i=0; i<num; i++) {
         mc[i].r = 16;
