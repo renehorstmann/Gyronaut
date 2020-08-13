@@ -35,35 +35,20 @@ static void update_meteorite(int idx, float dt) {
 }
 
 
-static void handle_collision(int a, int b, float dt) {
-	
-	// todo: impuls
-	glm_vec3_inv(m[a].speed);
-	m[a].rot_speed *= -1;
-	glm_vec3_inv(m[b].speed);
-	m[b].rot_speed *= -1;
-	
-	// move a out of b
-	float dx = mc[a].x - mc[b].x;
-	float dy = mc[a].y - mc[b].y;
-	float rr = mc[a].r + mc[b].r;
-	
-	float dist = sqrtf(dx*dx+dy*dy);
-	assume(dist < rr, "not colliding");
-	float shift = (rr - dist) / dist;
-	shift *= 1.2f; // 20% behind b
-	
-	u_pose_shift_xy(m[a].r->pose, dx * shift, dy * shift);
+static void handle_collision(int a, int b) {
+	p_circle_handle_elastic_collision(&mc[a], &mc[b], m[a].speed, m[b].speed);
+	u_pose_set_xy(m[a].r->pose, mc[a].x, mc[a].y);
+	u_pose_set_xy(m[b].r->pose, mc[b].x, mc[b].y);
 }
 
-static void self_collisions(float dt) {
+static void self_collisions() {
     for(int i=0; i<batch.num; i++) {
     	int offset = i+1;
     	pIndices_s res = p_circle_og(mc[i], mc+offset, batch.num-offset);
     	
     	for(int c=0; c<res.num; c++) {
     		printf("%d - %d\n", i, c+offset);
-    		handle_collision(i, res.data[c]+offset, dt);
+    		handle_collision(i, res.data[c]+offset);
     	}	
     }
 }
@@ -107,7 +92,7 @@ void meteorite_update(double dt) {
 	for(int i=0; i<batch.num; i++)
 	    update_meteorite(i, dt);
 	    
-	self_collisions(dt);
+	self_collisions();
 
     r_batch_update(&batch, 0, batch.num);
 }

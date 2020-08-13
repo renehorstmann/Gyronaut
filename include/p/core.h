@@ -8,5 +8,4 @@ typedef struct pIndices_s {
 	int num;
 } pIndices_s;
 
-
 #endif //P_CORE_H

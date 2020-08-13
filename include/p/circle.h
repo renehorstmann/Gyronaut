@@ -1,8 +1,10 @@
 #ifndef P_CIRCLE_H
 #define P_CIRCLE_H
 
+
 #include "math.h"
 #include "stdbool.h"
+#include "cglm/types.h"
 #include "core.h"
 
 
@@ -18,6 +20,9 @@ static bool p_circle_oo(pCircle_s a, pCircle_s b) {
 
 
 pIndices_s p_circle_og(pCircle_s a, const pCircle_s *b, int n);
+
+
+void p_circle_handle_elastic_collision(pCircle_s *a, pCircle_s *b, vec2 speed_a, vec2 speed_b);
 
 
 #endif //P_CIRCLE_H
