@@ -61,8 +61,9 @@ void meteorite_init(int num) {
     mc = New0(pCircle_s, num);
 
     for(int i=0; i<num; i++) {
-        mc[i].r = 16;
-        u_pose_set_size(batch.rects[i].pose, 20, 20);
+        float r = u_prange(10, 30);
+        mc[i].r = r * 0.75f;
+        u_pose_set_size(batch.rects[i].pose, r, r);
         
         U_PoseX(batch.rects[i].pose) = u_pnoise(0, 300);
         U_PoseY(batch.rects[i].pose) = u_pnoise(0, 300);

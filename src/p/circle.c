@@ -19,7 +19,9 @@ void p_circle_handle_elastic_collision(pCircle_s *a, pCircle_s *b, vec2 speed_a,
 	float rr = a->r + b->r;
 	
 	float dist = sqrtf(dx*dx+dy*dy);
-	assume(dist < rr, "not colliding");
+	
+	// assumtion is wrong if collision is detected by a group and a was already moved...
+	//assume(dist < rr, "not colliding");
 	float shift = (rr - dist) / dist;
 	shift *= 1.2f; // 20% behind b
 	
@@ -34,4 +36,7 @@ void p_circle_handle_elastic_collision(pCircle_s *a, pCircle_s *b, vec2 speed_a,
 		speed_a[i] = speed_b[i];
 		speed_b[i] = tmp;
 	}
+	
+	float m_a = powf(a->r, 2);
+	float m_b = powf(b->r, 2);
 }
