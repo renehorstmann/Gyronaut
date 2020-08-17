@@ -3,7 +3,6 @@
 #include "e/window.h"
 #include "e/input.h"
 
-
 bool e_input_up;
 bool e_input_left;
 bool e_input_right;
@@ -133,7 +132,7 @@ static void input_handle_keys(SDL_Event *event) {
 }
 
 
-
+#ifdef GLES
 static void input_handle_sensors(SDL_Event *event) {
 	SDL_Sensor *sensor = SDL_SensorFromInstanceID(event->sensor.which);
     if (!sensor
@@ -148,10 +147,12 @@ static void input_handle_sensors(SDL_Event *event) {
     //SDL_Log("Gyro update: %.2f, %.2f, %.2f\n", data[0], data[1], data[2]);
       
 }
+#endif
 
 void e_input_init() {
 	e_input_camera_p_inv_ptr = &camera_p_inv_init[0][0];
-	
+
+#ifdef GLES
 	int num_sensors = SDL_NumSensors();
 	bool accel_opened = false;
 	for(int i=0; i<num_sensors; i++) {
@@ -167,6 +168,7 @@ void e_input_init() {
 	e_input_accel_active = accel_opened;
 	if(accel_opened)
 	    SDL_Log("Opened acceleration sensor");
+#endif
 }
 
 void e_input_update() {
@@ -188,9 +190,11 @@ void e_input_update() {
             case SDL_KEYUP:
                 input_handle_keys(&event);
                 break;
+#ifdef GLES
             case SDL_SENSORUPDATE:
                 input_handle_sensors(&event);
                 break;
+#endif
         }
     }
 }

@@ -45,6 +45,7 @@ else ()
     find_package(SDL2_ttf REQUIRED)
 endif ()
 include_directories(${SDL2_INCLUDE_DIRS})
+message("include dir:" ${SDL2_INCLUDE_DIRS})
 target_link_libraries(gyronaut m
         ${SDL2_LIBRARIES}
         ${SDL2_IMAGE_LIBRARIES}
