@@ -89,7 +89,6 @@ void meteorite_kill() {
 }
 
 void meteorite_update(double dt) {
-	printf("dt %f\n", dt);
 	for(int i=0; i<batch.num; i++)
 	    update_meteorite(i, dt);
 	    

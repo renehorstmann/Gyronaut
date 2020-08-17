@@ -55,13 +55,13 @@ void controller_update(float dtime) {
     	ay = ay * a_mean + e_input_accel[1] * (1.0f - a_mean);
 
         float rot = atan2f(ay, ax);
-        
+
         target = rot - M_PI_2;
     } else {
     	if(e_input_left || rot_left)
-    	    target -= M_PI_2 * dtime;
-    	if(e_input_right || rot_right)
     	    target += M_PI_2 * dtime;
+    	if(e_input_right || rot_right)
+    	    target -= M_PI_2 * dtime;
     	    
     	static float cam_target = 0;
     	cam_target = cam_mean * cam_target + (1.0f - cam_mean) * target;
