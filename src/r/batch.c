@@ -1,6 +1,4 @@
-#define DEBUG
-
-#include "cglm/cglm.h"
+#include "mathc/mathc.h"
 #include "utilc/alloc.h"
 #include "r/r.h"
 #include "r/batch.h"
@@ -9,9 +7,9 @@
 static void init_rects(rRect_s *instances, int num) {
     for (int i = 0; i < num; i++) {
         rRect_s *r = &instances[i];
-        glm_mat4_identity(r->pose);
-        glm_mat4_identity(r->uv);
-        glm_vec4_one(r->color);
+        r->pose = mat44f_eye();
+        r->uv = mat44f_eye();
+        r->color = vec4f_set(1);
     }
 }
 
@@ -57,7 +55,7 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
                 int loc = loc_pose + c;
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
-                                      sizeof(rRect_s), (void *) (c * sizeof(vec4)));
+                                      sizeof(rRect_s), (void *) (c * sizeof(vec4f)));
                 glVertexAttribDivisor(loc, 1);
             }
 
@@ -66,7 +64,7 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
                 int loc = loc_uv + c;
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
-                                      sizeof(rRect_s), (void *) (offsetof(rRect_s, uv) + c * sizeof(vec4)));
+                                      sizeof(rRect_s), (void *) (offsetof(rRect_s, uv) + c * sizeof(vec4f)));
                 glVertexAttribDivisor(loc, 1);
             }
 

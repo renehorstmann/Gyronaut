@@ -1,6 +1,3 @@
-#define DEBUG
-
-#include "cglm/cglm.h"
 #include "utilc/assume.h"
 #include "e/input.h"
 #include "camera.h"

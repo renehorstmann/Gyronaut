@@ -1,19 +1,12 @@
-#include "cglm/cglm.h"
+#include "mathc/mathc.h"
+#include "r/shader.h"
 #include "r/single.h"
 
-static float buffer[] = {
-    -1, -1, 0, 1, 0, 1, 0, 1,
-    +1, -1, 0, 1, 1, 1, 0, 1,
-    -1, +1, 0, 1, 0, 0, 0, 1,
-    -1, +1, 0, 1, 0, 0, 0, 1,
-    +1, -1, 0, 1, 1, 1, 0, 1,
-    +1, +1, 0, 1, 1, 0, 0, 1
-};
 
 void r_single_init(rSingle *self, const float *vp, GLuint tex_sink) {
-    glm_mat4_identity(self->rect.pose);
-    glm_mat4_identity(self->rect.uv);
-    glm_vec4_one(self->rect.color);
+    self->rect.pose = mat44f_eye();
+    self->rect.uv = mat44f_eye();
+    self->rect.color = vec4f_set(1);
 
     self->vp = vp;
 
@@ -55,16 +48,16 @@ void r_single_render(rSingle *self) {
     glUseProgram(self->program);
 
     glUniformMatrix4fv(glGetUniformLocation(self->program, "pose"),
-                       1, GL_FALSE, &self->rect.pose[0][0]);
+                       1, GL_FALSE, &self->rect.pose.m00);
 
     glUniformMatrix4fv(glGetUniformLocation(self->program, "vp"),
                        1, GL_FALSE, self->vp);
 
     glUniformMatrix4fv(glGetUniformLocation(self->program, "uv"),
-                       1, GL_FALSE, &self->rect.uv[0][0]);
+                       1, GL_FALSE, &self->rect.uv.m00);
 
     glUniform4fv(glGetUniformLocation(self->program, "color"),
-                       1, self->rect.color);
+                       1, &self->rect.color.v0);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, self->tex);

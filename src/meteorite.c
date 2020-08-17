@@ -1,6 +1,4 @@
-#define DEBUG
-
-#include "cglm/cglm.h"
+#include "mathc/mathc.h"
 #include "utilc/assume.h"
 #include "utilc/alloc.h"
 #include "r/batch.h"
@@ -16,7 +14,7 @@ static rBatch batch;
 
 typedef struct Meteorite_s {
 	rRect_s *r;
-	vec2 speed;
+	vec2f speed;
 	float rot_speed;
 } Meteorite_s;
 
@@ -25,20 +23,20 @@ static pCircle_s *mc;
 
 
 static void update_meteorite(int idx, float dt) {
-    u_pose_shift(m[idx].r->pose,
-	    m[idx].speed[0] * dt,
-	    m[idx].speed[1] * dt,
+    u_pose_shift(&m[idx].r->pose,
+	    m[idx].speed.x * dt,
+	    m[idx].speed.y * dt,
 	    m[idx].rot_speed * dt
 	);	
-	mc[idx].x = U_PoseX(m[idx].r->pose);
-	mc[idx].y = U_PoseY(m[idx].r->pose);
+	mc[idx].x = u_pose_get_x(m[idx].r->pose);
+	mc[idx].y = u_pose_get_y(m[idx].r->pose);
 }
 
 
 static void handle_collision(int a, int b) {
 	p_circle_handle_elastic_collision(&mc[a], &mc[b], m[a].speed, m[b].speed);
-	u_pose_set_xy(m[a].r->pose, mc[a].x, mc[a].y);
-	u_pose_set_xy(m[b].r->pose, mc[b].x, mc[b].y);
+	u_pose_set_xy(&m[a].r->pose, mc[a].x, mc[a].y);
+	u_pose_set_xy(&m[b].r->pose, mc[b].x, mc[b].y);
 }
 
 static void self_collisions() {
@@ -63,20 +61,20 @@ void meteorite_init(int num) {
     for(int i=0; i<num; i++) {
         float r = u_prange(10, 30);
         mc[i].r = r * 0.75f;
-        u_pose_set_size(batch.rects[i].pose, r, r);
+        u_pose_set_size(&batch.rects[i].pose, r, r);
         
-        U_PoseX(batch.rects[i].pose) = u_pnoise(0, 300);
-        U_PoseY(batch.rects[i].pose) = u_pnoise(0, 300);
-        
-        u_hsv2rgb((vec3) {
+        u_pose_set_x(&batch.rects[i].pose, u_pnoise(0, 300));
+        u_pose_set_y(&batch.rects[i].pose, u_pnoise(0, 300));
+
+        batch.rects->color.xyz = u_hsv2rgb((vec3f) {
         	u_prange(0, 360), 
         	u_prange(0, 0.1),
         	u_prange(0.5, 1),
-        }, batch.rects[i].color);
+        });
         
         m[i].r = &batch.rects[i];
-        m[i].speed[0] = u_pnoise(0, 20);
-        m[i].speed[1] = u_pnoise(0, 20);
+        m[i].speed.x = u_pnoise(0, 20);
+        m[i].speed.y = u_pnoise(0, 20);
         m[i].rot_speed = u_pnoise(0, M_PI_2);
     }
     

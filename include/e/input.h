@@ -2,6 +2,7 @@
 #define E_INPUT_H
 
 #include <stdbool.h>
+#include "mathc/types.h"
 #include "core.h"
 
 
@@ -29,7 +30,7 @@ extern bool e_input_space;
 extern bool e_input_accel_active;
 extern float e_input_accel[3];
 
-extern const float *e_input_camera_p_inv_ptr;
+extern const mat44f *e_input_camera_p_inv_ptr;
 
 
 

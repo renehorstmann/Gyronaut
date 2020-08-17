@@ -1,5 +1,3 @@
-#define DEBUG
-
 #include "e/e.h"
 #include "r/r.h"
 #include "u/u.h"
@@ -29,7 +27,7 @@ void game_init() {
 
     r_text_init(&text, &camera_vp.m00, rRED, "FPS: 123456");
     r_text_set_size(&text, 10);
-    U_PoseY(text.r.rect.pose) = 50;
+    u_pose_set_y(&text.r.rect.pose, 50);
     
 }
 
@@ -47,7 +45,7 @@ void game_update(float dtime) {
         char fps[16];
         sprintf(fps, "FPS: %.1f", 1/dtime);
         r_text_set_text(&text, rWHITE, fps);
-        u_pose_set_left(text.r.rect.pose, 0);
+        u_pose_set_left(&text.r.rect.pose, 0);
     }
 }
 

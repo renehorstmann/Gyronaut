@@ -1,14 +1,14 @@
 #ifndef GYRONAUT_CAMERA_H
 #define GYRONAUT_CAMERA_H
 
-#include "cglm/struct.h"
+#include "mathc/types.h"
 
-extern mat4s camera_v;
-extern mat4s camera_v_inv;
-extern mat4s camera_p;
-extern mat4s camera_p_inv;
-extern mat4s camera_vp;
-//extern mat4s camera_vp_inv;
+extern mat44f camera_v;
+extern mat44f camera_v_inv;
+extern mat44f camera_p;
+extern mat44f camera_p_inv;
+extern mat44f camera_vp;
+//extern mat44f camera_vp_inv;
 
 void camera_init();
 

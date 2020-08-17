@@ -1,5 +1,4 @@
-#define DEBUG
-#include "cglm/cglm.h"
+#include "mathc/mathc.h"
 #include "e/e.h"
 #include "r/r.h"
 #include "u/u.h"

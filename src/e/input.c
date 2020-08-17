@@ -1,4 +1,4 @@
-#include "cglm/cglm.h"
+#include "mathc/mathc.h"
 #include "utilc/assume.h"
 #include "e/window.h"
 #include "e/input.h"
@@ -13,9 +13,9 @@ bool e_input_space;
 
 bool e_input_accel_active;
 float e_input_accel[3];
-const float *e_input_camera_p_inv_ptr;
+const mat44f *e_input_camera_p_inv_ptr;
 
-static const mat4 camera_p_inv_init = GLM_MAT4_IDENTITY_INIT;
+static const mat44f camera_p_inv_init = MAT44_INIT_EYE;
 
 static struct {
     void (*cb)(ePointer_s, void *);
@@ -26,10 +26,9 @@ static struct {
 static int reg_pointer_e_size = 0;
 
 static void to_perspective(float gl_x, float gl_y, float *x, float *y) {
-    vec4 res;
-    glm_mat4_mulv((vec4 *) e_input_camera_p_inv_ptr, (vec4) {gl_x, gl_y, 0, 1}, res);
-    *x = res[0];
-    *y = res[1];
+    vec4f res = mat44f_mul_vec(*e_input_camera_p_inv_ptr, (vec4f) {{gl_x, gl_y, 0, 1}});
+    *x = res.x;
+    *y = res.y;
 }
 
 static ePointer_s pointer_mouse(enum ePointerAction action) {
@@ -150,7 +149,7 @@ static void input_handle_sensors(SDL_Event *event) {
 #endif
 
 void e_input_init() {
-	e_input_camera_p_inv_ptr = &camera_p_inv_init[0][0];
+	e_input_camera_p_inv_ptr = &camera_p_inv_init;
 
 #ifdef GLES
 	int num_sensors = SDL_NumSensors();

@@ -11,7 +11,7 @@ pIndices_s p_circle_og(pCircle_s a, const pCircle_s *b, int n) {
 }
 
 
-void p_circle_handle_elastic_collision(pCircle_s *a, pCircle_s *b, vec2 speed_a, vec2 speed_b) {
+void p_circle_handle_elastic_collision(pCircle_s *a, pCircle_s *b, vec2f speed_a, vec2f speed_b) {
 	
 	// move a out of b
 	float dx = a->x - b->x;
@@ -32,9 +32,9 @@ void p_circle_handle_elastic_collision(pCircle_s *a, pCircle_s *b, vec2 speed_a,
 	// elastic collision:
 	// todo
 	for(int i=0; i<2; i++) {
-		float tmp = speed_a[i];
-		speed_a[i] = speed_b[i];
-		speed_b[i] = tmp;
+		float tmp = speed_a.v[i];
+		speed_a.v[i] = speed_b.v[i];
+		speed_b.v[i] = tmp;
 	}
 	
 	float m_a = powf(a->r, 2);

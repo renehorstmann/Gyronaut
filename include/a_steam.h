@@ -1,11 +1,11 @@
 #ifndef GYRONAUT_A_STEAM_H
 #define GYRONAUT_A_STEAM_H
 
-#include "cglm/types.h"
+#include "mathc/types.h"
 
 void a_steam_init();
 
-void a_steam_update(float dtime, mat4 pose, float curve);
+void a_steam_update(float dtime, mat44f pose, float curve);
 
 void a_steam_render();
 

@@ -1,5 +1,4 @@
-#define DEBUG
-#include "cglm/struct.h"
+#include "mathc/mathc.h"
 #include "r/single.h"
 #include "r/texture.h"
 #include "u/pose.h"
@@ -32,7 +31,7 @@ void astronaut_init() {
     
     speed = 15;
     
-    u_pose_set_size_angle(r.rect.pose, ASTRONAUT_W, ASTRONAUT_H, 0);
+    u_pose_set_size_angle(&r.rect.pose, ASTRONAUT_W, ASTRONAUT_H, 0);
 }
 
 void astronaut_update(float dtime) {
@@ -43,10 +42,10 @@ void astronaut_update(float dtime) {
     float angular_speed = da * ALPHA_SPEED_P;
     alpha = clamp_rotation(alpha + angular_speed * dtime);
     
-    u_pose_set_angle(r.rect.pose, alpha);
+    u_pose_set_angle(&r.rect.pose, alpha);
     
 //    u_pose_print(r.rect.pose);
-	u_pose_shift_xy(r.rect.pose,
+	u_pose_shift_xy(&r.rect.pose,
 	speed * cos(alpha) *dtime, 
 	speed * sin(alpha) * dtime);
 	
@@ -54,7 +53,7 @@ void astronaut_update(float dtime) {
 
 
     // set camera position
-    camera_set_pos(U_PoseX(r.rect.pose), U_PoseY(r.rect.pose));
+    camera_set_pos(u_pose_get_x(r.rect.pose), u_pose_get_y(r.rect.pose));
     
     
     a_steam_update(dtime, r.rect.pose, da / M_PI);

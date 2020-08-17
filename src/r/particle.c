@@ -1,6 +1,4 @@
-#define DEBUG
-
-#include "cglm/cglm.h"
+#include "mathc/mathc.h"
 #include "utilc/alloc.h"
 #include "utilc/assume.h"
 #include "r/r.h"
@@ -10,14 +8,14 @@
 static void init_rects(rParticleRect_s *instances, int num) {
     for (int i = 0; i < num; i++) {
         rParticleRect_s *r = &instances[i];
-        glm_mat4_identity(r->pose);
-        glm_mat4_identity(r->uv);
-        glm_vec4_zero(r->speed);
-        glm_vec4_zero(r->acc);
-        glm_vec4_copy((vec4){0, 0, 1, 0}, r->axis_angle);
-        glm_vec4_one(r->color);
-        glm_vec4_zero(r->color_speed);
-        glm_vec2_zero(r->uv_step);
+        r->pose = mat44f_eye();
+        r->uv = mat44f_eye();
+        r->speed = vec4f_set(0);
+        r->acc = vec4f_set(0);
+        r->axis_angle = (vec4f) {0, 0, 1, 0};
+        r->color = vec4f_set(1);
+        r->color_speed = vec4f_set(0);
+        r->uv_step = vec2f_set(0);
         r->uv_time = FLT_MAX;
         r->start_time = 0;
     }
@@ -72,7 +70,7 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
                 int loc = loc_pose + c;
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
-                                      sizeof(rParticleRect_s), (void *) (c * sizeof(vec4)));
+                                      sizeof(rParticleRect_s), (void *) (c * sizeof(vec4f)));
                 glVertexAttribDivisor(loc, 1);
             }
 
@@ -82,7 +80,7 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
                                       sizeof(rParticleRect_s),
-                                      (void *) (offsetof(rParticleRect_s, uv) + c * sizeof(vec4)));
+                                      (void *) (offsetof(rParticleRect_s, uv) + c * sizeof(vec4f)));
                 glVertexAttribDivisor(loc, 1);
             }
 
