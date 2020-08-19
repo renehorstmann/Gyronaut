@@ -13,7 +13,7 @@ He will constantly float forward (right) and the player can rotate his direction
 - Draw basic sprites
   - Background
 - Meteorites
-  - collision detection
+  - elastic collision
 - Space Station
   - Arrow to it
 - Basic Game
@@ -25,6 +25,7 @@ He will constantly float forward (right) and the player can rotate his direction
   - batch rendered
   - 2nd Layer of bg meteorites
 - Render to Framebuffer
+  - Bloom?
   - FishEye effect
   - HUD outside of fisheye sphere
  
