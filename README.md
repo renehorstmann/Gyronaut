@@ -12,8 +12,10 @@ He will constantly float forward (right) and the player can rotate his direction
 ## Todo
 - Draw basic sprites
   - Background
+- prandom normal dist / gauss
 - Meteorites
   - elastic collision
+- Implement nuklear debug window system
 - Space Station
   - Arrow to it
 - Basic Game
