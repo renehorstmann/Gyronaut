@@ -45,7 +45,6 @@ static void self_collisions() {
     	pIndices_s res = p_circle_og(mc[i], mc+offset, batch.num-offset);
     	
     	for(int c=0; c<res.num; c++) {
-    		printf("%d - %d\n", i, c+offset);
     		handle_collision(i, res.data[c]+offset);
     	}	
     }

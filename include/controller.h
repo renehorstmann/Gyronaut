@@ -4,7 +4,7 @@
 #include <stdbool.h>
 
 
-void controller_init(bool use_accel);
+void controller_init(int input_method);
 
 void controller_update(float dtime);
 

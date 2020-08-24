@@ -1,6 +1,7 @@
 #include "mathc/mathc.h"
 #include "utilc/assume.h"
 #include "e/window.h"
+#include "e/gui.h"
 #include "e/input.h"
 
 bool e_input_up;
@@ -171,8 +172,12 @@ void e_input_init() {
 }
 
 void e_input_update() {
+    if(e_gui_ctx) nk_input_begin(e_gui_ctx);
+
 	SDL_Event event;
     while (SDL_PollEvent(&event)) {
+        if(e_gui_ctx) nk_sdl_handle_event(&event);
+
         switch(event.type) {
             case SDL_QUIT:
                 e_window_kill();
@@ -196,6 +201,8 @@ void e_input_update() {
 #endif
         }
     }
+
+    if(e_gui_ctx) nk_input_end(e_gui_ctx);
 }
 
 

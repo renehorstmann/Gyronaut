@@ -1,4 +1,5 @@
 #include "mathc/mathc.h"
+#include "e/gui.h"
 #include "r/single.h"
 #include "r/texture.h"
 #include "u/pose.h"
@@ -48,7 +49,8 @@ void astronaut_update(float dtime) {
 	u_pose_shift_xy(&r.rect.pose,
 	speed * cos(alpha) *dtime, 
 	speed * sin(alpha) * dtime);
-	
+
+	e_gui_wnd_float_attribute("speed", &speed, 0, 50, 5);
     // check collision
 
 

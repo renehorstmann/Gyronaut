@@ -13,14 +13,13 @@ void r_render_init(SDL_Window *window) {
         SDL_Log("OpenGL failed: only has %d/16 vertex attributes", max_vertex_attributes);
         exit(EXIT_FAILURE);
     }
-    
+}
+
+void r_render_begin_frame() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
     glClearColor(0, 0, 0, 1);
-}
-
-void r_render_begin_frame() {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 

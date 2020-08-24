@@ -15,6 +15,7 @@ int main() {
     
     e_window_init("Gyronaut");
     e_input_init();
+    e_gui_init();
 
     r_render_init(e_window);
 
@@ -24,6 +25,8 @@ int main() {
     game_init();
 
     e_window_main_loop(main_loop);
+
+    e_gui_kill();
     
     return 0;
 }
@@ -43,6 +46,8 @@ static void main_loop(float delta_time) {
     r_render_begin_frame();
     
     game_render();
+
+    e_gui_render();
 
     // swap buffers
     r_render_end_frame();

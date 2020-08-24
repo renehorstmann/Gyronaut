@@ -4,7 +4,7 @@ project(Gyronaut C)
 set(CMAKE_C_STANDARD 11)
 
 #set(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} -march=native)  # march=native for best performance
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wno-long-long -pedantic -Wno-unused-function -Wno-missing-braces")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -pedantic -Wno-long-long -Wno-unused-function -Wno-unused-variable -Wno-missing-braces")
 
 include_directories(
         ${PROJECT_SOURCE_DIR}/include
