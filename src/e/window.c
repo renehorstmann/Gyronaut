@@ -63,7 +63,7 @@ void e_window_init(const char *name) {
     e_window = SDL_CreateWindow(name,
             SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
             640, 480,
-            SDL_WINDOW_OPENGL);
+            SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
     if (!e_window) {
         SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_CreateWindow failed: %s", SDL_GetError());
         exit(EXIT_FAILURE);

@@ -15,10 +15,12 @@ void r_render_init(SDL_Window *window) {
     }
 }
 
-void r_render_begin_frame() {
+void r_render_begin_frame(int width, int height) {
+    glViewport(0,0, width, height);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_DEPTH_TEST);
+    glDisable(GL_SCISSOR_TEST);
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 }

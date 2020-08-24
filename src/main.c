@@ -43,7 +43,7 @@ static void main_loop(float delta_time) {
     camera_update();
 
     // render
-    r_render_begin_frame();
+    r_render_begin_frame(e_window_size[0], e_window_size[1]);
     
     game_render();
 
