@@ -15,7 +15,6 @@ He will constantly float forward (right) and the player can rotate his direction
 - prandom normal dist / gauss
 - Meteorites
   - elastic collision
-- Implement nuklear debug window system
 - Space Station
   - Arrow to it
 - Basic Game
