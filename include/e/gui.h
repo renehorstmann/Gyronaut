@@ -9,7 +9,11 @@
 #define NK_INCLUDE_FONT_BAKING
 #define NK_INCLUDE_DEFAULT_FONT
 #include "nuklear/nuklear.h"
+#ifdef GLES
+#include "nuklear/nuklear_sdl_gles2.h"
+#else
 #include "nuklear/nuklear_sdl_gl3.h"
+#endif
 #include "SDL.h"
 
 extern struct nk_context *e_gui_ctx;
