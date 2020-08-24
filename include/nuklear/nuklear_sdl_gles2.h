@@ -17,7 +17,7 @@
 
 // added to enable scaling
 #ifndef NK_SCALE
-#define NK_SCALE 1.5f
+#define NK_SCALE 3.0f
 #endif
 
 
