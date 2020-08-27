@@ -7,9 +7,9 @@
 static void init_rects(rRect_s *instances, int num) {
     for (int i = 0; i < num; i++) {
         rRect_s *r = &instances[i];
-        r->pose = mat44f_eye();
-        r->uv = mat44f_eye();
-        r->color = vec4f_set(1);
+        r->pose = mat4_eye();
+        r->uv = mat4_eye();
+        r->color = vec4_set(1);
     }
 }
 
@@ -55,7 +55,7 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
                 int loc = loc_pose + c;
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
-                                      sizeof(rRect_s), (void *) (c * sizeof(vec4f)));
+                                      sizeof(rRect_s), (void *) (c * sizeof(vec4)));
                 glVertexAttribDivisor(loc, 1);
             }
 
@@ -64,7 +64,7 @@ void r_batch_init(rBatch *self, int num, const float *vp, GLuint tex_sink) {
                 int loc = loc_uv + c;
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
-                                      sizeof(rRect_s), (void *) (offsetof(rRect_s, uv) + c * sizeof(vec4f)));
+                                      sizeof(rRect_s), (void *) (offsetof(rRect_s, uv) + c * sizeof(vec4)));
                 glVertexAttribDivisor(loc, 1);
             }
 

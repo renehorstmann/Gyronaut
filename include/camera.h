@@ -3,12 +3,12 @@
 
 #include "mathc/types.h"
 
-extern mat44f camera_v;
-extern mat44f camera_v_inv;
-extern mat44f camera_p;
-extern mat44f camera_p_inv;
-extern mat44f camera_vp;
-//extern mat44f camera_vp_inv;
+extern mat4 camera_v;
+extern mat4 camera_v_inv;
+extern mat4 camera_p;
+extern mat4 camera_p_inv;
+extern mat4 camera_vp;
+//extern mat4 camera_vp_inv;
 
 void camera_init();
 

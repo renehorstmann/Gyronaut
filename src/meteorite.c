@@ -14,7 +14,7 @@ static rBatch batch;
 
 typedef struct Meteorite_s {
 	rRect_s *r;
-	vec2f speed;
+	vec2 speed;
 	float rot_speed;
 } Meteorite_s;
 
@@ -65,7 +65,7 @@ void meteorite_init(int num) {
         u_pose_set_x(&batch.rects[i].pose, u_pnoise(0, 300));
         u_pose_set_y(&batch.rects[i].pose, u_pnoise(0, 300));
 
-        batch.rects->color.xyz = u_hsv2rgb((vec3f) {
+        batch.rects->color.xyz = u_hsv2rgb((vec3) {
         	u_prange(0, 360), 
         	u_prange(0, 0.1),
         	u_prange(0.5, 1),

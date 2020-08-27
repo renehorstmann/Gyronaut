@@ -4,10 +4,10 @@
 #include "mathc/types.h"
 
 // rgb[0:1] hsv[0:360, 0:1, 0:1]
-vec3f u_rgb2hsv(vec3f rgb);
+vec3 u_rgb2hsv(vec3 rgb);
 
 
 // rgb[0:1] hsv[0:360, 0:1, 0:1]
-vec3f u_hsv2rgb(vec3f hsv);
+vec3 u_hsv2rgb(vec3 hsv);
 
 #endif // U_COLOR_H

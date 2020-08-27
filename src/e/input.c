@@ -14,9 +14,9 @@ bool e_input_space;
 
 bool e_input_accel_active;
 float e_input_accel[3];
-const mat44f *e_input_camera_p_inv_ptr;
+const mat4 *e_input_camera_p_inv_ptr;
 
-static const mat44f camera_p_inv_init = MAT44_INIT_EYE;
+static const mat4 camera_p_inv_init = MAT4_INIT_EYE;
 
 static struct {
     void (*cb)(ePointer_s, void *);
@@ -27,7 +27,7 @@ static struct {
 static int reg_pointer_e_size = 0;
 
 static void to_perspective(float gl_x, float gl_y, float *x, float *y) {
-    vec4f res = mat44f_mul_vec(*e_input_camera_p_inv_ptr, (vec4f) {{gl_x, gl_y, 0, 1}});
+    vec4 res = mat4_mul_vec(*e_input_camera_p_inv_ptr, (vec4) {{gl_x, gl_y, 0, 1}});
     *x = res.x;
     *y = res.y;
 }

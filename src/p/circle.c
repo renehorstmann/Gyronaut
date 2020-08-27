@@ -11,7 +11,7 @@ pIndices_s p_circle_og(pCircle_s a, const pCircle_s *b, int n) {
 }
 
 
-void p_circle_handle_elastic_collision(pCircle_s *a, pCircle_s *b, vec2f speed_a, vec2f speed_b) {
+void p_circle_handle_elastic_collision(pCircle_s *a, pCircle_s *b, vec2 speed_a, vec2 speed_b) {
 	
 	// move a out of b
 	float dx = a->x - b->x;

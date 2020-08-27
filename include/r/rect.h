@@ -4,9 +4,9 @@
 #include "mathc/types.h"
 
 typedef struct rRect_s {
-    mat44f pose;
-    mat44f uv;
-    vec4f color;
+    mat4 pose;
+    mat4 uv;
+    vec4 color;
 } rRect_s;
 
 

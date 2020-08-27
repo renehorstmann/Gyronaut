@@ -2,9 +2,9 @@
 
 
 // rgb[0:1] hsv[0:360, 0:1, 0:1]
-vec3f u_rgb2hsv(vec3f rgb) {
+vec3 u_rgb2hsv(vec3 rgb) {
     // copied from stackoverflow
-    vec3f hsv;
+    vec3 hsv;
     float min, max, delta;
 
     min = rgb.v0 < rgb.v1 ? rgb.v0 : rgb.v1;
@@ -49,9 +49,9 @@ vec3f u_rgb2hsv(vec3f rgb) {
 }
 
 // rgb[0:1] hsv[0:360, 0:1, 0:1]
-vec3f u_hsv2rgb(vec3f hsv) {
+vec3 u_hsv2rgb(vec3 hsv) {
     // copied from stackoverflow
-    vec3f rgb;
+    vec3 rgb;
     float hh, p, q, t, ff;
     long i;
 

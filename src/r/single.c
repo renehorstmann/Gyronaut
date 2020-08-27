@@ -4,9 +4,9 @@
 
 
 void r_single_init(rSingle *self, const float *vp, GLuint tex_sink) {
-    self->rect.pose = mat44f_eye();
-    self->rect.uv = mat44f_eye();
-    self->rect.color = vec4f_set(1);
+    self->rect.pose = mat4_eye();
+    self->rect.uv = mat4_eye();
+    self->rect.color = vec4_set(1);
 
     self->vp = vp;
 

@@ -6,14 +6,14 @@
 #include "core.h"
 
 typedef struct rParticleRect_s {
-    mat44f pose;
-    mat44f uv;
-    vec4f speed;
-    vec4f acc;
-    vec4f axis_angle;
-    vec4f color;
-    vec4f color_speed;
-    vec2f uv_step;
+    mat4 pose;
+    mat4 uv;
+    vec4 speed;
+    vec4 acc;
+    vec4 axis_angle;
+    vec4 color;
+    vec4 color_speed;
+    vec2 uv_step;
     float uv_time;
     float start_time;
 } rParticleRect_s;

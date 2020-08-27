@@ -6,20 +6,20 @@
 #include "camera.h"
 
 
-mat44f camera_v;
-mat44f camera_v_inv;
-mat44f camera_p;
-mat44f camera_p_inv;
-mat44f camera_vp;
-//mat4s camera_vp_inv;
+mat4 camera_v;
+mat4 camera_v_inv;
+mat4 camera_p;
+mat4 camera_p_inv;
+mat4 camera_vp;
+//mat4 camera_vp_inv;
 
 void camera_init() {
-    camera_v = mat44f_eye();
-    camera_v_inv = mat44f_eye();
-    camera_p = mat44f_eye();
-    camera_p_inv = mat44f_eye();
-    camera_vp = mat44f_eye();
-//    camera_vp_inv = mat44f_eye();
+    camera_v = mat4_eye();
+    camera_v_inv = mat4_eye();
+    camera_p = mat4_eye();
+    camera_p_inv = mat4_eye();
+    camera_vp = mat4_eye();
+//    camera_vp_inv = mat4_eye();
 
     e_input_camera_p_inv_ptr = &camera_p_inv;
 }
@@ -37,13 +37,13 @@ void camera_update() {
         height = 200 * wnd_height / wnd_width;
     }
 
-    camera_v_inv = mat_invert(camera_v);
+    camera_v_inv = mat4_inv(camera_v);
 
     camera_p = u_pose_ortho(-width / 2, width / 2, -height / 2, height / 2, -1, 1);
-    camera_p_inv = mat_invert(camera_p);
+    camera_p_inv = mat4_inv(camera_p);
 
-    camera_vp = mat_mul_mat(camera_p, camera_v_inv);
-//    camera_vp_inv = mat_invert(camera_vp);
+    camera_vp = mat4_mul_mat(camera_p, camera_v_inv);
+//    camera_vp_inv = mat4_inv(camera_vp);
 }
 
 void camera_set_pos(float x, float y) {

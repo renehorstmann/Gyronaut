@@ -8,14 +8,14 @@
 static void init_rects(rParticleRect_s *instances, int num) {
     for (int i = 0; i < num; i++) {
         rParticleRect_s *r = &instances[i];
-        r->pose = mat44f_eye();
-        r->uv = mat44f_eye();
-        r->speed = vec4f_set(0);
-        r->acc = vec4f_set(0);
-        r->axis_angle = (vec4f) {0, 0, 1, 0};
-        r->color = vec4f_set(1);
-        r->color_speed = vec4f_set(0);
-        r->uv_step = vec2f_set(0);
+        r->pose = mat4_eye();
+        r->uv = mat4_eye();
+        r->speed = vec4_set(0);
+        r->acc = vec4_set(0);
+        r->axis_angle = (vec4) {0, 0, 1, 0};
+        r->color = vec4_set(1);
+        r->color_speed = vec4_set(0);
+        r->uv_step = vec2_set(0);
         r->uv_time = FLT_MAX;
         r->start_time = 0;
     }
@@ -70,7 +70,7 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
                 int loc = loc_pose + c;
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
-                                      sizeof(rParticleRect_s), (void *) (c * sizeof(vec4f)));
+                                      sizeof(rParticleRect_s), (void *) (c * sizeof(vec4)));
                 glVertexAttribDivisor(loc, 1);
             }
 
@@ -80,7 +80,7 @@ void r_particle_init(rParticle *self, int num, const float *vp, GLuint tex_sink)
                 glEnableVertexAttribArray(loc);
                 glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE,
                                       sizeof(rParticleRect_s),
-                                      (void *) (offsetof(rParticleRect_s, uv) + c * sizeof(vec4f)));
+                                      (void *) (offsetof(rParticleRect_s, uv) + c * sizeof(vec4)));
                 glVertexAttribDivisor(loc, 1);
             }
 

@@ -24,7 +24,7 @@ static rParticleRect_s *get_next() {
     return &particles.rects[use];
 }
 
-static void setup_particle(rParticleRect_s *p, vec2f pos, vec2f dir) {
+static void setup_particle(rParticleRect_s *p, vec2 pos, vec2 dir) {
 	u_pose_set(&p->pose,
 	    u_pnoise(pos.x, 1),
 	    u_pnoise(pos.y, 1),
@@ -40,11 +40,11 @@ static void setup_particle(rParticleRect_s *p, vec2f pos, vec2f dir) {
 	
 	p->axis_angle.w = u_pnoise(0, M_PI);
 
-	p->color = (vec4f) {{
+	p->color = (vec4) {{
 		u_pnoise(0.9, 0.1), u_pnoise(0.9, 0.1), u_pnoise(0.9, 0.1), 1
 	}};
 
-    p->color_speed = (vec4f) {{
+    p->color_speed = (vec4) {{
 		0, 0, 0, -1.0f / particle_life
 	}};
 	
@@ -56,17 +56,17 @@ void a_steam_init() {
 	r_particle_init(&particles, max_particles, &camera_vp.m00, r_texture_from_file("res/steam.png"));
 }
 
-void a_steam_update(float dtime, mat44f pose, float curve) {
+void a_steam_update(float dtime, mat4 pose, float curve) {
 	current_time += dtime;
 	int add = (int) ceilf(dtime * particles_ps);
 	
-	vec4f pos = {{
+	vec4 pos = {{
 		-5/ASTRONAUT_W, 
 		(5+10*curve)/ASTRONAUT_H, 
 		0, 1}};
-	pos = mat_mul_vec(pose, pos);
+	pos = mat4_mul_vec(pose, pos);
 
-	vec2f dir = {{
+	vec2 dir = {{
 		curve * pose.m10/ASTRONAUT_H
 		- (1-fabsf(curve)) * pose.m00/ASTRONAUT_W,
 		curve * pose.m11/ASTRONAUT_H
