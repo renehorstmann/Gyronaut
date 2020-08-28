@@ -112,27 +112,4 @@ static void u_pose_set_bottom(mat4 *p, float b) {
 	p->m31 = b + u_pose_get_h(*p) /2;
 }
 
-static mat4 u_pose_ortho(float left,    float right,
-                          float bottom,  float top,
-                          float nearVal, float farVal) {
-    // from cglm/cam.h/glm_ortho
-    float rl, tb, fn;
-
-    mat4 dest = MAT4_INIT_ZERO;
-
-    rl = 1.0f / (right  - left);
-    tb = 1.0f / (top    - bottom);
-    fn =-1.0f / (farVal - nearVal);
-
-    dest.m[0][0] = 2.0f * rl;
-    dest.m[1][1] = 2.0f * tb;
-    dest.m[2][2] = 2.0f * fn;
-    dest.m[3][0] =-(right  + left)    * rl;
-    dest.m[3][1] =-(top    + bottom)  * tb;
-    dest.m[3][2] = (farVal + nearVal) * fn;
-    dest.m[3][3] = 1.0f;
-
-    return dest;
-}
-
 #endif //U_POSE_H

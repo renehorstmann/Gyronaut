@@ -39,7 +39,7 @@ void camera_update() {
 
     camera_v_inv = mat4_inv(camera_v);
 
-    camera_p = u_pose_ortho(-width / 2, width / 2, -height / 2, height / 2, -1, 1);
+    camera_p = mat4_camera_ortho(-width / 2, width / 2, -height / 2, height / 2, -1, 1);
     camera_p_inv = mat4_inv(camera_p);
 
     camera_vp = mat4_mul_mat(camera_p, camera_v_inv);
