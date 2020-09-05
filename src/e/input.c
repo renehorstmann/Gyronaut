@@ -1,4 +1,4 @@
-#include "mathc/mathc.h"
+#include "mathc/float.h"
 #include "utilc/assume.h"
 #include "e/window.h"
 #include "e/gui.h"

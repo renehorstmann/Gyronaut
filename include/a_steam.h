@@ -1,7 +1,7 @@
 #ifndef GYRONAUT_A_STEAM_H
 #define GYRONAUT_A_STEAM_H
 
-#include "mathc/types.h"
+#include "mathc/types/float.h"
 
 void a_steam_init();
 

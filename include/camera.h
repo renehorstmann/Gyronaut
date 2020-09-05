@@ -1,7 +1,7 @@
 #ifndef GYRONAUT_CAMERA_H
 #define GYRONAUT_CAMERA_H
 
-#include "mathc/types.h"
+#include "mathc/types/float.h"
 
 extern mat4 camera_v;
 extern mat4 camera_v_inv;

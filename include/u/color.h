@@ -1,7 +1,7 @@
 #ifndef U_COLOR_H
 #define U_COLOR_H
 
-#include "mathc/types.h"
+#include "mathc/types/float.h"
 
 // rgb[0:1] hsv[0:360, 0:1, 0:1]
 vec3 u_rgb2hsv(vec3 rgb);

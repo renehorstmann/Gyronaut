@@ -2,7 +2,7 @@
 #define R_TEXT_H
 
 #include "SDL_ttf.h"
-#include "mathc/types.h"
+#include "mathc/types/float.h"
 #include "single.h"
 
 

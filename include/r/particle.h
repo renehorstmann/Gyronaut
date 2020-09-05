@@ -2,7 +2,7 @@
 #define R_PARTICLE_H
 
 #include <stdbool.h>
-#include "mathc/types.h"
+#include "mathc/types/float.h"
 #include "core.h"
 
 typedef struct rParticleRect_s {

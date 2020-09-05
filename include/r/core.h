@@ -5,7 +5,7 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 
-#include "mathc/types.h"
+#include "mathc/types/float.h"
 
 
 #define rglerrclear while(glGetError()!=GL_NO_ERROR);

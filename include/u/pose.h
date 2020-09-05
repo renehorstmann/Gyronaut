@@ -2,7 +2,7 @@
 #define U_POSE_H
 
 #include <math.h>
-#include "mathc/types.h"
+#include "mathc/types/float.h"
 
 
 static float u_pose_get_x(mat4 p) {

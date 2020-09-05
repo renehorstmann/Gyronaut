@@ -2,7 +2,7 @@
 #define E_INPUT_H
 
 #include <stdbool.h>
-#include "mathc/types.h"
+#include "mathc/types/float.h"
 #include "core.h"
 
 

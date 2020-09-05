@@ -1,4 +1,4 @@
-#include "mathc/mathc.h"
+#include "mathc/float.h"
 #include "r/particle.h"
 #include "r/texture.h"
 #include "u/pose.h"

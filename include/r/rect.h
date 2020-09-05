@@ -1,7 +1,7 @@
 #ifndef R_RECT_H
 #define R_RECT_H
 
-#include "mathc/types.h"
+#include "mathc/types/float.h"
 
 typedef struct rRect_s {
     mat4 pose;
