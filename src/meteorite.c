@@ -1,10 +1,10 @@
 #include "mathc/float.h"
+#include "mathc/utils/color.h"
 #include "utilc/assume.h"
 #include "utilc/alloc.h"
 #include "r/batch.h"
 #include "r/texture.h"
 #include "u/pose.h"
-#include "u/color.h"
 #include "u/prandom.h"
 #include "p/circle.h"
 #include "camera.h"
@@ -65,7 +65,7 @@ void meteorite_init(int num) {
         u_pose_set_x(&batch.rects[i].pose, u_pnoise(0, 300));
         u_pose_set_y(&batch.rects[i].pose, u_pnoise(0, 300));
 
-        batch.rects->color.xyz = u_hsv2rgb((vec3) {
+        batch.rects->color.xyz = vec3_hsv2rgb((vec3) {
         	u_prange(0, 360), 
         	u_prange(0, 0.1),
         	u_prange(0.5, 1),

@@ -9,9 +9,5 @@
 
 #include "mat/double.h"
 
-#include "quat/dquat.h"
-
-#include "utils/dcamera.h"
-
 
 #endif //MATHC_DOUBLE_H

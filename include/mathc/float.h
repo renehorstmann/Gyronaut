@@ -9,9 +9,5 @@
 
 #include "mat/float.h"
 
-#include "quat/quat.h"
-
-#include "utils/camera.h"
-
 
 #endif //MATHC_FLOAT_H
