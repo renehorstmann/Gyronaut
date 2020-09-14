@@ -6,6 +6,17 @@
 #include "../types/bool.h"
 
 
+/** dst = unit_x */
+static dvec2 dvec2_unit_x() {
+    return (dvec2) {{1, 0}};
+}
+
+/** dst = unit_y */
+static dvec2 dvec2_unit_y() {
+    return (dvec2) {{0, 1}};
+}
+
+
 /** dst = scalar */
 static dvec2 dvec2_set(double scalar) {
     dvec2 res;

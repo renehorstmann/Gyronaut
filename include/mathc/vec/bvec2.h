@@ -5,6 +5,17 @@
 #include "../types/bool.h"
 
 
+/** dst = unit_x */
+static bvec2 bvec2_unit_x() {
+    return (bvec2) {{true, false}};
+}
+
+/** dst = unit_y */
+static bvec2 bvec2_unit_y() {
+    return (bvec2) {{false, true}};
+}
+
+
 /** dst = scalar */
 static bvec2 bvec2_set(bool set) {
     bvec2 res;

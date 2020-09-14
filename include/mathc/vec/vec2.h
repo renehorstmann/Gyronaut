@@ -6,6 +6,17 @@
 #include "../types/bool.h"
 
 
+/** dst = unit_x */
+static vec2 vec2_unit_x() {
+    return (vec2) {{1, 0}};
+}
+
+/** dst = unit_y */
+static vec2 vec2_unit_y() {
+    return (vec2) {{0, 1}};
+}
+
+
 /** dst = scalar */
 static vec2 vec2_set(float scalar) {
     vec2 res;

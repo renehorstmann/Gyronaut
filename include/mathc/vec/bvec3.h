@@ -5,6 +5,22 @@
 #include "../types/bool.h"
 
 
+/** dst = unit_x */
+static bvec3 bvec3_unit_x() {
+    return (bvec3) {{true, false, false}};
+}
+
+/** dst = unit_y */
+static bvec3 bvec3_unit_y() {
+    return (bvec3) {{false, true, false}};
+}
+
+/** dst = unit_z */
+static bvec3 bvec3_unit_z() {
+    return (bvec3) {{false, false, true}};
+}
+
+
 /** dst = scalar */
 static bvec3 bvec3_set(bool set) {
     bvec3 res;

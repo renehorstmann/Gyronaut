@@ -24,9 +24,9 @@ static bool dintersection_plane_plane(dvec3 *out_pos, dvec3 *out_dir,
     // distance point to plane = x*nx + y*ny + z*nz + 1*d
 
     dmat3 A;
-    A.col[0] = plane_hessian_a.xyz;
-    A.col[1] = plane_hessian_b.xyz;
-    A.col[2] = dir;
+    A = dmat3_set_row(A, plane_hessian_a.xyz, 0);
+    A = dmat3_set_row(A, plane_hessian_b.xyz, 1);
+    A = dmat3_set_row(A, dir, 2);
 
     // distance to planes should be 0, so -1*d
     dvec3 B = {{-plane_hessian_a.w, -plane_hessian_b.w, 0}};
@@ -75,9 +75,9 @@ static bool dintersection_plane_line_v(double *out_pos, const double *plane_hess
 
 
 /** returns t (line_pos + line_dir * t), or NAN if not intersecting */
-static double dintersection_triangle_line(dvec3 line_pos, dvec3 line_dir,
-                                        dvec3 v0, dvec3 v1, dvec3 v2,
-                                        bool culling) {
+static double dintersection_triangle_line(dvec3 v0, dvec3 v1, dvec3 v2,
+                                          dvec3 line_pos, dvec3 line_dir,
+                                          bool culling) {
     dvec3 v0v1 = dvec3_sub_vec(v1, v0);
     dvec3 v0v2 = dvec3_sub_vec(v2, v0);
     dvec3 pvec = dvec3_cross(line_dir, v0v2);
@@ -106,10 +106,10 @@ static double dintersection_triangle_line(dvec3 line_pos, dvec3 line_dir,
     return dvec3_dot(v0v2, qvec) * inv_det;
 }
 /** returns t (line_pos + line_dir * t), or NAN if not intersecting */
-static double dintersection_triangle_line_v(const double *line_pos, const double *line_dir,
-                                          const double *v0, const double *v1, const double *v2,
-                                          bool culling) {
-    return dintersection_triangle_line(DVec3(line_pos), DVec3(line_dir), DVec3(v0), DVec3(v1), DVec3(v2), culling);
+static double dintersection_triangle_line_v(const double *v0, const double *v1, const double *v2,
+                                            const double *line_pos, const double *line_dir,
+                                            bool culling) {
+    return dintersection_triangle_line(DVec3(v0), DVec3(v1), DVec3(v2), DVec3(line_pos), DVec3(line_dir), culling);
 }
 
 

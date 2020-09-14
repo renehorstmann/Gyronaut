@@ -6,6 +6,22 @@
 #include "../types/bool.h"
 
 
+/** dst = unit_x */
+static ivec3 ivec3_unit_x() {
+    return (ivec3) {{1, 0, 0}};
+}
+
+/** dst = unit_y */
+static ivec3 ivec3_unit_y() {
+    return (ivec3) {{0, 1, 0}};
+}
+
+/** dst = unit_z */
+static ivec3 ivec3_unit_z() {
+    return (ivec3) {{0, 0, 1}};
+}
+
+
 /** dst = scalar */
 static ivec3 ivec3_set(int scalar) {
     ivec3 res;
