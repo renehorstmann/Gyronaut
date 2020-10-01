@@ -64,10 +64,9 @@ void main() {
 
   vec4 pos = vertices[gl_VertexID];
 
-  // only rotate if rotation is given
-  if(abs(in_axis_angle.w) > 0.001f) {
-    pos = axis_angle_to_rot_mat(in_axis_angle.xyz, in_axis_angle.w * dt) * pos;
-  }
+  
+  pos = axis_angle_to_rot_mat(in_axis_angle.xyz, in_axis_angle.w * dt) * pos;
+  
   pos = in_pose * pos;
   pos += in_speed * dt;
   pos += in_acc * (dt * dt);
